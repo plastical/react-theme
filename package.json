@@ -1,0 +1,29 @@
+{
+  "name": "agire",
+  "version": "0.1.0",
+  "description": "React based theme for Wordpress",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryanvannin/agire.git"
+  },
+  "keywords": [
+    "theme",
+    "react",
+    "redux",
+    "react-router",
+    "4",
+    "webpack",
+    "2",
+    "wordpress"
+  ],
+  "author": "Ryan Vannin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryanvannin/agire/issues"
+  },
+  "homepage": "https://github.com/ryanvannin/agire#readme"
+}
