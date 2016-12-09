@@ -1,0 +1,21 @@
+.search_form {
+	.page_header & {
+		margin: 0 auto 75px;
+	}
+
+	.search_field {
+		box-sizing: border-box;
+		padding: 13px 20px 14px;
+		width: 100%;
+		background-color: transparent;
+		border: 1px solid $color__border-input;
+	}
+}
+
+.search_submit {
+	clip: rect( 1px, 1px, 1px, 1px );
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}

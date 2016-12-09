@@ -1,0 +1,29 @@
+{
+	"presets": [
+		"latest",
+		"react",
+		"es2015",
+		"stage-0"
+	],
+	"plugins": [
+		"transform-class-properties",
+		"transform-export-extensions",
+		"add-module-exports",
+		"syntax-jsx",
+		"transform-react-jsx",
+		"transform-react-display-name",
+		"lodash"
+	],
+	"env": {
+    "node": {
+      "plugins": [
+        [
+          "babel-plugin-transform-require-ignore",
+          {
+            "extensions": [".less", ".scss"]
+          }
+        ]
+      ]
+    }
+  }
+}
