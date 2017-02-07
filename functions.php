@@ -1,22 +1,20 @@
 <?php
 /**
- * Plastical functions and definitions.
- *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
- *
- * @package Plastical
- */
-
-/**
-* Other config stuff
+* Plastical functions and definitions.
+*
+* @link https://developer.wordpress.org/themes/basics/theme-functions/
+*
+* @package Plastical
 */
 
-// Get Specific functions Up & Running!
-require_once('library/client-core.php'); // core functions (don't remove)
-require_once('library/profiles.php'); // custom profile functions
-require_once('library/events-post-type.php'); // events custom types
-require_once('library/admin.php'); // custom admin functions
+/* Config theme directory whitin the the custom theme */
+define('CONFIG_THEME_DIR', '/bin');
 
+// Get Specific functions Up & Running!
+require_once(get_template_directory() . CONFIG_THEME_DIR . '/client-core.php'); // core functions (don't remove)
+require_once(get_template_directory() . CONFIG_THEME_DIR . '/profiles.php'); // custom profile functions
+require_once(get_template_directory() . CONFIG_THEME_DIR . '/events-post-type.php'); // events custom types
+require_once(get_template_directory() . CONFIG_THEME_DIR . '/admin.php'); // custom admin functions
 /**
 * Thumbnail sizes
 */
@@ -43,6 +41,7 @@ for the 640 x 640 image:
 You can change the names and dimensions to whatever
 you like. Enjoy!
 */
+
 
 function plastical_image_downsize( $value = false, $id, $size ) {
     if ( !wp_attachment_is_image($id) )
@@ -74,11 +73,18 @@ function plastical_image_downsize( $value = false, $id, $size ) {
 
 add_filter( 'image_downsize', 'plastical_image_downsize', 1, 3 );
 
+	
+// remove the p from around imgs (http://css-tricks.com/snippets/wordpress/remove-paragraph-tags-from-around-images/)
+function filter_ptags_on_images($content){
+   return preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
+}
+add_filter('the_content', 'filter_ptags_on_images');
+
 /**
  * Plastical only works if the REST API is available
  */
 if (version_compare($GLOBALS['wp_version'], '4.6-alpha', '<')) {
-	require get_template_directory() . '/bin/compat-warnings.php';
+	require get_template_directory() . CONFIG_THEME_DIR . '/compat-warnings.php';
 	return;
 }
 
@@ -108,10 +114,10 @@ function plastical_setup() {
 	 * If you're building a theme based on Plastical, use a find and replace
 	 * to change 'plastical' to the name of your theme in all the template files.
 	 */
-	load_theme_textdomain('plastical', get_template_directory() . '/languages');
+	load_theme_textdomain('plastical', get_template_directory() . CONFIG_THEME_DIR . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
-	add_theme_support('automatic-feed-links');
+	//add_theme_support('automatic-feed-links');
 
 	/*
 	 * Let WordPress manage the document title.
@@ -128,9 +134,10 @@ function plastical_setup() {
 	 */
 	add_theme_support('post-thumbnails');
 
-	// This theme uses wp_nav_menu() in one location.
+	// This theme uses wp_nav_menu() in more than one location due to localization issues.
 	register_nav_menus(array(
-		'primary' => esc_html__('Primary Menu', 'plastical'),
+		'primary-en' => esc_html__('Primary Menu for EN', 'plastical'),
+    'primary-it' => esc_html__('Primary Menu for IT', 'plastical'),
 	));
 
 	/*
@@ -146,37 +153,9 @@ function plastical_setup() {
 	));
 
 	add_post_type_support('post', 'comments');
-	add_post_type_support('page', 'comments');
+	// add_post_type_support('page', 'comments');
 }
 add_action('after_setup_theme', 'plastical_setup');
-
-/**
- * Register widget area.
- *
- * @link http://codex.wordpress.org/Function_Reference/register_sidebar
- */
-function plastical_widgets_init() {
-	register_sidebar(array(
-		'name'          => __('Primary sidebar', 'plastical'),
-		'id'            => 'primary-sidebar',
-		'description'   => '',
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget'  => '</aside>',
-		'before_title'  => '<h3 class="widget_title">',
-		'after_title'   => '</h3>',
-	));
-
-  register_sidebar(array(
-		'name'          => __('Secondary sidebar', 'plastical'),
-		'id'            => 'secondary-sidebar',
-		'description'   => '',
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget'  => '</aside>',
-		'before_title'  => '<h3 class="widget_title">',
-		'after_title'   => '</h3>',
-	));
-}
-add_action('widgets_init', 'plastical_widgets_init');
 
 /**
  * Enqueue scripts and styles.
@@ -192,8 +171,9 @@ function plastical_scripts() {
 		Jetpack_Tiled_Gallery::default_scripts_and_styles();
 	}
 
-	$url = trailingslashit(home_url());
-	$path = trailingslashit(wp_parse_url($url)['path']);
+	$url = trailingslashit(site_url());
+  $home = trailingslashit(home_url());
+	$path = trailingslashit(wp_parse_url($home)['path']);
 
 	$front_page_slug = false;
 	$blog_page_slug = false;
@@ -205,30 +185,35 @@ function plastical_scripts() {
 		}
 
 		$blog_page_id = get_option('page_for_posts');
-		$blog_page = get_post($blog_page_id);
-		if ($blog_page->post_name) {
-			$blog_page_slug = $blog_page->post_name;
-		}
+    if($blog_page_id) {
+		  $blog_page = get_post($blog_page_id);
+		  if ($blog_page->post_name) {
+			  $blog_page_slug = $blog_page->post_name;
+		  }
+    }
 	}
 
 	$user_id = get_current_user_id();
 	$user = get_userdata($user_id);
+  $canEdit = current_user_can('edit_post');
 
 	wp_scripts()->add_data(PLASTICAL_APP, 'data', sprintf(
 		'var SiteSettings = %s; var PlasticalSettings = %s;',
 		wp_json_encode(array(
 			'endpoint' => esc_url_raw($url),
-			'nonce' => wp_create_nonce('wp_rest'),
+			'nonce' => wp_create_nonce('wp_rest')
 		) ),
 		wp_json_encode(array(
+      'lang' => (ICL_LANGUAGE_CODE != '') ? ICL_LANGUAGE_CODE : 'en',
 			'user' => get_current_user_id(),
 			'userDisplay' => $user ? $user->display_name : '',
+      'canEdit' => $canEdit,
 			'frontPage' => array(
 				'page' => $front_page_slug,
 				'blog' => $blog_page_slug,
 			),
 			'URL' => array(
-				'base' => esc_url_raw($url),
+				'base' => esc_url_raw($home),
 				'path' => $path,
 			),
 			'meta' => array(
@@ -252,17 +237,23 @@ function plastical_add_path_to_page_query($args, $request) {
 add_filter('rest_page_query', 'plastical_add_path_to_page_query', 10, 2);
 
 // Allow anon comments via API when using this theme.
-add_filter('rest_allow_anonymous_comments', '__return_true');
+// add_filter('rest_allow_anonymous_comments', '__return_true');
+
+// remove legacy compatibility with jQuery...
+add_action( 'wp_default_scripts', function( $scripts ) {
+    if ( ! empty( $scripts->registered['jquery'] ) ) {
+        $jquery_dependencies = $scripts->registered['jquery']->deps;
+        $scripts->registered['jquery']->deps = array_diff( $jquery_dependencies, array( 'jquery-migrate' ) );
+    }
+} );
 
 // Add rest query vars for custom filtering
 function plastical_add_rest_query_vars($query_vars) {
-    $query_vars = array_merge( $query_vars, array('meta_key', 'meta_value', 'meta_compare') );
+    $query_vars = array_merge($query_vars, array('meta_key', 'meta_value', 'meta_compare', 'meta_query'));
     return $query_vars;
 }
-
-add_filter('rest_query_vars', 'plastical_add_rest_query_vars');
+add_filter('rest_query_vars', 'plastical_add_rest_query_vars', PHP_INT_MAX, 1);
 
 // Include extra functionality.
-require get_template_directory() . '/bin/load-menu.php';
-require get_template_directory() . '/bin/load-data.php';
-require get_template_directory() . '/bin/permalinks.php';
+require get_template_directory() . CONFIG_THEME_DIR . '/load-menu.php';
+require get_template_directory() . CONFIG_THEME_DIR . '/permalinks.php';

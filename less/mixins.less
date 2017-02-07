@@ -1,0 +1,304 @@
+/*********************
+BASE URL
+*********************/
+@base-url: 				"/assets";
+@layout-url: 			"/assets/layout";
+
+
+/*********************
+BRUTE HIDE
+*********************/
+.hidden {
+	display: none !important; 
+}
+
+/*********************
+THEME COLORS
+*********************/
+/* main theme colors */
+@baseColor: rgb(51,51,51); 	// gray
+@primaryColor: rgb(11,94,92); // dark green
+@secondaryColor: rgb(87,161,144); // light green
+
+/* Default variations  */
+@baseColor-light5:		lighten(@baseColor, 5%);
+@baseColor-light10:			lighten(@baseColor, 10%);
+@primaryColor-light5:		lighten(@primaryColor, 5%);
+@primaryColor-light10:			lighten(@primaryColor, 10%);
+@secondaryColor-light5:		lighten(@secondaryColor, 5%);
+@secondaryColor-light10:			lighten(@secondaryColor, 10%);
+
+@baseColor-dark5:		darken(@baseColor, 5%);
+@baseColor-dark10:			darken(@baseColor, 10%);
+@primaryColor-dark5:		darken(@primaryColor, 5%);
+@primaryColor-dark10:			darken(@primaryColor, 10%);
+@secondaryColor-dark5:		darken(@secondaryColor, 5%);
+@secondaryColor-dark10:			darken(@secondaryColor, 10%);
+           
+
+/*********************
+CLEARFIXIN'
+*********************/
+
+/* Contain floats: nicolasgallagher.com/micro-clearfix-hack/ */ 
+.clearfix:before, 
+.clearfix:after, 
+.nav .menu ul:before, 
+.nav .menu ul:after { content: ""; display: table; }
+.clearfix:after, 
+.nav .menu ul:after { clear: both; }
+.clearfix, 
+.nav .menu ul { zoom: 1; }
+
+/*********************
+COLORS
+*********************/
+
+/* service colors */
+@red:				rgb(255,186,186);	
+@green:             rgb(223,242,191);	
+@blue:              rgb(189,229,248);				
+@yellow:			rgb(254,239,179);
+
+@black:             rgb(0,0,0);
+@darkerGray:          lighten(@black, 10%);
+@darkGray:          lighten(@black, 25%);
+@gray:              lighten(@black, 50%);
+@lightGray:         lighten(@black, 75%);
+@lighterGray:       lighten(@black, 90%);
+@lightestGray:      rgb(245,245,245);
+@white:             rgb(255,255,255);
+
+/* this is pulled from Bootstrap */
+@complement:        spin(@baseColor, 180);  // Determine a complementary color
+@split1:            spin(@baseColor, 158);  // Split complements
+@split2:            spin(@baseColor, -158);
+@triad1:            spin(@baseColor, 135);  // Triads colors
+@triad2:            spin(@baseColor, -135);
+@tetra1:            spin(@baseColor, 90);   // Tetra colors
+@tetra2:            spin(@baseColor, -90);
+@analog1:           spin(@baseColor, 22);   // Analogs colors
+@analog2:           spin(@baseColor, -22);
+
+.darkenColor(@color: @baseColor, @percentage: 10%) {
+	color: darken(@color, @percentage);
+}
+
+.lightenColor(@color: @baseColor, @percentage: 10%) {
+	color: lighten(@color, @percentage);
+}
+
+/*********************
+TYPOGRAPHY
+*********************/
+
+.sans-serif { 
+	font-family: Arial, Helvetica, sans-serif; 
+}
+.serif { 
+	font-family: "Georgia", Cambria, Times New Roman, Times, serif; 
+}
+
+@font-face {
+  font-family: 'graublau_webregular';
+  src: url("@{base-url}/webfonts/graublauweb.woff2") format('woff2'),
+       url("@{base-url}/webfonts/graublauweb.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 
+use the best ampersand 
+http://simplebits.com/notebook/2008/08/14/ampersands-2/
+*/
+span.amp {
+  font-family: Baskerville,'Goudy Old Style',Palatino,'Book Antiqua',serif;
+  font-style: italic;
+}
+
+/* text alignment */
+.text_left { text-align: left; }
+.text_center { text-align: center; }
+.text_right { text-align: right; }
+
+.text_shadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(255,255,255,0.9) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
+.lighter_text_shadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
+.darker_text_shadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(0,0,0,0.2) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
+
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { /* WebKit browsers */
+    color:   rgb(99,99,99);
+}
+input:-moz-placeholder,textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:   rgb(99,99,99);
+}
+input::-moz-placeholder,textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:   rgb(99,99,99);
+}
+input:-ms-input-placeholder,textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:   rgb(99,99,99);
+}
+
+/*********************
+ALERTS & NOTICES
+*********************/
+
+.help, .info, .error, .success { 
+	border: 1px solid; 
+}
+
+div {
+  &.help, &.info, &.error, &.success { 
+    padding: .75em;
+    .borderBox();
+  }
+}
+
+.help { 
+	border-color: darken(@yellow, 25%); 
+	background: @yellow; 
+}
+
+.info { 
+	border-color: darken(@blue, 25%); 
+	background: @blue; 
+}
+
+.error { 
+	border-color: darken(@red, 25%); 
+	background: @red; 
+}
+
+.error_message {
+  color:  darken(@red, 25%); 
+}
+
+.success { 
+	border-color: darken(@green, 25%); 
+	background: @green; 
+} 
+
+input.error::-webkit-input-placeholder, textarea.error::-webkit-input-placeholder { /* WebKit browsers */
+    color:  darken(@red, 25%); 
+}
+input.error:-moz-placeholder,textarea.error:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:  darken(@red, 25%); 
+}
+input.error::-moz-placeholder,textarea.error::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:  darken(@red, 25%); 
+}
+input.error:-ms-input-placeholder,textarea.error:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:  darken(@red, 25%); 
+}
+
+/*********************
+BACKGROUND SPRITE WITH DEFAULT .PNG
+*********************/
+
+.backgroundSprite(@x: 0, @y:0, @repeat: no-repeat,@color: transparent, @url: url("@{layout-url}/sprite.png")) {
+	background: @arguments;
+}
+
+/*********************
+BOX-SHADOW
+*********************/
+
+.boxShadow(@x: 0, @y: 0, @blur: 1px, @distance: 0, @color: rgba(0,0,0,0.2)) {
+  -webkit-box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  box-shadow: @arguments;
+}
+
+/*********************
+BOX SIZING BEHAVIOUR
+*********************/
+
+.borderBox {
+	-webkit-box-sizing:border-box;
+  		-moz-box-sizing:border-box;
+    			box-sizing:border-box;
+}
+
+/*********************
+BORDER RADIUS
+*********************/
+
+/* .borderRadius(4px); */
+.borderRadius(@radius: 4px) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+      -ms-border-radius: @radius;
+       -o-border-radius: @radius;
+          border-radius: @radius;
+}
+
+/* .borderRadius-left(4px); */
+.borderRadius-left(@radius: 4px) {
+	-webkit-border-bottom-left-radius: @radius;
+  	   -webkit-border-top-left-radius: @radius;
+		-moz-border-radius-bottomleft: @radius;
+		   -moz-border-radius-topleft: @radius;
+			border-bottom-left-radius: @radius;
+			   border-top-left-radius: @radius;
+}
+
+/* .borderRadius-right(4px); */
+.borderRadius-right(@radius: 4px) {
+	-webkit-border-bottom-right-radius: @radius;
+  	   -webkit-border-top-right-radius: @radius;
+		-moz-border-radius-bottomright: @radius;
+		   -moz-border-radius-topright: @radius;
+			border-bottom-right-radius: @radius;
+			   border-top-right-radius: @radius;
+}
+
+/* .borderRadius-bottom(4px); */
+.borderRadius-bottom(@radius: 4px) {
+	-webkit-border-bottom-right-radius: @radius;
+	 -webkit-border-bottom-left-radius: @radius;
+	    -moz-border-radius-bottomright: @radius;
+	     -moz-border-radius-bottomleft: @radius;
+	        border-bottom-right-radius: @radius;
+	         border-bottom-left-radius: @radius;
+}
+
+/* .borderRadius-top(4px); */
+.borderRadius-top(@radius: 4px) {
+	-webkit-border-top-right-radius: @radius;
+	 -webkit-border-top-left-radius: @radius;
+	    -moz-border-radius-topright: @radius;
+	     -moz-border-radius-topleft: @radius;
+	        border-top-right-radius: @radius;
+	         border-top-left-radius: @radius;
+}
+
+/*********************
+TRANISTION
+*********************/
+
+/* .transition(all,2s,ease-out); */
+.transition(@what: all, @time: 0.2s, @easing: ease-out) {
+	-webkit-transition: @what @time @easing;
+	   -moz-transition: @what @time @easing;
+ 	    -ms-transition: @what @time @easing;
+	     -o-transition: @what @time @easing;
+	        transition: @what @time @easing;
+}
+
+/*********************
+CSS3 GRADIENTS
+Be careful with these since they can 
+really slow down your CSS. Don't overdue it.
+*********************/
+
+/* .css-gradient(#dfdfdf,#f8f8f8); */
+.css-gradient(@from: #dfdfdf, @to: #f8f8f8) {
+	background-color: @to;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+	background-image: -webkit-linear-gradient(top, @from, @to);
+	background-image: -moz-linear-gradient(top, @from, @to);
+	background-image: -o-linear-gradient(top, @from, @to);
+	background-image: -ms-linear-gradient(top, @from, @to);
+	background-image: linear-gradient(top, @from, @to);
+}
+

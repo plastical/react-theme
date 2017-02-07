@@ -7,7 +7,7 @@ export default {
   },
 
   // <a href=${ data.link } class="read-more">Read More <span class="screen-reader-text">${ data.title.rendered }</span></a>
-  getExcerpt(data) {
+  getExcerpt(data, message) {
     if (!data.excerpt.protected) {
       if (data.format === 'image' && !data.excerpt.rendered) {
         return { __html: data.content.rendered };
@@ -15,26 +15,27 @@ export default {
       return { __html: data.excerpt.rendered };
     }
 
-    return { __html: '<p>This content is password-protected.</p>' };
+    return { __html: `<p>${message}.</p>` };
   },
 
-  getContent(data) {
+  getContent(data, message) {
     if (!data.content.protected) {
       return { __html: data.content.rendered };
     }
 
-    return { __html: '<p>This content is password-protected.</p>' };
+    return { __html: `<p>${message}.</p>` };
   },
 
-  getDate(data) {
-    const date = moment(data.date);
-    return date.format('MMMM Do YYYY');
+  getDate(date) {
+    const dateToFormat = moment(date);
+    return dateToFormat.format('DD.MM.YYYY');
   },
 
-  getTime(data) {
-    const date = moment(data.date);
-    return date.format('h:mm a');
+  getTime(date) {
+    const dateToFormat = moment(date);
+    return dateToFormat.format('HH:mm');
   },
+
   /* eslint no-underscore-dangle: 1 */
   getFeaturedMedia(data) {
     if (!data._embedded) {
@@ -45,5 +46,17 @@ export default {
     }
     const media = find(data._embedded['wp:featuredmedia'], item => (typeof item.source_url !== 'undefined'));
     return media;
+  },
+
+  getCapitalize(str) {
+    return str.replace(/(^|\s)([a-z])/g, (m, p1, p2) => (p1 + p2.toUpperCase()))
+  },
+
+  getEditLink(data, message) {
+    /* eslint no-undef: 0 */
+    if (PlasticalSettings.canEdit) {
+      return { __html: `<a href="/wp-admin/post.php?post=${data.id}&action=edit&lang=${PlasticalSettings.lang}">${message}</a>` };
+    }
+    return { __html: '' };
   }
 };

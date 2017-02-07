@@ -3,9 +3,12 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const OfflinePlugin = require('offline-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
+
+const cssloader = require('./package').cssloader;
 
 // This file is written in ES5 because it is run via Node.js and is not transpiled by babel. We want to support constious versions of node, so it is best to not use any ES6 features even if newer versions support ES6 features out of the box.
 
@@ -46,13 +49,17 @@ const plugins = [
     disable: false,
     allChunks: true 
   }),
+  new webpack.NoEmitOnErrorsPlugin()
 ];
 
 if (isProd) {
 	// When running in production, we want to use the minified script so that the file is smaller
 	plugins.push( 
-		new webpack.optimize.UglifyJsPlugin({
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
 			compress: {
+        drop_debugger: true,
+        drop_console: true,
         warnings: false,
         screw_ie8: true,
         conditionals: true,
@@ -66,8 +73,10 @@ if (isProd) {
       },
       output: {
         comments: false
-      },
-		}) 
+      }
+		}), // Minify everything
+    new webpack.optimize.AggressiveMergingPlugin() // Merge chunks
+    // new OfflinePlugin()
 	);
 } else {
   plugins.push(
@@ -75,8 +84,7 @@ if (isProd) {
   );
 }
 
-const webpackConfig = {
-
+module.exports = {
 	// Entry points point to the javascript module that is used to generate the script file.
 	// The key is used as the name of the script.
 	entry: {
@@ -96,37 +104,39 @@ const webpackConfig = {
 		},
 		modules: ['node_modules', 'src']
 	},
-	devtool: isProd ? 'source-map' : 'eval',
+	devtool: isProd ? '' : 'eval',
 	module: {
 		// Webpack loaders are applied when a resource matches the test case
-		rules: [
+		rules: [      
       {
         test: /\.html$/,
         exclude: [/node_modules/, /public/],
-        use: 'file-loader',
-        query: {
-          name: '[name].[ext]'
+        use: {
+          loader: 'file-loader',
+          query: {
+            name: '[name].[ext]'
+          }
         }
       },
       {
-        test: /.*\.less$/,
-        loader: ExtractTextPlugin.extract({ loader: ['css-loader', 'less-loader', 'postcss-loader'], fallbackLoader: 'style-loader' })
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract({ use: ['css-loader', 'postcss-loader', 'less-loader'], fallback: 'style-loader' })
       },
 			{
 				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract({ loader: ['css-loader', 'sass-loader'], 
-				fallbackLoader: 'style-loader'})
+				loader: ExtractTextPlugin.extract({ use: ['css-loader', 'sass-loader'], 
+				fallback: 'style-loader'})
 			},
       // Files
-      { test: /\.gif$/, loader: "url-loader?limit=10000&mimetype=image/gif" },
-      { test: /\.jpg$/, loader: "url-loader?limit=10000&mimetype=image/jpg" },
-      { test: /\.png$/, loader: "url-loader?limit=10000&mimetype=image/png" },
-      { test: /\.svg/, loader: "url-loader?limit=26000&mimetype=image/svg+xml" },
-      { test: /\.(woff|woff2|ttf|eot)/, loader: "url-loader?limit=1" }  ,
+      { test: /\.gif$/, use: 'url-loader?limit=10000&mimetype=image/gif' },
+      { test: /\.jpg$/, use: 'url-loader?limit=10000&mimetype=image/jpg' },
+      { test: /\.png$/, use: 'url-loader?limit=10000&mimetype=image/png' },
+      { test: /\.svg/, use: 'url-loader?limit=26000&mimetype=image/svg+xml' },
+      { test: /\.(woff|woff2|ttf|eot)/, use: 'url-loader?limit=1' },
       // JSON 
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        use: 'json-loader'
       },
 			{
         enforce: "pre",
@@ -148,6 +158,4 @@ const webpackConfig = {
 		process: true
 	},
 	plugins
-};
-
-module.exports = webpackConfig;
+}

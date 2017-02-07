@@ -1,0 +1,96 @@
+/******************************************************************
+Site Name: 
+Author: 
+
+Stylesheet: IE Stylesheet
+
+So instead of using the respond.js file to add media query support
+to IE, we're going to use LESS to create an easily readable css file.
+Here, we import all the styles the standard stylesheet gets, only
+without the media queries. No need to worry about editing anything!
+
+******************************************************************/
+
+/*
+Base.css contains the main mobile styles and is called in the 
+header. This way mobile devices get ONLY the styles that apply
+to them. No muss, no fuss.
+
+normalize.css and the mixins are also called within that base file 
+
+let's now call the FUNCTIONS for these different stylesets. This
+doesn't load the CSS, the CSS is loaded directly below.
+*/
+
+@import "600up";
+/* 
+you can call the larger styles if you want, but there's really no need 
+*/
+
+/*
+Now we call the functions that contain all the CSS. This means
+you don't have to maintain an IE stylesheet AND a standard 
+responsive stylesheet.
+*/
+
+.600up();
+
+/******************************************************************
+ADDITIONAL IE FIXES
+These fixes are now ONLY seen by IE, so you don't have to worry
+about using prefixes, although it's best practice. For more info
+on using Modernizr classes, check out this link:
+http://www.modernizr.com/docs/
+******************************************************************/
+
+/*
+For example, you can use something like:
+
+.no-textshadow .class { ... }
+
+You can also target specific versions by using something like:
+
+.ie7 .class { ... }
+
+*/
+
+/*
+
+Using .lt-ie8 instead is better: it targets old browsers once!
+
+ }*/
+ 
+ 
+.ie6 #slide, .ie7 #slide, .ie8 #slide { display:none;}
+
+.ie6 #search, .ie7 #search {margin-right: 1em;}
+
+.ie6 #content, .ie7 #content, .ie8 #content {margin:4em 0 0;}
+.ie6 .home #content, .ie7 .home #content, .ie8 .home #content {margin-top:4em;}
+
+.ie6 #main .post time, .ie7 #main .post time, .ie8 #main .post time {
+				display: inline;
+				position:relative;
+				z-index: 0;
+				left: auto;
+				margin-left: 0;
+				padding: 0;				
+				width: auto;
+				height: auto;
+				color: rgb(125,125,125);
+				background: none;
+				text-align: left;
+				line-height: 1.5;		
+				
+				& .day {
+					font-size: 12px; /* 24px /12px */
+					font-weight: normal;
+				}
+				
+				& .year {
+					font-size: 12px; /* 24px /12px */
+					font-weight: normal;
+				}
+		}
+		
+.ie6 #main, .ie7 #main, .ie6 .sidebar, .ie7 .sidebar { margin-left: 0; margin-right: 0;}

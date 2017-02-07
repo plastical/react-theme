@@ -1,0 +1,23 @@
+/* --- THEME FORCE EVENTS (CUSTOM POST TYPE) --- */
+
+/* Columns Events Custom Posts Type */
+
+th#col_ev_date, th#col_ev_cat {width:150px}
+td.col_ev_date em{color:gray;}
+th#col_ev_times{width:150px}
+th#col_ev_thumb{width:100px}
+
+th#col_menu_order{width:60px}
+td.col_menu_id{color:gray;text-align:right;}
+td.col_menu_order{color:#219b38;text-align:right;}
+th#col_menu_thumb{width:100px}
+td.col_menu_thumb img{border:1px solid #d8d8d8}
+th#col_menu_cat,th#col_menu_title,th#col_menu_size{width:150px}
+
+/* Metabox */
+
+.events_meta { width: 100%; }
+.events_meta ul li { height: 20px; clear:both; margin: 0 0 15px 0;}
+.events_meta ul li label { width: 100px; display:block; float:left; padding-top:4px; }
+.events_meta ul li input { width:20%; min-width: 190px; float:left; display:block; }
+.events_meta ul li em { width: 200px; display:block; color:gray; margin-left:10px; padding-top: 4px}

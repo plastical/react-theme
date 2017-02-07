@@ -14,9 +14,6 @@
 
 get_header(); ?>
 
-	<div id="primary" class="content_area">
-		<main id="main" class="site_main" role="main" aria-live="assertive" tabindex="-1"></main><!-- #main -->
-	</div><!-- #primary -->
+	<div id="root"></div>
 
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>

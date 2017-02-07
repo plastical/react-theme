@@ -35,13 +35,17 @@ class Plastical_LoadMenu {
 
 		$request = new \WP_REST_Request();
 		$request['context'] = 'view';
-		$request['location'] = 'primary';
-
+    $location = 'primary-en';
+    if(ICL_LANGUAGE_CODE == 'it'){
+      $location = 'primary-it';
+    }
+		$request['location'] = $location;
+    
 		if (class_exists('WP_REST_Menus')) {
 			$menu_api = new WP_REST_Menus();
 			$menu = $menu_api->get_menu_location($request);
 		}
-
+    //print_r($menu);
 		return $menu;
 	}
 }

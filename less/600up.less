@@ -1,0 +1,297 @@
+/* import mixins */
+@import "mixins";
+
+.600up() { 
+		
+.hidden {
+	display:none !important; 
+}
+
+p.increase {
+	font-size: 24/16em;
+  line-height: 1.125;
+}
+
+/***** Grid Options down here, where they are usable ******/
+	/* layout options ( all have margins right & left of 1%) */
+	.col60  { width: 6.3829787%; } /* width 60px  / grid_1  */
+	.col140 { width: 14.893617%; } /* width 140px / grid_2  */
+	.col220 { width: 23.404255%; } /* width 220px / grid_3  */
+	.col300 { width: 31.914894%; } /* width 300px / grid_4  */
+	.col380 { width: 40.425532%; } /* width 380px / grid_5  */
+	.col480 { width: 48.936170%; } /* width 480px / grid_6  */
+	.col540 { width: 57.446809%; } /* width 540px / grid_7  */
+	.col620 { width: 65.957447%; } /* width 620px / grid_8  */
+	.col700 { width: 74.468085%; } /* width 700px / grid_9  */
+	.col780 { width: 82.978723%; } /* width 780px / grid_10 */
+	.col860 { width: 91.489362%; } /* width 860px / grid_11 */
+	.col940 { width: 100.0%;     } /* width 940px / grid_12 */
+	
+	/* layout & column defaults */
+	.col60, .col140, .col220, .col300, .col380, .col480, .col540, .col620, .col700, .col780, .col860, .col940 	{ 
+		display: inline; 
+		float: left; 
+		position: relative;
+		margin-left: 1.0638298%;   /* 10px */ 
+		margin-right: 1.0638298%;  /* 10px */
+	}
+	
+	/* floats */
+	.left { float: left; }
+	.right { float: right; }
+	.center { clear:both; display: block; float: none; margin-right: auto; margin-left: auto;}
+	
+	/* default styles & fixes */
+	.first { margin-left: 0; } /* fixes alignment */
+	.last { margin-right: 0; } /* fixes alignment */
+
+	#header {
+		height: 140px;
+	}
+	#inner-header {
+		width: 90%;	
+	}
+
+	#logo {
+    margin-left: 4/16em;
+    padding: 6px 0 0 0;
+		width: 144px;
+	}
+		
+	#nav-toggle, #search-toggle {
+		display:none;
+	}
+	#navigation, #navigation.show, #search-box, #search-box.show {
+		display:block;
+	}
+
+  #language {
+    position: relative;
+    float: right;
+    z-index: 1;
+    top: 97px;
+    right: 0;
+		margin: 0 0 0 auto;
+    width: auto;
+    height: 43px;
+    .borderBox();
+    border-left: solid 1px @secondaryColor;
+    border-right: solid 1px @secondaryColor;
+
+    & span {
+      display: block;
+      width: 32px;
+			color: @baseColor-dark5;
+		  padding: 0 .375em 0 .375em;
+      .borderBox();
+			border-bottom: solid 8px @secondaryColor;		
+      font-size: 14/16em;
+		  line-height: 43px;
+      text-align: center;
+    }
+
+    &:hover span {
+			border-bottom: solid 8px @white;
+		  line-height: 43px;
+    }
+  }
+
+  #search-box {
+    position: relative;
+    float: right;
+    margin: 0 -32px 0 auto;
+    padding: 27px 0 0 0;
+    width: 66.666666666666666%;
+    background-color: transparent;
+
+    & .search_form {
+      float: right;
+      margin: 0 0 0 auto;
+      width: 100%;
+    }
+  
+    & .search_field {  
+      padding:.75em 1.5em .75em .75em;
+      background-position: 95%;
+    }
+  }
+
+	#navigation {
+    clear: both;
+    float: left;
+		margin: 0 0 0 auto;
+    padding-top: 8px;
+    width: auto;
+    max-width: 780px;
+    height: 43px;
+		border-bottom: 0;
+    background-color: transparent;
+		
+		& .menu {
+			margin: 0 auto;
+			padding: 0 0 0 0;
+			
+			& .nav_menu { 		
+				margin: 0 auto;
+				padding: 0 0 0 0;
+				width: auto;
+			
+				& .menu_item { 
+					position: relative;
+					display: block;
+					float: left;
+					text-align: center;
+          border-right: solid 1px @secondaryColor;
+					
+					&:first-child a { 	
+						border-top: 0;	
+						border-bottom: 0;
+            border-left: 0;
+					}
+					
+					&:last-child {		
+						margin-right: 0;
+						& a {			
+							margin-right: 0;
+						}	
+					}
+					
+					& a {
+						display: block;
+						margin: 0 auto 0 auto;
+						padding: 0 .375em 0 .375em;
+						color: @baseColor;
+						border-top: 0;	
+						border-bottom: solid 8px @secondaryColor;				
+						width: auto;
+            max-width: 110px;
+            font-size: 14/16em;
+						font-weight: 400;
+						line-height: 43px;
+					  text-align: center;
+						text-decoration: none;
+						text-shadow: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+						/*
+						remember this is for mobile ONLY, so there's no need
+						to even declare hover styles here, you can do it in
+						the style.less file where it's relevant. We want to 
+						keep this file as small as possible!
+						*/
+						&:hover{	
+							color: @baseColor-dark5;
+							border-bottom: solid 8px @white;						
+						}				
+					}		
+									
+					/* highlight current page */
+					&.current_menu_item a, 
+					&.current_page_item a,
+					&.current_page_ancestor a,
+					& a.active {							
+						color: @baseColor-dark5;
+						border-bottom: solid 8px @white;
+					}
+				}
+
+        & .menu_item:first-child { 	            
+          border-left: solid 1px @secondaryColor;
+				}
+			}
+		}
+	}
+	
+	#banner {
+    & .banner_item {
+      & .banner_content {
+        width: 80%;    
+      }
+    }
+  }
+	
+	#container {	
+		background-color: @lightestGray;	
+	}
+
+  #content {
+  }
+
+  .inner_content { 
+		padding: 1em 2.5% 4em 2.5%;
+    .borderBox();
+		background-color: @white;	
+	}	
+
+  .featured_image {
+    width: 100%;
+  }
+
+  & .entry_list {
+    & .entry {
+      & .entry_main {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .home_news_list {
+    border-bottom: 0;
+  }
+	
+	.alignleft, 
+  img.alignleft { 
+    float: left; 
+  }
+
+	.alignright,
+  img.alignright { 
+    float: right ;
+  }
+
+	.aligncenter, img.aligncenter { 
+    float: none; 
+    display: block; 
+    margin: 0 auto;
+  }
+
+  #footer {
+    .logo {
+      padding-top: 1.5em;
+    }
+  }
+
+  #footer-navigation {
+    & .menu_item {
+      float: left;
+      margin-right: 2%;
+      padding-bottom: 1em;
+      width: 23%;
+
+      &.menu_item_has_children {
+        min-height: 200px;
+      }
+
+      & a {
+        font-size: 12/16em;
+      }
+
+      & .sub_menu {
+        display: block;
+
+        & .menu_item {
+          float: none;
+          padding-bottom: 0;
+          width: 100%;
+          min-height: 0;
+
+          & a {
+            padding: .5em 0 .5em 0;
+          }
+        }
+      }
+    }
+  }
+
+} /* end of the function (DO NOT DELETE) */

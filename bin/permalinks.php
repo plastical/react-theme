@@ -34,7 +34,7 @@ class Plastical_SetPermalinks {
 		}
 		?>
 		<div class="notice notice-warning">
-			<p><?php esc_html_e('<b>Warning:</b> The theme you\'re using does not support customized permalinks.', 'plastical'); ?></p>
+			<p><?php esc_html_e('Warning: The theme you\'re using does not support customized permalinks.', 'plastical'); ?></p>
 		</div>
 		<?php
 	}
