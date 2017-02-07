@@ -9,10 +9,6 @@
     "start": "webpack --watch",
     "lint": "eslint src/components js --ext=js,jsx"
   },
-  "pre-commit": [
-    "precommit-msg",
-    "lint"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plastical/react-theme.git"
