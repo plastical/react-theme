@@ -47,7 +47,7 @@ const Event = (props) => {
         <div className="entry_meta">
           <time className="entry_date published startdate" dateTime={event.events_startdate_iso}>
             {event.events_startdate}
-          </time>
+          </time> &mdash; {event.events_location}
           {editLink ?
             <p dangerouslySetInnerHTML={editLink} /> :
             null

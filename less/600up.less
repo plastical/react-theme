@@ -46,173 +46,61 @@ p.increase {
 	.last { margin-right: 0; } /* fixes alignment */
 
 	#header {
-		height: 140px;
 	}
+
 	#inner-header {
 		width: 90%;	
 	}
-
-	#logo {
-    margin-left: 4/16em;
-    padding: 6px 0 0 0;
-		width: 144px;
-	}
-		
-	#nav-toggle, #search-toggle {
-		display:none;
-	}
-	#navigation, #navigation.show, #search-box, #search-box.show {
-		display:block;
-	}
-
+	
   #language {
-    position: relative;
-    float: right;
-    z-index: 1;
-    top: 97px;
-    right: 0;
-		margin: 0 0 0 auto;
-    width: auto;
-    height: 43px;
-    .borderBox();
-    border-left: solid 1px @secondaryColor;
     border-right: solid 1px @secondaryColor;
 
-    & span {
-      display: block;
-      width: 32px;
+  	&:hover{	
 			color: @baseColor-dark5;
-		  padding: 0 .375em 0 .375em;
-      .borderBox();
-			border-bottom: solid 8px @secondaryColor;		
-      font-size: 14/16em;
-		  line-height: 43px;
-      text-align: center;
-    }
+      height: 80px;
+			border-bottom: solid 8px @white;						
+		}		
+  }
 
-    &:hover span {
-			border-bottom: solid 8px @white;
-		  line-height: 43px;
+  #search-toggle {
+    &:hover{	
+			color: @baseColor-dark5;
+      height: 80px;
+			border-bottom: solid 10px @white;						
+		}	
+  }
+
+  #navigation, #search-box {
+	  margin: 0 auto 0 -5.555555555555555555555%;
+	  width: 111.111111111111111111111%;
+    .boxShadow(0, 2px);
+  }
+
+  #navigation {
+    & .menu {		
+      margin: 0 auto;
+      padding: 0 5%;
+      .borderBox;
     }
   }
 
-  #search-box {
-    position: relative;
-    float: right;
-    margin: 0 -32px 0 auto;
-    padding: 27px 0 0 0;
-    width: 66.666666666666666%;
-    background-color: transparent;
+	#slider {
 
-    & .search_form {
-      float: right;
-      margin: 0 0 0 auto;
-      width: 100%;
-    }
-  
-    & .search_field {  
-      padding:.75em 1.5em .75em .75em;
-      background-position: 95%;
-    }
-  }
-
-	#navigation {
-    clear: both;
-    float: left;
-		margin: 0 0 0 auto;
-    padding-top: 8px;
-    width: auto;
-    max-width: 780px;
-    height: 43px;
-		border-bottom: 0;
-    background-color: transparent;
-		
-		& .menu {
-			margin: 0 auto;
-			padding: 0 0 0 0;
-			
-			& .nav_menu { 		
-				margin: 0 auto;
-				padding: 0 0 0 0;
-				width: auto;
-			
-				& .menu_item { 
-					position: relative;
-					display: block;
-					float: left;
-					text-align: center;
-          border-right: solid 1px @secondaryColor;
-					
-					&:first-child a { 	
-						border-top: 0;	
-						border-bottom: 0;
-            border-left: 0;
-					}
-					
-					&:last-child {		
-						margin-right: 0;
-						& a {			
-							margin-right: 0;
-						}	
-					}
-					
-					& a {
-						display: block;
-						margin: 0 auto 0 auto;
-						padding: 0 .375em 0 .375em;
-						color: @baseColor;
-						border-top: 0;	
-						border-bottom: solid 8px @secondaryColor;				
-						width: auto;
-            max-width: 110px;
-            font-size: 14/16em;
-						font-weight: 400;
-						line-height: 43px;
-					  text-align: center;
-						text-decoration: none;
-						text-shadow: none;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-						/*
-						remember this is for mobile ONLY, so there's no need
-						to even declare hover styles here, you can do it in
-						the style.less file where it's relevant. We want to 
-						keep this file as small as possible!
-						*/
-						&:hover{	
-							color: @baseColor-dark5;
-							border-bottom: solid 8px @white;						
-						}				
-					}		
-									
-					/* highlight current page */
-					&.current_menu_item a, 
-					&.current_page_item a,
-					&.current_page_ancestor a,
-					& a.active {							
-						color: @baseColor-dark5;
-						border-bottom: solid 8px @white;
-					}
-				}
-
-        & .menu_item:first-child { 	            
-          border-left: solid 1px @secondaryColor;
-				}
-			}
-		}
-	}
-	
-	#banner {
-    & .banner_item {
-      & .banner_content {
-        width: 80%;    
+    & .slide_item {
+      & .slide_content {
+         & h1, & h1 a {
+           font-size: 3rem;
+         }
       }
     }
   }
 	
 	#container {	
 		background-color: @lightestGray;	
+    
+    &.moved {
+      padding-top: 70px;
+    }
 	}
 
   #content {
@@ -220,15 +108,23 @@ p.increase {
 
   .inner_content { 
 		padding: 1em 2.5% 4em 2.5%;
-    .borderBox();
+    .borderBox;
 		background-color: @white;	
 	}	
 
   .featured_image {
     width: 100%;
+    margin-bottom: -25%;
   }
 
-  & .entry_list {
+  .single_entry { 
+    background-color: @white;
+    .borderBox;
+    min-height: 320px;
+    padding: 1em 5% 4em;
+  }
+
+  .entry_list {
     & .entry {
       & .entry_main {
         max-width: 100%;
@@ -236,8 +132,25 @@ p.increase {
     }
   }
 
-  .home_news_list {
+  .home_list {
     border-bottom: 0;
+  }
+
+  .partners_grid {
+    & li {
+      width: 20%;
+
+      &.double {
+        width: 40%;
+      }
+    }
+  }
+
+  .team_board_grid {
+    & li {
+      float: left;
+      width: 33.3333333333333333%;
+    }
   }
 	
 	.alignleft, 
@@ -275,6 +188,7 @@ p.increase {
 
       & a {
         font-size: 12/16em;
+	      font-family: 'open_sansregular', arial, helvetica, sans-serif;
       }
 
       & .sub_menu {
@@ -288,6 +202,7 @@ p.increase {
 
           & a {
             padding: .5em 0 .5em 0;
+	          font-family: 'open_sanslight', arial, helvetica, sans-serif;
           }
         }
       }

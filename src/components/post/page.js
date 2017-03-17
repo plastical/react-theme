@@ -51,7 +51,10 @@ class SinglePage extends Component {
         <ScrollIntoView id="#container" />          
         <DocumentMeta {...meta} />
         <BodyClass classes={['page', 'single', 'single_page']} />
-        <h1 className="page_title" dangerouslySetInnerHTML={getTitle(post)} />
+        {(this.props.path.indexOf('/tecnopolo-ticino') !== -1) ?
+          <h1 className="tech_title increase"><strong>Tecnopolo®</strong> Ticino</h1> :
+          <h1 className="page_title" dangerouslySetInnerHTML={getTitle(post)} />
+        }
         {featuredMedia ?
           <Media media={featuredMedia} parentClass="page_image" /> :
           null
@@ -88,7 +91,7 @@ class SinglePage extends Component {
         {(this.props.hasBack && this.props.parentNavItem) ?
           <div className="back">
             <Link className="back_link" to={this.props.parentNavItem.url} >{this.props.parentNavItem.title}</Link>
-            <span className="back_current" dangerouslySetInnerHTML={getTitle(this.props.post)} />
+            <span className="back_current" dangerouslySetInnerHTML={getTitle(this.props.post)} />            
             <div className="lightest_sep" />
           </div> :
           null

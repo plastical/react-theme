@@ -11,6 +11,7 @@ import { push, replace } from './routing';
 import { requestMenu } from 'wordpress-query-menu/lib/state';
 
 import Navigation from 'components/navigation';
+import Slideshow from 'components/home/slideshow';
 import Home from 'components/home';
 import Posts from 'components/posts';
 import SinglePost from 'components/post';
@@ -91,6 +92,8 @@ class Structure extends Component {
         isNavOpen: false
       });
     }
+    const scrollToEl = document.getElementById('header');
+    scrollToEl.scrollIntoView();
   }
 
   /* eslint quote-props: 1 */
@@ -99,6 +102,7 @@ class Structure extends Component {
     let blogURL;
     let blogURLPaged;
     let frontPage;
+    let slideshow;
     const path = settings.URL.path || '/';
     const languageSwitch = (locale.lang === 'en') ? '/it/' : '/';
 
@@ -110,7 +114,9 @@ class Structure extends Component {
         blogURL = null;
         blogURLPaged = null;
       }
+      // Comment or uncomment according the kind of page you want to display.
       // frontPage = <Match exactly pattern={path} render={(props) => <SinglePage slug={settings.frontPage.page} {...props} />} />;
+      slideshow = <Match exactly pattern={path} render={(props) => <Slideshow slug={settings.frontPage.page} {...props} />} />;
       frontPage = <Match exactly pattern={path} render={(props) => <Home slug={settings.frontPage.page} {...props} />} />;
     } else {
       blogURL = <Match exactly pattern={path} component={Posts} />
@@ -137,96 +143,97 @@ class Structure extends Component {
         onPush={this.props.onPush}
         onReplace={this.props.onReplace}
       >
-        <div id="container" className="site">
-          <a id="t" href="#content" className="skip_link screen_reader_text">{intl.formatMessage({ id: 'structure.skip' })}</a>
+        <div id="inner-root">
+          {slideshow} 
+          <div id="container" className="site">
+            <a id="t" href="#content" className="skip_link screen_reader_text">{intl.formatMessage({ id: 'structure.skip' })}</a>
+            <header id="header" className="site_header" role="banner">
+              <div id="inner-header" className="wrap clearfix">
+                <button 
+                  id="language"
+                  className="language" 
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+                    window.location.assign(languageSwitch); 
+                  }}
+                >
+                  <span>{intl.formatMessage({ id: 'structure.changeLanguageTo' })}</span>
+                </button>              
+                <button id="search-toggle" className={searchClasses} onClick={this.toggleElements}>
+                  <svg id="search-toggle-img" ><use xlinkHref="/assets/layout/lens.svg#svg-lens" /></svg>
+                </button>
+                <button id="nav-toggle" className={navClasses} onClick={this.toggleElements}>&equiv;</button>
+                <h1 id="logo"><Link to={path} rel="home"><img src="/assets/layout/logo.svg" alt="logo" /></Link></h1>              
+                <div id="search-box" className={searchClasses} role="search" aria-live="assertive">
+                  <SearchForm />
+                </div>
+                <nav id="navigation" className={navClasses} role="navigation" aria-live="assertive">      
+                  <Navigation extended={false} />
+                </nav>
+              </div>    
+            </header>{/* #masthead */}  
+            <div id="content" className="site_content">
+              {frontPage}{/* Guess what? The home page has custom styles... */}                             
+              <div className="inner_content wrap clearfix">
+                {/* Trailing slashes for custom routes are a mess!!! */} 
+                <Match exactly pattern={`${path}events`} component={Events} />
+                <Match exactly pattern={`${path}events/`} component={Events} /> 
+                <Match pattern={`${path}events/p/:paged`} component={Events} />                     
+                <Match pattern={`${path}events/p/:paged/`} component={Events} />   
+                <Match exactly pattern={`${path}users`} component={Users} />             
+                <Match exactly pattern={`${path}users/`} component={Users} />                         
+                <Match pattern={`${path}users/p/:paged`} component={Users} />                       
+                <Match pattern={`${path}users/p/:paged/`} component={Users} />
+                <Match exactly pattern={`${path}residents/:city`} render={(props) => <Users {...props} />} />
+                <Match exactly pattern={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
+                <Match pattern={`${path}residents/:city/p/:paged/`} render={(props) => <Users {...props} />} />
+                <Match exactly pattern={`${path}alumni`} render={(props) => <Users isAlumni {...props} />} />
+                <Match exactly pattern={`${path}alumni/`} render={(props) => <Users isAlumni {...props} />} />
+                <Match pattern={`${path}alumni/p/:paged/`} render={(props) => <Users isAlumni {...props} />} />
+                <Match exactly pattern={`${path}search/:search`} component={Search} />
+                <Match exactly pattern={`${path}search/:search/`} component={Search} />
+                <Match exactly pattern={`${path}search/:search/p/:paged/`} component={Search} />
+                <Match exactly pattern={`${path}category/:slug/`} render={(props) => <Term taxonomy="category" {...props} />} />
+                <Match pattern={`${path}category/:slug/p/:paged/`} render={(props) => <Term taxonomy="category" {...props} />} />
+                <Match exactly pattern={`${path}tag/:slug/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
+                <Match pattern={`${path}tag/:slug/p/:paged/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
+                <Match exactly pattern={`${path}date/:year/`} component={DateArchive} />
+                <Match pattern={`${path}date/:year/p/:paged/`} component={DateArchive} />
+                <Match exactly pattern={`${path}date/:year/:month/`} component={DateArchive} />
+                <Match pattern={`${path}date/:year/:month/p/:paged/`} component={DateArchive} />
+                <Match exactly pattern={`${path}date/:year/:month/:day/`} component={DateArchive} />
+                <Match pattern={`${path}date/:year/:month/:day/p/:paged/`} component={DateArchive} />
+                <Match exactly pattern={`${path}contact/`} component={Contact} />
+                <Match exactly pattern={`${path}page/**/`} component={SinglePage} />
+                <Match exactly pattern={`${path}:year/:month/:day/:slug/`} component={SinglePost} />             
+                <Match exactly pattern={`${path}events/:slug/`} component={SingleEvent} />                
+                <Match exactly pattern={`${path}user/:slug/`} component={SingleUser} />
+                {blogURL}
+                {blogURLPaged}           
+                <Miss component={NotFound} />
+              </div>  
+            </div>{/* #content */}
 
-          <header id="header" className="site_header" role="banner">
-            <div id="inner-header" className="wrap clearfix">
-              <button 
-                id="language"
-                className="language" 
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  e.stopPropagation(); 
-                  window.location.assign(languageSwitch); 
-                }}
-              >
-                <span>{intl.formatMessage({ id: 'structure.changeLanguageTo' })}</span>
-              </button>              
-              <button id="search-toggle" className={searchClasses} onClick={this.toggleElements}>
-                <svg id="search-toggle-img" ><use xlinkHref="/assets/layout/lens.svg#svg-lens" /></svg>
-              </button>
-              <button id="nav-toggle" className={navClasses} onClick={this.toggleElements}>&equiv;</button>
-              <h1 id="logo"><Link to={path} rel="home"><img src="/assets/layout/logo.svg" alt="logo" /></Link></h1>              
-              <div id="search-box" className={searchClasses} role="search" aria-live="assertive">
-                <SearchForm />
+            <div className="push" />
+            <footer id="footer" className="site_footer" role="contentinfo">
+              <div id="inner-footer" className="wrap clearfix">
+                <Link className="logo" to="#t" rel="home"><img src="/assets/layout/logo_inv.svg" alt="logo" /></Link>
+                <nav id="footer-navigation" role="navigation" aria-live="assertive">
+                  <Navigation extended />
+                </nav>
+                <div className="copyright">
+                  <span>&copy;</span>
+                  {`${new Date().getFullYear()} ${settings.meta.title}`}
+                </div>
+                <div className="credits">
+                  Made by <a href="http://plastical.com" rel="designer">Plastical</a>
+                </div>
               </div>
-              <nav id="navigation" className={navClasses} role="navigation" aria-live="assertive">      
-                <Navigation extended={false} />
-              </nav>
-            </div>    
-          </header>{/* #masthead */}  
+            </footer>{/* #footer */}
 
-          <div id="content" className="site_content">                      
-            {frontPage}{/* Guess what? The home page has custom styles... */}
-            <div className="inner_content wrap clearfix">
-              {/* Trailing slashes for custom routes are a mess!!! */} 
-              <Match exactly pattern={`${path}events`} component={Events} />
-              <Match exactly pattern={`${path}events/`} component={Events} /> 
-              <Match pattern={`${path}events/p/:paged`} component={Events} />                     
-              <Match pattern={`${path}events/p/:paged/`} component={Events} />   
-              <Match exactly pattern={`${path}users`} component={Users} />             
-              <Match exactly pattern={`${path}users/`} component={Users} />                         
-              <Match pattern={`${path}users/p/:paged`} component={Users} />                       
-              <Match pattern={`${path}users/p/:paged/`} component={Users} />
-              <Match exactly pattern={`${path}residents/:city`} render={(props) => <Users {...props} />} />
-              <Match exactly pattern={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
-              <Match pattern={`${path}residents/:city/p/:paged/`} render={(props) => <Users {...props} />} />
-              <Match exactly pattern={`${path}alumni`} render={(props) => <Users isAlumni {...props} />} />
-              <Match exactly pattern={`${path}alumni/`} render={(props) => <Users isAlumni {...props} />} />
-              <Match pattern={`${path}alumni/p/:paged/`} render={(props) => <Users isAlumni {...props} />} />
-              <Match exactly pattern={`${path}search/:search`} component={Search} />
-              <Match exactly pattern={`${path}search/:search/`} component={Search} />
-              <Match exactly pattern={`${path}search/:search/p/:paged/`} component={Search} />
-              <Match exactly pattern={`${path}category/:slug/`} render={(props) => <Term taxonomy="category" {...props} />} />
-              <Match pattern={`${path}category/:slug/p/:paged/`} render={(props) => <Term taxonomy="category" {...props} />} />
-              <Match exactly pattern={`${path}tag/:slug/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
-              <Match pattern={`${path}tag/:slug/p/:paged/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
-              <Match exactly pattern={`${path}date/:year/`} component={DateArchive} />
-              <Match pattern={`${path}date/:year/p/:paged/`} component={DateArchive} />
-              <Match exactly pattern={`${path}date/:year/:month/`} component={DateArchive} />
-              <Match pattern={`${path}date/:year/:month/p/:paged/`} component={DateArchive} />
-              <Match exactly pattern={`${path}date/:year/:month/:day/`} component={DateArchive} />
-              <Match pattern={`${path}date/:year/:month/:day/p/:paged/`} component={DateArchive} />
-              <Match exactly pattern={`${path}contact/`} component={Contact} />
-              <Match exactly pattern={`${path}page/**/`} component={SinglePage} />
-              <Match exactly pattern={`${path}:year/:month/:day/:slug/`} component={SinglePost} />             
-              <Match exactly pattern={`${path}events/:slug/`} component={SingleEvent} />                
-              <Match exactly pattern={`${path}user/:slug/`} component={SingleUser} />
-              {blogURL}
-              {blogURLPaged}           
-              <Miss component={NotFound} />
-            </div>  
-          </div>{/* #content */}
-
-          <div className="push" />
-          <footer id="footer" className="site_footer" role="contentinfo">
-            <div id="inner-footer" className="wrap clearfix">
-              <Link className="logo" to="#t" rel="home"><img src="/assets/layout/logo_inv.svg" alt="logo" /></Link>
-              <nav id="footer-navigation" role="navigation" aria-live="assertive">
-                <Navigation extended />
-              </nav>
-              <div className="copyright">
-                <span>&copy;</span>
-                {`${new Date().getFullYear()} ${settings.meta.title}`}
-              </div>
-              <div className="credits">
-                Made by <a href="http://plastical.com" rel="designer">Plastical</a>
-              </div>
-            </div>
-          </footer>{/* #footer */}
-
-        </div>{/* #container */}
+          </div>{/* #container */}
+        </div>
       </StaticRouter>
     )
   }

@@ -13,16 +13,13 @@ class ContactForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayForm: 'info',
       built: now.toISOString(),
       verify: validate.verifyString(),
       language: this.props.locale.lang,
       error_name: false,
       error_email: false,
-      error_project_name: false,
+      error_company: false,
       error_industry: false,
-      error_founded: false,
-      error_funds_raised: false,
       error_url: false,
       error_details: false,
       error_verify: false,
@@ -33,7 +30,6 @@ class ContactForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleErrors = this.handleErrors.bind(this);
-    this.toggleForm = this.toggleForm.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -53,7 +49,7 @@ class ContactForm extends Component {
     this.validation(e);  
     this.setState({ isSubmitting: true });
 
-    const keys = ['name', 'email', 'reason', 'project_name', 'need', 'industry', 'founded', 'funds_raised', 'url', 'details', 'verify', 'built', 'language'];
+    const keys = ['name', 'email', 'company', 'industry', 'url', 'reason', 'details', 'verify', 'built', 'language'];
     
     const rawValues = {};
     keys.map((key) => {
@@ -65,15 +61,10 @@ class ContactForm extends Component {
     const values = {}; 
     values.name = rawValues.name;
     values.email = rawValues.email;
-    values.reason = rawValues.reason;
-    if (rawValues.reason === 'project') {
-      values.project_name = rawValues.project_name;
-      values.need = rawValues.need;
-      values.industry = rawValues.industry;
-      values.founded = rawValues.founded;
-      values.funds_raised = rawValues.funds_raised;
-      values.url = rawValues.url;
-    }
+    values.company = rawValues.company;
+    values.industry = rawValues.industry;
+    values.url = rawValues.url;
+    values.reason = rawValues.reason;    
     values.details = rawValues.details;
     values.verify = rawValues.verify;
     values.built = rawValues.built;
@@ -98,17 +89,12 @@ class ContactForm extends Component {
           // Clear the details form
           e.target.name.value = '';
           e.target.email.value = '';
-          if (rawValues.reason === 'project') {
-            e.target.project_name.value = '';
-            e.target.need.value = '';
-            e.target.industry.value = '';
-            e.target.founded.value = '';
-            e.target.funds_raised.value = '';
-          }
+          e.target.company.value = '';
+          e.target.industry.value = '';
+          e.target.url.value = '';
           e.target.details.value = '';
           e.target.submit.value = false;        
           this.setState({       
-            displayForm: 'info',  
             successMessage: `${this.props.intl.formatMessage({ id: 'contact.success_message' })}, ${res.name}` 
           });
         } else {   
@@ -129,17 +115,11 @@ class ContactForm extends Component {
     if (e.target.name === 'email') {
       this.setState({ error_email: validate.validateEmail(e.target.value) });
     }
-    if (e.target.name === 'project_name') {
-      this.setState({ error_project_name: validate.validateMinLength(e.target.value, 3) || validate.validateNoHTML(e.target.value) });
-    }
+    if (e.target.name === 'company') {      
+      this.setState({ error_industry: validate.validateMinLength(e.target.value, 3) || validate.validateNoHTML(e.target.value) });
+    } 
     if (e.target.name === 'industry') {
       this.setState({ error_industry: validate.validateMinLength(e.target.value, 3) || validate.validateNoHTML(e.target.value) });
-    }
-    if (e.target.name === 'founded') {
-      this.setState({ error_founded: validate.validateNoHTML(e.target.value) });
-    }
-    if (e.target.name === 'funds_raised') {
-      this.setState({ error_funds_raised: validate.validateNoHTML(e.target.value) });
     }
     if (e.target.name === 'url') {
       this.setState({ error_url: validate.validateURL(e.target.value) });
@@ -153,10 +133,8 @@ class ContactForm extends Component {
     if (
       this.state.error_name || 
       this.state.error_email || 
-      this.state.error_project_name ||
+      this.state.error_company || 
       this.state.error_industry ||
-      this.state.error_founded ||
-      this.state.error_funds_raised ||
       this.state.error_url ||
       this.state.error_details ||
       this.state.error_verify
@@ -204,64 +182,7 @@ class ContactForm extends Component {
   handleChange(e) {
     this.setState({ verify: e.target.value });
   }
-
-  toggleForm(e) {
-    if (e.target.value === 'info') {
-      this.setState({ 
-        displayForm: 'info'
-      })
-    }
-    if (e.target.value === 'project') {    
-      this.setState({ 
-        displayForm: 'project'
-      });
-    }
-  }
-
-  renderProject() {
-    const intl = this.props.intl;
-    return (
-      <div>
-        <div className="contact_form_field">
-          <label htmlFor="project_name">{intl.formatMessage({ id: 'contact.project_name' })} *</label>
-          <input id="project-name" className={(this.state.error_project_name) ? 'error' : ''} name="project_name" type="text" aria-required="true" required="required" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.project_name_ph' })} />
-          {(this.state.error_project_name) ? <span className="error_message">{intl.formatMessage({ id: 'contact.project_name_err' })}</span> : null}
-        </div>
-        <div className="contact_form_field">
-          <label htmlFor="need">{intl.formatMessage({ id: 'contact.support_needed' })} *</label>
-          <select name="need" readOnly>
-            <option value="networking">{intl.formatMessage({ id: 'contact.networking' })}</option>
-            <option value="tech-transfer">{intl.formatMessage({ id: 'contact.tech_transfer' })}</option>
-            <option value="headquarters">{intl.formatMessage({ id: 'contact.headquarters' })}</option>
-            <option value="growth">{intl.formatMessage({ id: 'contact.growth' })}</option>
-            <option value="coaching">{intl.formatMessage({ id: 'contact.coaching' })}</option>
-            <option value="other">{intl.formatMessage({ id: 'contact.other' })}</option>
-          </select>
-        </div>
-        <div className="contact_form_field">
-          <label htmlFor="industry">{intl.formatMessage({ id: 'contact.industry' })} *</label>
-          <input id="industry" className={(this.state.error_industry) ? 'error' : ''} name="industry" type="text" aria-required="true" required="required" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.industry_ph' })} />
-          {(this.state.error_industry) ? <span className="error_message">{intl.formatMessage({ id: 'contact.industry_err' })}</span> : null}
-        </div>
-        <div className="contact_form_field">
-          <label htmlFor="founded">{intl.formatMessage({ id: 'contact.founded' })}</label>
-          <input id="founded" className={(this.state.error_founded) ? 'error' : ''} name="founded" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.founded_ph' })} />
-          {(this.state.error_founded) ? <span className="error_message">{intl.formatMessage({ id: 'contact.founded_err' })}</span> : null}
-        </div>
-        <div className="contact_form_field">
-          <label htmlFor="funds_raised">{intl.formatMessage({ id: 'contact.funds_raised' })}</label>
-          <input id="funds-raised" className={(this.state.error_funds_raised) ? 'error' : ''} name="funds_raised" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.funds_raised_ph' })} />
-          {(this.state.error_funds_raised) ? <span className="error_message">{intl.formatMessage({ id: 'contact.funds_raised_err' })}</span> : null}
-        </div>
-        <div className="contact_form_field">
-          <label htmlFor="url">{intl.formatMessage({ id: 'contact.project_url' })}</label>
-          <input id="url" className={(this.state.error_url) ? 'error' : ''} name="url" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.project_url_ph' })} />
-          {(this.state.error_url) ? <span className="error_message">{intl.formatMessage({ id: 'contact.project_url_err' })}</span> : null}
-        </div>
-      </div>
-    );
-  }
-
+  
   render() {
     const intl = this.props.intl;
     const successMessage = this.state.successMessage ? <div className="success">{this.state.successMessage}</div> : null;
@@ -282,14 +203,30 @@ class ContactForm extends Component {
           {(this.state.error_email) ? <span className="error_message">{intl.formatMessage({ id: 'contact.email_err' })}</span> : null}
         </div>
         <div className="contact_form_field">
+          <label htmlFor="company">{intl.formatMessage({ id: 'contact.company' })}</label>
+          <input id="company" className={(this.state.error_company) ? 'error' : ''} name="company" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.company_ph' })} />
+          {(this.state.error_company) ? <span className="error_message">{intl.formatMessage({ id: 'contact.company_err' })}</span> : null}
+        </div>
+        <div className="contact_form_field">
+          <label htmlFor="industry">{intl.formatMessage({ id: 'contact.industry' })}</label>
+          <input id="industry" className={(this.state.error_industry) ? 'error' : ''} name="industry" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.industry_ph' })} />
+          {(this.state.error_industry) ? <span className="error_message">{intl.formatMessage({ id: 'contact.industry_err' })}</span> : null}
+        </div>
+        <div className="contact_form_field">
+          <label htmlFor="url">{intl.formatMessage({ id: 'contact.project_url' })}</label>
+          <input id="url" className={(this.state.error_url) ? 'error' : ''} name="url" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'contact.project_url_ph' })} />
+          {(this.state.error_url) ? <span className="error_message">{intl.formatMessage({ id: 'contact.project_url_err' })}</span> : null}
+        </div>
+        <div className="contact_form_field">
           <label htmlFor="reason">{intl.formatMessage({ id: 'contact.reason' })} *</label>
-          <select name="reason" onChange={this.toggleForm}>
-            <option value="info">{intl.formatMessage({ id: 'contact.info_request' })}</option>
-            <option value="project">{intl.formatMessage({ id: 'contact.project_submission' })}</option>
+          <select name="reason">
+            <option value="tecnopolo">{intl.formatMessage({ id: 'contact.tecnopolo' })}</option>
+            <option value="tech-transfer">{intl.formatMessage({ id: 'contact.tech_transfer' })}</option>
+            <option value="startup-sme-support">{intl.formatMessage({ id: 'contact.support' })}</option>
+            <option value="coaching">{intl.formatMessage({ id: 'contact.coaching' })}</option>
+            <option value="other">{intl.formatMessage({ id: 'contact.other' })}</option>
           </select>
         </div>
-
-        {(this.state.displayForm === 'project') ? this.renderProject() : null}
         
         <div className="contact_form_field">
           <label htmlFor="details">{intl.formatMessage({ id: 'contact.details' })} *</label>

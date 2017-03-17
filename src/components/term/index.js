@@ -1,7 +1,6 @@
 /* global PlasticalSettings */
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateIntl } from 'react-intl';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
 

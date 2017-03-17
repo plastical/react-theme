@@ -17,8 +17,28 @@ import { getTitle, getContent, getFeaturedMedia, getEditLink } from 'utils/conte
 import EventForm from './form';
 import Media from '../post/image';
 import Placeholder from 'components/placeholder';
+import Socials from 'components/socials';
 
-class SingleEvent extends Component {
+/* eslint no-underscore-dangle: 0 */
+class SingleEvent extends Component { 
+  renderFeaturedImage() {
+    const event = this.props.event;
+
+    if (!event) {
+      return null;
+    }
+
+    const featuredMedia = getFeaturedMedia(event);
+
+    if (!featuredMedia) {
+      return null;
+    }
+
+    return (
+      <Media media={featuredMedia} parentClass="featured_image" />
+    );
+  }
+
   renderArticle() {
     const { event, locale, intl } = this.props;
     if (!event) {
@@ -36,17 +56,20 @@ class SingleEvent extends Component {
     });
     const featuredMedia = getFeaturedMedia(event);
     const editLink = getEditLink(event, intl.formatMessage({ id: 'content-mixin.edit' }));
+    const title = getTitle(event)
 
     return (
       <article id={`event-${event.id}`} className={classes}>
         <ScrollIntoView id="#container" />          
         <DocumentMeta {...meta} />
         <BodyClass classes={['single', 'single_event']} />
-        {featuredMedia ?
-          <Media media={featuredMedia} parentClass="entry_image" /> :
-          null
-        }
-        <h1 className="entry_title" dangerouslySetInnerHTML={getTitle(event)} />        
+        <h1 className="entry_title" dangerouslySetInnerHTML={title} /> 
+        <h3>{event.events_startdate} &mdash; {event.events_location}</h3>
+        
+        <div className="entry_meta" dangerouslySetInnerHTML={editLink} />
+        <div className="entry_content" dangerouslySetInnerHTML={getContent(event, intl.formatMessage({ id: 'content-mixin.passprotected' }))} />  
+        <div className="bumper" />    
+        {intl.formatMessage({ id: 'event.location' })} {event.events_location}<br />
         {intl.formatMessage({ id: 'event.begins' })} 
         <time className="entry_date published startdate" dateTime={event.events_startdate_iso}>
           <em> {event.events_startdate}</em>
@@ -54,10 +77,10 @@ class SingleEvent extends Component {
         {intl.formatMessage({ id: 'event.ends' })} 
         <time className="entry_date published enddate" dateTime={event.events_enddate_iso}>
           <em> {event.events_enddate}</em>
-        </time>
-        <div className="entry_meta" dangerouslySetInnerHTML={editLink} />
-        <div className="entry_content" dangerouslySetInnerHTML={getContent(event, intl.formatMessage({ id: 'content-mixin.passprotected' }))} />        
-        
+        </time> 
+        <div className="bumper" />  
+        <Socials intl title={`${title.__html} - ${event.events_startdate}, ${event.events_location}`} summary={getContent(event, intl.formatMessage({ id: 'content-mixin.passprotected' }))} image={featuredMedia.source_url} />
+        <div className="bumper" />  
       </article>
     );
   }
@@ -104,8 +127,11 @@ class SingleEvent extends Component {
           <div className="lightest_sep" />
         </div>
 
-        <section id="main" className="col780 center clearfix" role="main" aria-live="assertive" tabIndex="-1">
-          <QueryEvents eventSlug={this.props.slug} />
+        <div className="bumper" />
+        {!this.props.loading && this.renderFeaturedImage()}
+
+        <section id="main" className="col780 center clearfix single_entry" role="main" aria-live="assertive" tabIndex="-1">
+          <QueryEvents eventSlug={this.props.slug} />  
           {this.props.loading ?
             <Placeholder type="event" /> :
             this.renderArticle()

@@ -28,6 +28,7 @@ class EventForm extends Component {
       error_first_name: false,
       error_last_name: false,
       error_email: false,
+      error_job_title: false,
       error_company: false,
       error_address: false,
       error_verify: false,
@@ -57,7 +58,7 @@ class EventForm extends Component {
     this.validation(e);  
     this.setState({ isSubmitting: true });
 
-    const keys = ['post_id', 'ticket_type', 'reason', 'first_name', 'last_name', 'email', 'company', 'address', 'verify', 'built', 'language', 'event_name', 'event_startdate'];
+    const keys = ['post_id', 'reason', 'first_name', 'last_name', 'email', 'job_title', 'company', 'address', 'verify', 'built', 'language', 'event_name', 'event_startdate'];
     
     const rawValues = {};
     keys.map((key) => {
@@ -68,11 +69,11 @@ class EventForm extends Component {
 
     const values = {}; 
     values.post_id = rawValues.post_id;
-    values.ticket_type = rawValues.ticket_type;
     values.reason = rawValues.reason;
     values.first_name = rawValues.first_name;
     values.last_name = rawValues.last_name;
     values.email = rawValues.email;
+    values.job_title = rawValues.job_title;
     values.company = rawValues.company;
     values.address = rawValues.address;
     values.verify = rawValues.verify;
@@ -107,6 +108,7 @@ class EventForm extends Component {
           e.target.first_name.value = '';
           e.target.last_name.value = '';
           e.target.email.value = '';
+          e.target.job_title.value = '';
           e.target.company.value = '';
           e.target.address.value = '';
           e.target.submit.value = false;        
@@ -134,6 +136,9 @@ class EventForm extends Component {
     if (e.target.name === 'email') {
       this.setState({ error_email: validate.validateEmail(e.target.value) });
     }
+    if (e.target.name === 'job_title') {
+      this.setState({ error_job_title: validate.validateNoHTML(e.target.value) });
+    }
     if (e.target.name === 'company') {
       this.setState({ error_company: validate.validateNoHTML(e.target.value) });
     }
@@ -147,6 +152,7 @@ class EventForm extends Component {
       this.state.error_first_name || 
       this.state.error_last_name || 
       this.state.error_email || 
+      this.state.error_job_title ||
       this.state.error_company ||
       this.state.error_address ||
       this.state.error_verify
@@ -201,20 +207,12 @@ class EventForm extends Component {
     const errorMessage = this.state.errorMessage ? <div className="error">{this.state.errorMessage}</div> : null;
     return (      
       <div className="registration_form">
-        <p>{intl.formatMessage({ id: 'event.deadline' })} {this.state.deadline}</p>
+        <h4>{intl.formatMessage({ id: 'event.deadline' })} <em>{this.state.deadline}</em></h4>
+        <div className="bumper" />
         <form onSubmit={this.onSubmit}>
           {successMessage}
           {errorMessage}
-
-          <div className="contact_form_field">
-            <label htmlFor="ticket_type">{intl.formatMessage({ id: 'event.attending_as' })} *</label>
-            <select name="ticket_type" readOnly>
-              <option value="startup">Startup</option>
-              <option value="investor">{intl.formatMessage({ id: 'event.investor' })}</option>
-              <option value="partner">Partner</option>
-              <option value="guest">{intl.formatMessage({ id: 'event.guest' })}</option>
-            </select>
-          </div>
+          
           <div className="contact_form_field">
             <label htmlFor="first_name">{intl.formatMessage({ id: 'event.first_name' })} *</label>
             <input id="first-name" className={(this.state.error_first_name) ? 'error' : ''} name="first_name" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} aria-required="true" required="required" placeholder={intl.formatMessage({ id: 'event.first_name_ph' })} />
@@ -229,6 +227,11 @@ class EventForm extends Component {
             <label htmlFor="email">Email *</label>
             <input id="email" className={(this.state.error_email) ? 'error' : ''} name="email" type="email" onBlur={this.onBlur} onKeyPress={this.onKeyPress} aria-describedby="email-notes" aria-required="true" required="required" placeholder={intl.formatMessage({ id: 'contact.email_ph' })} />
             {(this.state.error_email) ? <span className="error_message">{intl.formatMessage({ id: 'contact.email_err' })}</span> : null}
+          </div>
+          <div className="contact_form_field">
+            <label htmlFor="job_title">{intl.formatMessage({ id: 'event.job_title' })}</label>
+            <input id="job-title" className={(this.state.error_job_title) ? 'error' : ''} name="job_title" type="text" onBlur={this.onBlur} onKeyPress={this.onKeyPress} placeholder={intl.formatMessage({ id: 'event.job_title_ph' })} />
+            {(this.state.error_job_title) ? <span className="error_message">{intl.formatMessage({ id: 'event.job_title' })}</span> : null}
           </div>
           <div className="contact_form_field">
             <label htmlFor="company">{intl.formatMessage({ id: 'event.company' })}</label>

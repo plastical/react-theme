@@ -10,9 +10,21 @@ const EventList = (props) => {
     return null;
   }
 
-  const events = props.events.map((event, i) => 
-    <Event key={`event-${i}`} {...event} {...props} />
-  );
+  if (!props.pastEvents && !props.events) {
+    return null;
+  }
+
+  let events;
+
+  if (props.past) {
+    events = props.pastEvents.map((event, i) => 
+      <Event key={`event-${i}`} {...event} {...props} />
+    );
+  } else {
+    events = props.events.map((event, i) => 
+      <Event key={`event-${i}`} {...event} {...props} />
+    );
+  }
 
   return (
     <div className="entry_list">

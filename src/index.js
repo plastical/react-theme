@@ -40,7 +40,7 @@ function handleURLs() {
     window.h.push(`${location.pathname}/`);
   }
 
-  jQuery('#container').on('click', 'a[rel!=external][target!=_blank]', (e) => {
+  jQuery('#slider, #container').on('click', 'a[rel!=external][target!=_blank]', (e) => {
     // Don't capture clicks in post content.
     if (jQuery(e.currentTarget).closest('.entry_content').length) {
       return;
@@ -51,7 +51,7 @@ function handleURLs() {
     }
     e.preventDefault();
     let url = e.currentTarget.href;
-    
+    console.log(url);
     url = url.replace(PlasticalSettings.URL.base, PlasticalSettings.URL.path);
     
     // get global history from ./store
@@ -59,8 +59,8 @@ function handleURLs() {
   });
 
   // anchor scroll
-  jQuery('#container').on('click', 'a[href^="#"]', (e) => {
-    skipLink(e.target);
+  jQuery('#slider, #container').on('click', 'a[href^="#"]', (e) => {
+    skipLink(e.currentTarget);
   });
 }
 
@@ -74,11 +74,15 @@ function renderPreloadData() {
 function detectScroll() {
   jQuery(window).scroll(() => {
     const winPosition = jQuery(window).scrollTop();
-
-    if (winPosition > 5) {
-      jQuery('#header').addClass('moved');
+    jQuery('#header').removeClass('moved');
+    let moveHeight = 5;
+    if (jQuery('.home').length > 0 && jQuery('#slider').length > 0) {
+      moveHeight = (jQuery('#slider').height() - 70);
+    } 
+    if (winPosition > moveHeight) {
+      jQuery('#header, #container').addClass('moved');
     } else {
-      jQuery('#header').removeClass('moved');
+      jQuery('#header, #container').removeClass('moved');
     }
   });
 }

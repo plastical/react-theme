@@ -18,6 +18,7 @@ import Placeholder from 'components/placeholder';
 
 const Events = (props) => {
   const events = props.events;
+  const pastEvents = props.pastEvents;
   const intl = props.intl;
 
   let pag = '';
@@ -37,24 +38,49 @@ const Events = (props) => {
       <ScrollIntoView id="#container" />
       <DocumentMeta {...meta} />
       <BodyClass classes={['events']} />
-      
-      <QueryEvents query={props.query} />
-      {props.loading ?
-        <Placeholder type="events" /> :
-        <div>
-          <h1 className="page_title">{`${intl.formatMessage({ id: 'event.title' })} ${pag}`}</h1>
-          <EventList mediumList {...props} />
-        </div>
-      }
-      <Pagination
-        path={props.path}
-        length={events.length}
-        current={props.page}
-        isFirstPage={props.page === 1}
-        isLastPage={props.page === props.totalPages}
-        totalPages={props.totalPages}
-        intl={props.intl}
-      />
+      <h1 className="page_title">{`${intl.formatMessage({ id: 'event.title' })} ${pag}`}</h1>            
+      <div>
+        <QueryEvents query={props.query} />
+        {props.loading ?
+          <Placeholder type="events" /> :
+          <div>
+            <h3 className="page_title">{`${intl.formatMessage({ id: 'event.forthcoming' })} ${pag}`}</h3>
+            <EventList mediumList {...props} />
+          </div>
+        }
+        <Pagination
+          path={props.path}
+          length={events.length}
+          current={props.page}
+          isFirstPage={props.page === 1}
+          isLastPage={props.page === props.totalPages}
+          totalPages={props.totalPages}
+          intl={props.intl}
+        />
+      </div>
+      <div className="bumper" />
+      <div className="sep" />
+      <div className="bumper" />
+
+      <div>
+        <QueryEvents query={props.pastQuery} />
+        {props.pastLoading ?
+          <Placeholder type="events" /> :
+          <div>
+            <h3 className="page_title">{`${intl.formatMessage({ id: 'event.past' })} ${pag}`}</h3>
+            <EventList smallList past {...props} />
+          </div>
+        }
+        <Pagination
+          path={props.path}
+          length={pastEvents.length}
+          current={props.pastPage}
+          isFirstPage={props.pastPage === 1}
+          isLastPage={props.pastPage === props.pastTotalPages}
+          totalPages={props.pastTotalPages}
+          intl={props.intl}
+        />
+      </div>
       
     </section>
   );
@@ -64,14 +90,24 @@ export default injectIntl(
   connect((state, ownProps) => {
     const locale = state.locale;
     const query = {};
+    const pastQuery = {};
+
     if (locale.lang !== 'en') {
       query.lang = locale.lang;
+      pastQuery.lang = locale.lang;
     }
+
     query.page = ownProps.params.paged || 1;
     query.order = 'asc';
     query.order_by = 'meta_value';
     query.meta_key = 'events_startdate';
     query.forthcoming = 1;
+
+    pastQuery.page = ownProps.params.paged || 1;
+    pastQuery.order = 'desc';
+    pastQuery.order_by = 'meta_value';
+    pastQuery.meta_key = 'events_enddate';
+    pastQuery.past = 1;
 
     let path = PlasticalSettings.URL.path || '/';
     if (PlasticalSettings.frontPage.page) {
@@ -80,6 +116,10 @@ export default injectIntl(
 
     const events = getEventsForQuery(state, query) || [];
     const requesting = isRequestingEventsForQuery(state, query);
+
+    const pastEvents = getEventsForQuery(state, pastQuery) || []; 
+    const pastRequesting = isRequestingEventsForQuery(state, pastQuery);
+
     return {
       locale,
       path,
@@ -89,6 +129,12 @@ export default injectIntl(
       requesting,
       loading: requesting && !events,
       totalPages: getTotalPagesForQuery(state, query),
+      pastPage: parseInt(pastQuery.page),
+      pastQuery,
+      pastEvents,
+      pastRequesting,
+      pastLoading: pastRequesting && !pastEvents,
+      pastTotalPages: getTotalPagesForQuery(state, pastQuery),
     };
   })(Events)
 );

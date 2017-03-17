@@ -90,8 +90,6 @@ export default injectIntl(
       path = `${path}/`;
     }
 
-    console.log(path);
-
     const query = {};
     if (locale.lang !== 'en') {
       query.lang = locale.lang;

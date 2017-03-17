@@ -100,6 +100,62 @@ TYPOGRAPHY
 }
 
 @font-face {
+    font-family: 'open_sansextrabold';
+    src: url("@{base-url}/webfonts/opensans-extrabold-webfont.woff2") format('woff2'),
+         url("@{base-url}/webfonts/opensans-extrabold-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sanslight';
+    src: url("@{base-url}/webfonts/opensans-light-webfont.woff2") format('woff2'),
+         url("@{base-url}/webfonts/opensans-light-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sanslight_italic';
+    src: url("@{base-url}/webfonts/opensans-lightitalic-webfont.woff2") format('woff2'),
+         url("@{base-url}/webfonts/opensans-lightitalic-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sansregular';
+    src: url("@{base-url}/webfonts/opensans-regular-webfont.woff2") format('woff2'),
+         url("@{base-url}/webfonts/opensans-regular-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'tech-light';
+    src: url("@{base-url}/webfonts/tech-round-light-beta.woff2") format('woff2'),
+         url("@{base-url}/webfonts/tech-round-light-beta.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'tech-medium';
+    src: url("@{base-url}/webfonts/tech-round-medium-beta.woff2") format('woff2'),
+         url("@{base-url}/webfonts/tech-round-medium-beta.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'tech-bold';
+    src: url("@{base-url}/webfonts/tech-round-bold-beta.woff2") format('woff2'),
+         url("@{base-url}/webfonts/tech-round-bold-beta.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
   font-family: 'graublau_webregular';
   src: url("@{base-url}/webfonts/graublauweb.woff2") format('woff2'),
        url("@{base-url}/webfonts/graublauweb.woff") format('woff');
@@ -121,22 +177,29 @@ span.amp {
 .text_center { text-align: center; }
 .text_right { text-align: right; }
 
-.text_shadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(255,255,255,0.9) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
-.lighter_text_shadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
-.darker_text_shadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(0,0,0,0.2) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
+.textShadow { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(255,255,255,0.9) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
+.textShadow-lighter { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
+.textShadow-darker { text-shadow:rgba(0,0,0,0.0) -1px 0, rgba(0,0,0,0.0) 0 -1px, rgba(0,0,0,0.5) 0 1px, rgba(0,0,0,0.0) -1px -2px; }
 
 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { /* WebKit browsers */
     color:   rgb(99,99,99);
+    font-family: 'open_sanslight', arial, helvetica, sans-serif;	
 }
+
 input:-moz-placeholder,textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
     color:   rgb(99,99,99);
+    font-family: 'open_sanslight', arial, helvetica, sans-serif;	
 }
+
 input::-moz-placeholder,textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
     color:   rgb(99,99,99);
+    font-family: 'open_sanslight', arial, helvetica, sans-serif;	
 }
+
 input:-ms-input-placeholder,textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
     color:   rgb(99,99,99);
+    font-family: 'open_sanslight', arial, helvetica, sans-serif;	
 }
 
 /*********************
@@ -195,7 +258,7 @@ input.error:-ms-input-placeholder,textarea.error:-ms-input-placeholder { /* Inte
 BACKGROUND SPRITE WITH DEFAULT .PNG
 *********************/
 
-.backgroundSprite(@x: 0, @y:0, @repeat: no-repeat,@color: transparent, @url: url("@{layout-url}/sprite.png")) {
+.backgroundSprite(@x: 0, @y:0, @repeat: no-repeat, @color: transparent, @url: url("@{layout-url}/sprite.png")) {
 	background: @arguments;
 }
 

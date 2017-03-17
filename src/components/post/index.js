@@ -19,6 +19,7 @@ import PostMeta from './meta';
 import Media from './image';
 import Comments from 'components/comments';
 import Placeholder from 'components/placeholder';
+import Socials from 'components/socials';
 
 class SinglePost extends Component {
 
@@ -69,14 +70,17 @@ class SinglePost extends Component {
       entry: true
     });
 
+
+    const featuredMedia = getFeaturedMedia(post);
     const editLink = getEditLink(post, intl.formatMessage({ id: 'content-mixin.edit' }));
+    const title = getTitle(post);
 
     return (
       <article id={`post-${post.id}`} className={classes}>
         <ScrollIntoView id="#container" />          
         <DocumentMeta {...meta} />
         <BodyClass classes={['single', 'single_post']} />             
-        <h1 className="entry_title" dangerouslySetInnerHTML={getTitle(post)} />
+        <h1 className="entry_title" dangerouslySetInnerHTML={title} />
         <div className="entry_meta">   
           <time className="entry_date published updated" dateTime={post.date}>{getDate(post.date)}</time>        
           {editLink ?
@@ -87,6 +91,9 @@ class SinglePost extends Component {
         {/* <PostMeta post={post} humanDate={getDate(post.date)} intl={intl} /> */}
         <div className="entry_content" dangerouslySetInnerHTML={getContent(post, intl.formatMessage({ id: 'content-mixin.passprotected' }))} />
         
+        <div className="bumper" />  
+        <Socials intl title={title.__html} summary={getContent(post, intl.formatMessage({ id: 'content-mixin.passprotected' }))} image={featuredMedia.source_url} />
+        <div className="bumper" />  
       </article>
     );
   }
@@ -139,11 +146,12 @@ class SinglePost extends Component {
 
         {!this.props.loading && this.renderCategories()}
 
+        <div className="bumper" />
         {!this.props.loading && this.renderFeaturedImage()}
 
-        <section id="main" className="col780 center clearfix" role="main" aria-live="assertive" tabIndex="-1">
-
+        <section id="main" className="col780 center clearfix single_entry" role="main" aria-live="assertive" tabIndex="-1">
           <QueryPosts postSlug={this.props.slug} />
+          <div className="bumper" />   
           {this.props.loading ?
             <Placeholder type="post" /> :
             this.renderArticle()
@@ -151,7 +159,6 @@ class SinglePost extends Component {
 
           {/* We won't accept comments, so... */}
           {/* !this.props.loading && this.renderComments() */}
-
         </section>
       </div>
     );

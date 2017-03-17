@@ -23,7 +23,7 @@ const Content = (props) => {
   return (
     <div> 
       {!hideTitle ?
-        <h1 className="entry_title" dangerouslySetInnerHTML={getTitle(post)} /> :
+        <h1 dangerouslySetInnerHTML={getTitle(post)} /> :
         null
       } 
       {editLink ?           

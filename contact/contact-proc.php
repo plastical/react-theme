@@ -20,18 +20,24 @@ $l = 'en';
 $r = array(
 	'en' => array(
 		'bodyGeneral' => '<br/>Thank you for contacting us.<br/><br/>We will come back to you as soon as possibile.<br/><br/>Best regards.<br/>',
-		'subjectInfo' => 'Information request',
-		'subjectProject' => 'Project submission',
-		'bodyProject' => '<br/>Thank you for submitting a project.<br/><br/>We will evaluate your information and come back to you as soon as possible.<br/><br/>Best regards.<br/>',
-	  'subjectAttend' => 'Event attendance',
+		'subjectContact' => 'Information request',
+    'reasonTecnopolo' => 'Tecnopolo Ticino',
+    'reasonTechTransfer' => 'Technology transfer',
+    'reasonSupport' => 'Startup / SME support',
+    'reasonCoaching' => 'Coaching',
+    'reasonOther' => 'Other',
+		'subjectAttend' => 'Event attendance',
 		'bodyAttend' => '<br/>Thank you for booking a place at this event.<br/><br/>Best regards.<br/>',
 	),
 	'it' => array(
 		'bodyGeneral' => '<br/>Grazie per averci contattato.<br/><br/>Daremo un riscontro non appena possibile.<br/><br/>Cordiali saluti.<br/>',
-		'subjectInfo' => 'Richiesta informazioni',
-		'subjectProject' => 'Segnalazione di progetto',
-		'bodyProject' => '<br/>Grazie per averci segnalato un progetto.<br/><br/>Valuteremo le informazioni fornite e daremo un riscontro non appena possibile.<br/><br/>Cordiali saluti.<br/>',
-    'subjectAttend' => 'Iscrizione evento',
+		'subjectContact' => 'Richiesta informazioni',
+    'reasonTecnopolo' => 'Tecnopolo Ticino',
+    'reasonTechTransfer' => 'Transfer tecnologico',
+    'reasonSupport' => 'Supporto Startup / PMI',
+    'reasonCoaching' => 'Coaching',
+    'reasonOther' => 'Altro',
+		'subjectAttend' => 'Iscrizione evento',
 		'bodyAttend' => '<br/>Grazie per aver prenotato un posto a questo evento.<br/><br/>Cordiali saluti.<br/>',
   )
 );
@@ -63,20 +69,30 @@ if (isset($req['submit'])) {
 			
 		$notificationBody = $r[$l]['bodyGeneral'] . $fromName;
 		// filter according to reason
-		if($req['reason'] == 'info') {
-			$expected = array('name', 'email', 'reason', 'details', 'built');
+		if ($req['reason'] != 'attendance') {
+			$expected = array('name', 'email', 'company', 'industry', 'url', 'reason', 'details', 'built');
 			$required = array('name', 'email', 'reason', 'details', 'built');
-			$notificationSubject = $fromName . ': ' . $r[$l]['subjectInfo'];
-		}			
-		else if($req['reason'] == 'project') {
-			$expected = array('name', 'email', 'reason', 'project_name', 'need', 'industry', 'founded', 'funds_raised', 'details', 'url', 'built');
-			$required = array('name', 'email', 'reason', 'project_name', 'need', 'industry', 'details', 'built');
-			$notificationSubject = $fromName . ': ' . $r[$l]['subjectProject'];
-			$notificationBody =  $r[$l]['bodyProject'] . $fromName;
+      if ($req['reason'] == 'tecnopolo') {
+        $notificationReason = $r[$l]['reasonTecnopolo'];
+      }
+      else if ($req['reason'] == 'tech-transfer') {
+        $notificationReason = $r[$l]['reasonTechTransfer'];
+      }
+      else if ($req['reason'] == 'startup-sme-support') {
+        $notificationReason = $r[$l]['reasonSupport'];
+      } 
+      else if ($req['reason'] == 'coaching') {
+        $notificationReason = $r[$l]['reasonCoaching'];
+      }
+      else {
+        $notificationReason = $r[$l]['reasonOther'];
+      }
+
+			$notificationSubject = $fromName . ': ' . $r[$l]['subjectContact'] . ' - ' . $notificationReason;
 		}
-		else if($req['reason'] == 'attendance') {
-			$expected = array('ticket_type', 'first_name', 'last_name', 'company', 'email', 'address', 'post_id', 'reason', 'event_name', 'event_startdate', 'built');
-			$required = array('ticket_type', 'first_name', 'last_name', 'email', 'address', 'post_id', 'reason', 'event_name', 'event_startdate', 'built');
+		else if ($req['reason'] == 'attendance') {
+			$expected = array('first_name', 'last_name', 'email', 'job_title', 'company', 'address', 'post_id', 'reason', 'event_name', 'event_startdate', 'built');
+			$required = array('first_name', 'last_name', 'email', 'address', 'post_id', 'reason', 'event_name', 'event_startdate', 'built');
 			$notificationSubject = $fromName . ': ' . $r[$l]['subjectAttend'];
 			$notificationBody = $r[$l]['bodyAttend'] . $fromName;
 		}
@@ -165,9 +181,9 @@ if (isset($req['submit'])) {
       $sqlOK = false;
       $wpdb->query( $wpdb->prepare(
         'INSERT INTO plst_event_subscriptions 
-        ( created, post_id, ticket_type, email, first_name, last_name, company, address ) 
+        ( created, post_id, email, first_name, last_name, job_title, company, address ) 
         VALUES ( %s, %d, %s, %s, %s, %s, %s, %s )', 
-        $created, $post_id, $ticket_type, $email, $first_name, $last_name, $company, $address
+        $created, $post_id, $email, $first_name, $last_name, $job_title, $company, $address
       ) );
       $OK = $wpdb->insert_id;
       if($OK == 0) 
@@ -215,14 +231,14 @@ if (isset($req['submit'])) {
       $mail->Subject= $notificationSubject;
 
 			// Set the SMTP server.
-			$mail->Host=$host;
+			//$mail->Host=$host;
 			
 			// Set "need authentication".
-			$mail->SMTPAuth=true;
+			//$mail->SMTPAuth=true;
 			
 			// Set your username and password.
-			$mail->Username=$username;
-			$mail->Password=$password;
+			//$mail->Username=$username;
+			//$mail->Password=$password;
 			
 			
 			// Send Email.

@@ -220,6 +220,8 @@ function plastical_scripts() {
 				'title' => get_bloginfo('name', 'display'),
 				'description' => get_bloginfo('description', 'display'),
 			),
+      'facebookAppId' => FACEBOOK_APPID,
+      'twitterHandler' => TWITTER_HANDLER
 		) )
 	) );
 }

@@ -86,6 +86,7 @@ $columns = array(
   "title" => __('Event'),
   "col_ev_date" => __('Date'),
   "col_ev_times" => __('Times'),
+  "col_ev_location" => __('Location'),
   "col_ev_desc" => __('Description'),
 	"col_ev_featured" => __('Featured'),
 	"col_ev_attendform" => __('Attend form'),
@@ -122,6 +123,9 @@ case "col_ev_times":
     $endtime = date($time_format, $endt);
     echo $starttime . ' - ' .$endtime;
 break;
+case "col_ev_location";
+    echo $custom["events_location"][0];
+break;
 case "col_ev_desc";
     the_excerpt();
 break;
@@ -149,7 +153,7 @@ function events_display () {
   global $wpdb;
   $custom = get_post_custom($post->ID);
   $results = $wpdb->get_results(
-    "SELECT created, last_name, first_name, email, company, address, ticket_type FROM plst_event_subscriptions 
+    "SELECT created, last_name, first_name, email, job_title, company, address FROM plst_event_subscriptions 
     WHERE post_id = '$post->ID' ORDER BY last_name"
   );
   $result_count = $wpdb->get_var(
@@ -175,13 +179,13 @@ function events_display () {
           Email
         </th>
         <th class="manage-column">
+          <?php _e('Job title') ?>
+        </th>
+        <th class="manage-column">
           <?php _e('Company') ?>
         </th>
         <th class="manage-column">
           <?php _e('Address') ?>
-        </th>
-        <th class="manage-column">
-          <?php _e('Ticket type') ?>
         </th>
       </tr>
     </thead>
@@ -194,9 +198,9 @@ function events_display () {
           echo '<td>' . $result->last_name . '</td>';
           echo '<td>' . $result->first_name . '</td>';
           echo '<td>' . $result->email . '</td>';
-          echo '<td>' . (($result->company != '') ? $result->company : '-') . '</td>';
+          echo '<td>' . $result->job_title . '</td>';
+          echo '<td>' . $result->company . '</td>';
           echo '<td>' . $result->address . '</td>';
-          echo '<td>' . $result->ticket_type . '</td>';
           echo '</tr>';
         } ?>
     </tbody>
@@ -218,6 +222,7 @@ $meta_dd = $custom["events_deadlinedate"][0];
 $meta_st = $meta_sd;
 $meta_et = $meta_ed;
 $meta_dt = $meta_dd;
+$events_location = get_post_meta( $post->ID, 'events_location', true );
 $events_featured = get_post_meta( $post->ID, 'events_featured', true );
 $events_attendform = get_post_meta( $post->ID, 'events_attendform', true );
 
@@ -255,22 +260,19 @@ echo '<input type="hidden" name="events-nonce" id="events-nonce" value="' . wp_c
  
 ?>
 <div class="events_meta">
-<ul>
+  <ul>
     <li><label><?php _e('Start date') ?></label><input name="events_startdate" class="events_date" value="<?php echo $clean_sd; ?>" placeholder="<?php _e('DD.MM.YYYY') ?>"/></li>
     <li><label><?php _e('Start time') ?></label><input name="events_starttime" value="<?php echo $clean_st; ?>" placeholder="<?php _e('HH:MM') ?>"/></li>
     <li><label><?php _e('End date') ?></label><input name="events_enddate" class="events_date" value="<?php echo $clean_ed; ?>"  placeholder="<?php _e('DD.MM.YYYY') ?>"/></li>
     <li><label><?php _e('End time') ?></label><input name="events_endtime" value="<?php echo $clean_et; ?>" placeholder="<?php _e('HH:MM') ?>"/></li>
-</ul>
+  </ul>
+  <p>&nbsp;</p>
 </div>
 <div class="events_meta">
 	<ul>
-			<li><label><?php _e('Featured?') ?></label>
-			<select name="events_featured">
-				<option value="no" <?php if(!isset($events_featured) || $events_featured == 'no'){ echo 'selected="selected"'; } ?>><?php _e('No') ?></option>
-				<option value="yes" <?php if($events_featured == 'yes'){ echo 'selected="selected"';}?>><?php _e('Yes') ?></option>
-			</select>
-			</li>
+			<li><label><?php _e('Location') ?></label><input name="events_location" value="<?php echo $events_location; ?>" placeholder="<?php _e('Venue, City') ?>"/></li>
 	</ul>
+  <p>&nbsp;</p>
 </div>
 <div class="events_meta">
 	<ul>
@@ -285,6 +287,17 @@ echo '<input type="hidden" name="events-nonce" id="events-nonce" value="' . wp_c
     <li><label><?php _e('Deadline date') ?></label><input name="events_deadlinedate" class="events_date" value="<?php echo $clean_dd; ?>"  placeholder="<?php _e('DD.MM.YYYY') ?>"/></li>
     <li><label><?php _e('Deadline time') ?></label><input name="events_deadlinetime" value="<?php echo $clean_dt; ?>" placeholder="<?php _e('HH:MM') ?>"/></li>
   </ul>
+  <p>&nbsp;</p>
+</div>
+<div class="events_meta">
+	<ul>
+			<li><label><?php _e('Featured?') ?></label>
+			<select name="events_featured">
+				<option value="no" <?php if(!isset($events_featured) || $events_featured == 'no'){ echo 'selected="selected"'; } ?>><?php _e('No') ?></option>
+				<option value="yes" <?php if($events_featured == 'yes'){ echo 'selected="selected"';}?>><?php _e('Yes') ?></option>
+			</select>
+			</li>
+	</ul>
   <p>&nbsp;</p>
 </div>
 <?php
@@ -319,6 +332,10 @@ endif;
 $updateendd = strtotime ( $_POST["events_enddate"] . $_POST["events_endtime"]);
 update_post_meta($post->ID, "events_enddate", $updateendd );
 
+if(!isset($_POST["events_location"])):
+return $post;
+endif;
+update_post_meta( $post->ID, 'events_location', strip_tags( $_POST['events_location'] ) );
  
 if(!isset($_POST["events_featured"])):
 return $post;
@@ -393,6 +410,9 @@ function get_events_meta_enddate($object) { // no need to call a single field_na
 function get_events_meta_enddate_iso($object) { // no need to call a single field_name
   return date('c', get_post_meta($object['id'], 'events_enddate', true));
 }
+function get_events_meta_location($object) { // no need to call a single field_name
+  return get_post_meta($object['id'], 'events_location', true);
+}
 function get_events_meta_featured($object) { // no need to call a single field_name
   return get_post_meta($object['id'], 'events_featured', true);
 }
@@ -424,6 +444,11 @@ function register_events_meta_rest() {
   ]);
   register_rest_field('events', 'events_enddate_iso', [
       'get_callback'    => 'get_events_meta_enddate_iso',
+      'update_callback' => 'null',
+      'schema'          => 'null',
+  ]);
+  register_rest_field('events', 'events_location', [
+      'get_callback'    => 'get_events_meta_location',
       'update_callback' => 'null',
       'schema'          => 'null',
   ]);
@@ -498,6 +523,13 @@ function events_query( $args, $request ) {
     $args['meta_query'] = array(
     		'compare' => '>=',
     		'key'		=> 'events_startdate',
+    		'value'	=> time()
+    	);
+  }
+  if(isset($request['past'])) {
+    $args['meta_query'] = array(
+    		'compare' => '<',
+    		'key'		=> 'events_enddate',
     		'value'	=> time()
     	);
   }
