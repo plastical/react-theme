@@ -96,7 +96,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "connected-react-router": "^4.0.0-beta.4",
     "history": "^4.5.0",
     "intl": "^1.2.5",
     "language": "^0.4.0",
