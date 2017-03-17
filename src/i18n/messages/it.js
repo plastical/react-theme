@@ -98,7 +98,7 @@ export const ITALIAN_TRANSLATION = {
     'contact.coaching': 'Coaching',
     'contact.other': 'Altro',
     'contact.industry': 'Settore principale',
-    'contact.industry_ph': 'Ex.: Life science, Digital / ITC, High tech / Industrial, Cleantech / Energy, ...',
+    'contact.industry_ph': 'Es.: Life science, Digital / ITC, High tech / Industrial, Cleantech / Energy, ...',
     'contact.industry_err': 'Settore richiede almeno 3 caratteri',
     'contact.project_url': 'URL del sito / progetto',
     'contact.project_url_ph': 'Es.: http://www.mio-progetto.ch',
