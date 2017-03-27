@@ -220,10 +220,8 @@ class ContactForm extends Component {
         <div className="contact_form_field">
           <label htmlFor="reason">{intl.formatMessage({ id: 'contact.reason' })} *</label>
           <select name="reason">
+            <option value="tech-transfer_startup-support">{intl.formatMessage({ id: 'contact.tech_transfer-support' })}</option>
             <option value="tecnopolo">{intl.formatMessage({ id: 'contact.tecnopolo' })}</option>
-            <option value="tech-transfer">{intl.formatMessage({ id: 'contact.tech_transfer' })}</option>
-            <option value="startup-sme-support">{intl.formatMessage({ id: 'contact.support' })}</option>
-            <option value="coaching">{intl.formatMessage({ id: 'contact.coaching' })}</option>
             <option value="other">{intl.formatMessage({ id: 'contact.other' })}</option>
           </select>
         </div>

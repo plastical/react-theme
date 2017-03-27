@@ -75,6 +75,9 @@ if (isset($req['submit'])) {
       if ($req['reason'] == 'tecnopolo') {
         $notificationReason = $r[$l]['reasonTecnopolo'];
       }
+      else if ($req['reason'] == 'tech-transfer_startup-support') {
+        $notificationReason = $r[$l]['reasonTechTransfer'] . ' - ' . $r[$l]['reasonSupport'];
+      }
       else if ($req['reason'] == 'tech-transfer') {
         $notificationReason = $r[$l]['reasonTechTransfer'];
       }

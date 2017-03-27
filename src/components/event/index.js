@@ -92,7 +92,7 @@ class SingleEvent extends Component {
       return null;
     }
 
-    if (!event.events_attendform) {
+    if (event.events_attendform === 'no') {
       return null;
     }
 

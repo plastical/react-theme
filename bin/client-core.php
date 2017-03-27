@@ -93,7 +93,7 @@ $more = 'Continua';
 else 
 $more = 'More';
 // if there's no active WPLM active:  $more = 'more';
-return '... <p><a class="action alignright" href="'. get_permalink($post->ID) . '" title="'.get_the_title($post->ID).'">'.$more.' &raquo;</a></p><p class="clearfix"></p>';
+return '... <a class="excerpt" href="'. get_permalink($post->ID) . '" title="'.get_the_title($post->ID).'">&nbsp;</a><p class="clearfix"></p>';
 }
 add_filter('excerpt_more', 'client_excerpt_more');
 

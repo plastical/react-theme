@@ -155,6 +155,19 @@ a, a:visited {
 	}
 }
 
+a.excerpt {
+  &:after {
+    content: '>';
+    position: relative;
+    top: 2px;
+    margin-top: -8px;
+    margin-left: 0;
+    font-family: 'graublau_webregular';
+    font-size: 22px;
+    line-height: 16px;
+  }
+}
+
 a.more {
   float: right;
   display: inline-block;

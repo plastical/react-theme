@@ -96,6 +96,7 @@ export const ITALIAN_TRANSLATION = {
     'contact.tecnopolo': 'Tecnopolo Ticino',
     'contact.support': 'Supporto Startup / PMI',
     'contact.coaching': 'Coaching',
+    'contact.tech_transfer-support': 'Trasferimento tecnologico - Supporto Startup / PMI',
     'contact.other': 'Altro',
     'contact.industry': 'Settore principale',
     'contact.industry_ph': 'Es.: Life science, Digital / ITC, High tech / Industrial, Cleantech / Energy, ...',

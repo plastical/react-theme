@@ -99,13 +99,13 @@ export default injectIntl(
 
     query.page = ownProps.params.paged || 1;
     query.order = 'asc';
-    query.order_by = 'meta_value';
+    query.orderby = 'meta_value';
     query.meta_key = 'events_startdate';
     query.forthcoming = 1;
 
     pastQuery.page = ownProps.params.paged || 1;
     pastQuery.order = 'desc';
-    pastQuery.order_by = 'meta_value';
+    pastQuery.orderby = 'meta_value';
     pastQuery.meta_key = 'events_enddate';
     pastQuery.past = 1;
 
