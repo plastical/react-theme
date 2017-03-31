@@ -51,7 +51,7 @@ function handleURLs() {
     }
     e.preventDefault();
     let url = e.currentTarget.href;
-    console.log(url);
+    
     url = url.replace(PlasticalSettings.URL.base, PlasticalSettings.URL.path);
     
     // get global history from ./store
@@ -71,19 +71,22 @@ function renderPreloadData() {
   actions.setMenu(`primary-${PlasticalSettings.lang}`, PlasticalMenu.data);
 }
 
+/* eslint no-use-before-define: 1 */
 function detectScroll() {
   jQuery(window).scroll(() => {
-    const winPosition = jQuery(window).scrollTop();
-    jQuery('#header').removeClass('moved');
-    let moveHeight = 5;
+    clearTimeout(scrollTimer);
+    let moveHeight = 1;
     if (jQuery('.home').length > 0 && jQuery('#slider').length > 0) {
       moveHeight = (jQuery('#slider').height() - 70);
-    } 
-    if (winPosition > moveHeight) {
-      jQuery('#header, #container').addClass('moved');
-    } else {
-      jQuery('#header, #container').removeClass('moved');
     }
+    const scrollTimer = setTimeout(() => {
+      const winPosition = jQuery(window).scrollTop();       
+      if (winPosition > moveHeight) {
+        jQuery('#header, #container').addClass('moved');
+      } else {
+        jQuery('#header, #container').removeClass('moved');
+      }
+    }, 100);    
   });
 }
 

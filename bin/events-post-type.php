@@ -522,7 +522,7 @@ function events_query( $args, $request ) {
   if(isset($request['forthcoming'])) {
     $args['meta_query'] = array(
     		'compare' => '>=',
-    		'key'		=> 'events_startdate',
+    		'key'		=> 'events_enddate',
     		'value'	=> time()
     	);
   }
@@ -537,7 +537,7 @@ function events_query( $args, $request ) {
     $args['meta_query'] = array(
         array(
     		'compare' => '>=',
-    		'key'		=> 'events_startdate',
+    		'key'		=> 'events_enddate',
     		'value'	=> time()
         ),
         array(

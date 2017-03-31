@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
-import { CSSTransition, transit } from 'react-css-transition';
 import ScrollIntoView from 'scroll-component';
 
 // Internal dependencies
@@ -25,20 +24,14 @@ import EventList from '../events/list';
 import Media from '../post/image';
 import Placeholder from 'components/placeholder';
 
-const Slide = ({ intl, slide, active, idx }) => 
-  <CSSTransition 
-    component="article"
+const Slide = ({ intl, slide, active, idx }) =>   
+  <article 
     id={`slide-${idx}`}
     key={idx} 
     style={{ 
       backgroundImage: `url(${getFeaturedMedia(slide).source_url})`
     }}
-    className="slide_item"
-    defaultClassName="slide_item_default"
-    enterClassName="slide_item_enter"
-    leaveClassName="slide_item_leave"
-    activeClassName="slide_item_active"
-    active={active}
+    className={(active) ? 'slide_item active' : 'slide_item'}
   >
     <div className="slide_filter" />
     <div className="wrap clearfix">
@@ -63,13 +56,13 @@ const Slide = ({ intl, slide, active, idx }) =>
         </div>
       }
     </div>
-  </CSSTransition>
+  </article>
 
 class Slideshow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stopSlide: false,
+      stopSlide: true,
       activeId: 0
     }
     this.slideShow = this.slideShow.bind(this);

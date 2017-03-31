@@ -361,6 +361,13 @@ HEADER SYTLES
 	height: 70px;
   border-bottom: solid 8px @secondaryColor;
 	background-color: @white;
+
+  &.moved{
+    position: fixed;
+    z-index: 100000;
+    background-color: @white;
+    .boxShadow(0, 2px, 2px);	
+  }
 }
 
 #inner-header {
@@ -593,13 +600,13 @@ BANNER & CALL TO ACTIONS
   .borderBox;
   overflow:hidden;
 
-  & .slide_item {			
+  & .slide_item {		
     position: absolute;
     z-index: 0;
     bottom: 0;
-    left: 0;
+    left: -10000;
     width: 100%;
-    height: 100%;	
+    height: 100%;
     opacity: 0.01;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -607,25 +614,13 @@ BANNER & CALL TO ACTIONS
     box-shadow: inset 50px 50px 300px 50px rgba(0,0,0,0.5);
     .borderBox;
     overflow:hidden;	
+    transition: opacity 1000ms ease-in;
 
-    &.slide_item_default {
-      opacity: 0.01;
-      z-index: 0;
-    }
-
-    &.slide_item_enter {
-
-    }
-
-    &.slide_item_leave {
-      opacity: 1.0;
-      .transition(all, 2s);
-    }
-
-    &.slide_item_active {
+    &.active {
+      opacity: 1;
+      left: 0;
       z-index: 1;
-      opacity: 1.0;
-      .transition(all, 2s);
+      transition: opacity 500ms ease-in;
     }
 
     & .slide_filter {
