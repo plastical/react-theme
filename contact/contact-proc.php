@@ -1,4 +1,5 @@
 <?php 
+header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('UTC');
 $path = $_SERVER['DOCUMENT_ROOT'];
 include_once $path . '/wp-load.php';
@@ -19,13 +20,20 @@ $l = 'en';
 
 $r = array(
 	'en' => array(
-		'bodyGeneral' => '<br/>Thank you for contacting us.<br/><br/>We will come back to you as soon as possibile.<br/><br/>Best regards.<br/>',
+		'bodyGeneral' => '<br/>Thank you for contacting us.<br/><br/>We will come back to you as soon as possible.<br/><br/>Best regards.<br/>',
 		'subjectContact' => 'Information request',
     'reasonTecnopolo' => 'Tecnopolo Ticino',
     'reasonTechTransfer' => 'Technology transfer',
     'reasonSupport' => 'Startup / SME support',
     'reasonCoaching' => 'Coaching',
     'reasonOther' => 'Other',
+    'industryLifeSciences' =>  'Life sciences',
+    'industryDigitalIct' =>  'Digital / ICT',
+    'industryHightechIndustrial' =>  'High tech / Industrial',
+    'industryCleantechEnergy' =>  'Cleantech / Energy',
+    'industryFashion' =>  'Fashion',
+    'industryOther' => 'Other',
+    'fileAttached' => 'Complementary information in the attached pdf.',
 		'subjectAttend' => 'Event attendance',
 		'bodyAttend' => '<br/>Thank you for booking a place at this event.<br/><br/>Best regards.<br/>',
 	),
@@ -37,24 +45,87 @@ $r = array(
     'reasonSupport' => 'Supporto Startup / PMI',
     'reasonCoaching' => 'Coaching',
     'reasonOther' => 'Altro',
+    'industryLifeSciences' =>  'Life sciences',
+    'industryDigitalIct' =>  'Digital / ICT',
+    'industryHightechIndustrial' =>  'High tech / Industrial',
+    'industryCleantechEnergy' =>  'Cleantech / Energy',
+    'industryFashion' =>  'Fashion',
+    'industryOther' => 'Altro',
+    'fileAttached' => 'Informazioni complementari nel pdf allegato.',
 		'subjectAttend' => 'Iscrizione evento',
 		'bodyAttend' => '<br/>Grazie per aver prenotato un posto a questo evento.<br/><br/>Cordiali saluti.<br/>',
   )
 );
+
+function randomText() {
+  $alphanum = "abcdefghijkmnpqrstuvwxyz123456789";   		
+    $inc = 1;
+    while ($inc < 5) {
+      $alphanum = $alphanum.'abcdefghijkmnpqrstuvwxyz123456789';
+      $inc++;
+    }  
+    $str = substr(str_shuffle($alphanum), 0, rand(4,8));  // 4 Being the minimum amound of letters returned and 24 being the maximum
+    return strtolower($str);
+}
+
+function upload($file) {
+  $allowedMimeTypes = array( 
+    'application/pdf'
+  );
+  $valid = false;
+  if($file['size'] > (10485760/5)) { //2 MB (size is also in bytes)
+    $valid = false;
+  } else {
+    $valid = true;
+  }
+  if (!in_array($file['type'], $allowedMimeTypes)) {
+    $valid = false;
+  } else {
+    $valid = true;
+  }
+  if ($valid) {
+    // $file_name = round(microtime(true)) . '_' . randomText() . '.pdf';
+    // if (move_uploaded_file($file['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/files/uploads/docs/' . $file_name)) {
+      return true;
+      //return strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https://'?'https://':'http://' . $_SERVER['HTTP_HOST'] . '/files/uploads/docs/' . $file_name;
+    // } else {
+      // return false;
+    // }
+  } else {
+    return false;
+  }
+}
+
 
 // verification random string
 $contentHelpers = new ContentHelpers();
 
 $errors = array();
 $missing = array();
+$file_input = false;
+$uploadOk = true;
 $sqlOK = true;	
 		
 $jsonItems = Array();
-$req= json_decode(file_get_contents('php://input'), true);
+$req = json_decode(file_get_contents('php://input'), true);
+if (!is_array($req)) {
+  $req = $_POST;
+}
 
 // check if the form has been submitted
 if (isset($req['submit'])) {	
 
+  // check file
+  if (isset($_FILES['file_input'])) {    
+    $uploadOk = upload($_FILES['file_input']);
+    if($uploadOk) {
+
+      $new_file_name = round(microtime(true)) . '_' . randomText() . '.pdf';
+      $file_input = $_FILES['file_input']['tmp_name'];
+      //$file_input = $uploadOk;
+    }
+  }
+		
 	// check whether verification is empty
 	if (isset($req['verify']) && $req['verify'] != '')
 		$errors['verify'] = true;
@@ -65,8 +136,8 @@ if (isset($req['submit'])) {
 	
 	// antispam filter 
 	$timeOut = $contentHelpers->isTimeOut($req['built']);
-	if ($timeOut == false) {		
-			
+
+	if ($timeOut == false) {					
 		$notificationBody = $r[$l]['bodyGeneral'] . $fromName;
 		// filter according to reason
 		if ($req['reason'] != 'attendance') {
@@ -143,7 +214,7 @@ if (isset($req['submit'])) {
         $errors['email'] = true;
       }
 		}
-		
+
 		$mailReady = false;
 		$message = '';
 		// go ahead only if not suspect and all required fields OK
@@ -168,15 +239,36 @@ if (isset($req['submit'])) {
 				if($item != 'verify' && $item != 'built' && $item != 'reason')	{
 					if($item == 'details')
 						$message .= "<hr/>$val<hr/>";
-					else
-					$message .= ucfirst($item).": $val<br/>";
+					else if($item == 'industry') {
+           switch ($val) {
+            case 'life-sciences':
+              $message .= ucfirst($item).': ' . $r[$l]['industryLifeSciences'] . '<br/>';
+              break;
+            case 'digital-ict':
+              $message .= ucfirst($item).': ' . $r[$l]['industryDigitalIct'] . '<br/>';
+              break;
+            case 'hightech-industrial':
+              $message .= ucfirst($item).': ' . $r[$l]['industryHightechIndustrial'] . '<br/>';
+              break;
+            case 'cleantech-energy':
+              $message .= ucfirst($item).': ' . $r[$l]['industryCleantechEnergy'] . '<br/>';
+              break;
+            case 'fashion':
+              $message .= ucfirst($item).': ' . $r[$l]['industryFashion'] . '<br/>';
+              break;
+            default:
+              $message .= ucfirst($item).': ' . $r[$l]['industryOther'] . '<br/>';
+           }
+          }
+          else
+					 $message .= ucfirst($item).": $val<br/>";
 				}
 			}
 			// limit line length to 70 characters
 			//$message = wordwrap($message, 70);
 			$mailReady = true;
 		}
-
+    
     if ($mailReady && $reason == 'attendance'){
       $name = $first_name . ' ' . $last_name;
       $now = new DateTime();
@@ -213,6 +305,16 @@ if (isset($req['submit'])) {
 			
 			// Set the body of the Email.
 			//'Ex.: $message= This Email is sent by PHPMailer of WordPress';
+      //if($file_input) {
+        //$message .= '<br/><br/>' . $r[$l]['fileAttached'] . ' ' . $file_input . '<br/>';
+      //}
+      if($uploadOk) { 
+        if($file_input) {
+          $message .= '<br/><br/>' . $r[$l]['fileAttached'] . ' <br/>';
+        }
+        $mail->AddAttachment($file_input, $new_file_name);
+      }
+
 			$mailBody2Text = new Html2Text($message . '<br/><br/>' . $notificationBody);
 			$message = $mailBody2Text->get_text();
 			

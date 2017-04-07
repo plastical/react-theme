@@ -504,6 +504,8 @@ MAIN NAVIGATION STYLES
   }
 
   & svg {
+    position: relative;
+    z-index: -1;
 	  width: 24px;
     height: 24px;
   }
@@ -513,11 +515,6 @@ MAIN NAVIGATION STYLES
 	float: right;
 	width: 48px;
   height: 70px;
-
-  & svg {
-	  width: 24px;
-    height: 24px;
-  }
 }
 
 #nav-toggle.active, #search-toggle.active {

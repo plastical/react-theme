@@ -56,7 +56,7 @@ class EventForm extends Component {
     e.preventDefault();
     e.persist(); // We need this for the callback after a registration is posted.
     this.validation(e);  
-    this.setState({ isSubmitting: true });
+    // this.setState({ isSubmitting: true });
 
     const keys = ['post_id', 'reason', 'first_name', 'last_name', 'email', 'job_title', 'company', 'address', 'verify', 'built', 'language', 'event_name', 'event_startdate'];
     

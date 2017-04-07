@@ -1,18 +1,21 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Redirect, Link } from 'react-router';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
 
 // Internal dependencies
+import { getTitle, getEditLink, getContent, getDate, getExcerpt, getFeaturedMedia } from 'utils/content-mixin';
 import BodyClass from 'utils/react-body-class';
 import QueryUsers from 'wordpress-query-users';
 import { isRequestingUsersForQuery, getUsersForQuery, getTotalPagesForQuery as getTotalPagesForQueryUsers } from 'wordpress-query-users/lib/selectors';
 import QueryEvents from 'wordpress-query-custom-posts-events';
 import { isRequestingEventsForQuery, getEventsForQuery, getTotalPagesForQuery as getTotalPagesForQueryEvents } from 'wordpress-query-custom-posts-events/lib/selectors';
+import QueryChildren from 'wordpress-query-page-children';
+import { isRequestingChildrenForQuery, getChildrenForQuery, getTotalChildrenForQuery } from 'wordpress-query-page-children/lib/selectors';
 import QueryPosts from 'wordpress-query-posts';
 import { isRequestingPostsForQuery, getPostsForQuery, getTotalPagesForQuery as getTotalPagesForQueryPosts } from 'wordpress-query-posts/lib/selectors';
 
@@ -22,6 +25,58 @@ import EventList from 'components/events/list';
 import PostList from 'components/posts/list';
 import Pagination from 'components/pagination/archive';
 import Placeholder from 'components/placeholder';
+
+const PageList = (props) => {
+  if (!props.pages) {
+    return null;
+  }
+
+  const pages = props.pages.map((page, i) => 
+    <PageInList key={`page-${i}`} {...page} {...props} />
+  );
+
+  return (
+    <div className="entry_list">
+      {pages.length > 0 || props.noPreload ?
+        pages :
+        <Placeholder />
+      }  
+    </div>
+  );
+}
+
+const PageInList = (props) => {
+  const page = props;
+  const intl = props.intl;
+
+  if (page.type === 'attachment') {
+    return null;
+  }
+
+  const classes = classNames({
+    entry: true
+  });
+
+  const path = page.link.replace(PlasticalSettings.URL.base, PlasticalSettings.URL.path);
+  const editLink = getEditLink(page, intl.formatMessage({ id: 'content-mixin.edit' }));
+
+  return (
+    <article id={`page-${page.id}`} className={classes}>
+      <div className="entry_main">
+        <h2 className="entry_title">
+          <Link className="entry_link" to={path} rel="bookmark" dangerouslySetInnerHTML={getTitle(page)} />
+        </h2>        
+        <div className="entry_meta">   
+          {editLink ?
+            <p dangerouslySetInnerHTML={editLink} /> :
+            null
+          }
+        </div>
+        <div className="entry_content" dangerouslySetInnerHTML={getExcerpt(page)} /> 
+      </div>  
+    </article>       
+  );
+}
 
 class Search extends Component {
   constructor(props) {
@@ -39,6 +94,7 @@ class Search extends Component {
     const props = this.props;
     const users = this.props.users;
     const events = this.props.events;
+    const pages = this.props.pages;
     const posts = this.props.posts;
 
     const intl = this.props.intl;
@@ -64,7 +120,7 @@ class Search extends Component {
 
         <div className="col940 center clearfix">
 
-          <div className="search_results col300 first left clearfix">
+          <div className="search_results col480 first left clearfix">
             <h5>{intl.formatMessage({ id: 'search.users' })}</h5>
             <QueryUsers query={this.props.usersQuery} />
             {(this.props.usersLoading) ?
@@ -89,7 +145,7 @@ class Search extends Component {
             }
           </div>
           
-          <div className="search_results col300 left clearfix">
+          <div className="search_results col480 right last clearfix">
             <h5>{intl.formatMessage({ id: 'search.events' })}</h5>
             <QueryEvents query={this.props.eventsQuery} />        
             {(this.props.eventsLoading) ?
@@ -114,7 +170,34 @@ class Search extends Component {
             }          
           </div>
 
-          <div className="search_results col300 right last clearfix">
+          <div style={{ clear: 'both' }} />
+
+          <div className="search_results col480 first left clearfix">
+            <h5>{intl.formatMessage({ id: 'search.pages' })}</h5>
+            <QueryChildren query={this.props.pagesQuery} />
+            {(this.props.pagesLoading) ?
+              <Placeholder /> :
+              <PageList pages={pages} {...props} smallList noPreload />                           
+            }
+            {this.props.pagesTotalPages > 1 ?
+              <Pagination
+                path={this.props.path}
+                length={pages.length}
+                current={this.props.pagesPage}
+                isFirstPage={this.props.pagesPage === 1}
+                isLastPage={this.props.pagesPage === this.props.pagesTotalPages}
+                totalPages={this.props.pagesTotalPages}
+                intl
+              /> :
+              null
+            }  
+            {!this.props.pagesRequesting && pages.length === 0 && this.props.pagesTotalPages <= 1 ?
+              <p>{intl.formatMessage({ id: 'search.no_results' })}</p> :
+              null
+            }
+          </div>
+
+          <div className="search_results col480 right last clearfix">
             <h5>{intl.formatMessage({ id: 'search.posts' })}</h5>
             <QueryPosts query={this.props.postsQuery} />
             {(this.props.postsLoading) ?
@@ -159,12 +242,14 @@ export default injectIntl(
 
     const usersQuery = {};
     const eventsQuery = {};
+    const pagesQuery = {};
     const postsQuery = {};
 
 
     if (locale.lang !== 'en') {
       usersQuery.lang = locale.lang;
       eventsQuery.lang = locale.lang;
+      pagesQuery.lang = locale.lang;
       postsQuery.lang = locale.lang;
     }
 
@@ -173,6 +258,10 @@ export default injectIntl(
 
     eventsQuery.page = ownProps.params.paged || 1;
     eventsQuery.search = ownProps.params.search || '';
+
+    pagesQuery.page = ownProps.params.paged || 1;
+    pagesQuery.search = ownProps.params.search || '';
+    pagesQuery.status = 'publish';
 
     postsQuery.page = ownProps.params.paged || 1;
     postsQuery.search = ownProps.params.search || '';
@@ -183,6 +272,9 @@ export default injectIntl(
 
     const events = getEventsForQuery(state, eventsQuery) || [];
     const eventsRequesting = isRequestingEventsForQuery(state, eventsQuery);
+
+    const pages = getChildrenForQuery(state, pagesQuery) || [];
+    const pagesRequesting = isRequestingChildrenForQuery(state, pagesQuery);
 
     const posts = getPostsForQuery(state, postsQuery) || [];
     const postsRequesting = isRequestingPostsForQuery(state, postsQuery);
@@ -204,6 +296,13 @@ export default injectIntl(
       eventsRequesting,
       eventsLoading: eventsRequesting && !events,
       eventsTotalPages: getTotalPagesForQueryEvents(state, eventsQuery),
+      pagesLength: pages.length,
+      pagesPage: parseInt(postsQuery.page),
+      pagesQuery,
+      pages,
+      pagesRequesting,
+      pagesLoading: pagesRequesting && !pages,
+      pagesTotalPages: getTotalChildrenForQuery(state, pagesQuery),
       postsLength: posts.length,
       postsPage: parseInt(postsQuery.page),
       postsQuery,

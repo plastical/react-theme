@@ -35,7 +35,6 @@ export default {
     return true;
   },
 
-
   validateMinLength(value, length) {
     if (value.length >= length) {
       return false;
@@ -45,9 +44,20 @@ export default {
 
   validateIsEmpty(value) {
     if (value.length === 0) {
-      return false
+      return false;
     }
     return true;
+  },
+
+  validatePDF(value, file, size) {
+    if (value === '' || (file.size < size && this.get_extension(value) === 'pdf')) { 
+      return false;
+    }
+    return true;
+  },
+
+  get_extension(filename) {
+    return filename.split('.').pop().toLowerCase();
   },
 
   verifyString() {

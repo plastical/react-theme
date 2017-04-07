@@ -133,6 +133,7 @@ module.exports = {
       { test: /\.png$/, use: 'url-loader?limit=10000&mimetype=image/png' },
       { test: /\.svg/, use: 'url-loader?limit=26000&mimetype=image/svg+xml' },
       { test: /\.(woff|woff2|ttf|eot)/, use: 'url-loader?limit=1' },
+      { test: /\.pdf/, use: 'url-loader?limit=1&mimetype=application/pdf' },
       // JSON 
       {
         test: /\.json$/,
