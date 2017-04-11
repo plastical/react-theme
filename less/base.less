@@ -66,6 +66,24 @@ img {
   max-width: 100%;
 }
 
+ul {
+  list-style: none;
+  list-style-type: none;
+
+  & li {
+    margin: 0 0 0 32px;
+    padding: 0 0 0 0;
+    text-indent: -16px;
+
+    &:before {
+      display: inline-block;
+      content: "■";
+      width: 16px;
+      color: @secondaryColor;
+    }
+  }
+}
+
 /*********************
 FORMS & INPUTS
 *********************/
@@ -545,6 +563,17 @@ MAIN NAVIGATION STYLES
 		/* .menu is clearfixed inside mixins.less */
     & .nav_menu {
       & .menu_item {
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+        text-indent: 0;
+
+        &:before {
+          display: none;
+          content: none;
+          width: 0;
+          color: inherit;
+        }
+
         & a {
           display: block;
           padding: .75em .5em;
@@ -737,8 +766,18 @@ CONTENT STYLES
 
       & li {
         display: block;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
         height: 49px;
         border-bottom: solid 1px @lighterGray;
+        text-indent: 0;
+
+        &:before {
+          display: none;
+          content: none;
+          width: 0;
+          color: inherit;
+        }
 
         & a.more {
           width: 100%;
@@ -773,8 +812,18 @@ CONTENT STYLES
 
       & li {
         display: block;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
         height: 49px;
         border-bottom: solid 1px @lighterGray;
+        text-indent: 0;
+
+        &:before {
+          display: none;
+          content: none;
+          width: 0;
+          color: inherit;
+        }
 
         & a.more {
           width: 100%;
@@ -857,8 +906,17 @@ CONTENT STYLES
 .entry_list {
   & .entry {
     clear: both;
-    padding: .5em 0;
+    margin: 0 0 0 0;
+    padding: .5em 0 .5em 0;
     border-bottom: solid 1px @lighterGray;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
 
     & .entry_image {
       float: left;
@@ -884,9 +942,17 @@ CONTENT STYLES
 }
 
 .home_list {
-
   & .entry {
-    padding: .125em 0;
+    margin: 0 0 0 0;
+    padding: .125em 0 .125em 0;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
 
     & .entry_image {
       float: left;
@@ -921,8 +987,18 @@ CONTENT STYLES
 
   & li {
     display: block;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
     height: 49px;
     border-bottom: solid 1px @lighterGray;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
 
     & a.more {
       width: 100%;
@@ -943,7 +1019,17 @@ CONTENT STYLES
   & li {
     display: block;
     float: left;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
     width: 33.3333333333333333%;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
 
     & img {
       max-width: 100%;
@@ -962,8 +1048,18 @@ CONTENT STYLES
   & li {
     display: block;
     float: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
     width: 100%;
     .borderBox;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
 
     & h3, & h3 a,  & h4, & h4 a, & p {
       margin: 0 auto 0 auto;
@@ -1025,8 +1121,17 @@ PAGE NAV STYLES
 	margin: 1em 0 2em; 
 	
   & .page_nav li { 
-    float: left; 
-    margin-left: 5px;       
+    float: left;  
+    margin: 0 0 0 5px;
+    padding: 0 0 0 0;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
     
     & a { 
       padding: 2px 6px; 
@@ -1087,6 +1192,17 @@ aside {
   list-style-type: none;
 
   & .menu_item {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
+
     & a {
       display: block;
       padding: .75em 0;
@@ -1168,6 +1284,17 @@ FOOTER STYLES
   list-style-type: none;
 
   & .menu_item {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
+
     & a {
       display: block;
       padding: .75em 0;
@@ -1262,7 +1389,16 @@ EXTRAS
   & li {
     display: block;
     float: left; 
-    margin-right: .25em; 
+    margin: 0 .25em 0 0;
+    padding: 0 0 0 0;
+    text-indent: 0;
+
+    &:before {
+      display: none;
+      content: none;
+      width: 0;
+      color: inherit;
+    }
 
     & .social_link {
       display: inline-block;

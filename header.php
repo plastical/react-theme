@@ -19,4 +19,4 @@
 <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
 </head>
 
-<body <?php body_class(); ?>>
+<body>
