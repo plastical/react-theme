@@ -40,15 +40,6 @@ const NumericPager = (props) => {
       pagination.push(<li key={i}><Link to={`${props.path}p/${i}/`}>{i}</Link></li>);
     }
   }
-  /*
-  for (let i = startPage; i <= endPage; i + 1) {
-    if (i === paged) {
-      pagination += <li key={i} className="current_link">{i}</li>
-    } else {
-      pagination += <li key={i}><Link to={`${props.path}p/${i}/`}>{i}</Link></li>
-    }
-  }
-  */
 
   return (
     <ol className="page_nav">

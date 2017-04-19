@@ -97,7 +97,8 @@ export default injectIntl(
       pastQuery.lang = locale.lang;
     }
 
-    query.page = ownProps.params.paged || 1;
+    query.page = 1;
+    query.per_page = 50;
     query.order = 'asc';
     query.orderby = 'meta_value';
     query.meta_key = 'events_startdate';

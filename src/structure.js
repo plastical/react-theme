@@ -182,12 +182,10 @@ class Structure extends Component {
               <div className="inner_content wrap clearfix">
                 {/* Trailing slashes for custom routes are a mess!!! */} 
                 <Match exactly pattern={`${path}events`} component={Events} />
-                <Match exactly pattern={`${path}events/`} component={Events} /> 
-                <Match pattern={`${path}events/p/:paged`} component={Events} />                     
+                <Match exactly pattern={`${path}events/`} component={Events} />                   
                 <Match pattern={`${path}events/p/:paged/`} component={Events} />   
                 <Match exactly pattern={`${path}users`} component={Users} />             
-                <Match exactly pattern={`${path}users/`} component={Users} />                         
-                <Match pattern={`${path}users/p/:paged`} component={Users} />                       
+                <Match exactly pattern={`${path}users/`} component={Users} />                       
                 <Match pattern={`${path}users/p/:paged/`} component={Users} />
                 <Match exactly pattern={`${path}residents/:city`} render={(props) => <Users {...props} />} />
                 <Match exactly pattern={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
