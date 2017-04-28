@@ -235,7 +235,7 @@ class Structure extends Component {
                   {`${new Date().getFullYear()} ${settings.meta.title}`}
                 </div>
                 <div className="credits">
-                  Made by <a href="http://plastical.com" rel="designer">Plastical</a>
+                  Made by <a href="http://plastical.com" rel="designer noopener noreferrer" target="_blank">Plastical</a>
                 </div>
               </div>
             </footer>{/* #footer */}
