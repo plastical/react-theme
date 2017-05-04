@@ -22,7 +22,6 @@ import { setMenu } from 'wordpress-query-menu/lib/state';
 // Accessibility
 import { skipLink } from 'utils/a11y';
 
-
 function renderApp() {
   render(
     <Provider store={store}>
@@ -36,7 +35,6 @@ function renderApp() {
 
 // Set up link capture on all links in the app context.
 function handleURLs() {
-  console.log(location.href);
   if (/files/.test(location.href)) {
     return;
   }

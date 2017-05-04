@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux';
+import ReactGA from 'react-ga';
 import thunkMiddleware from 'redux-thunk';
 
 import {
@@ -30,6 +31,13 @@ const enhancer = composeEnhancers(
   applyMiddleware(thunkMiddleware, routerMiddleware),
   // other store enhancers if any
 );
+
+ReactGA.initialize('UA-2185125-65');
+
+history.listen((location, action) => {
+  ReactGA.set({ page: location.pathname });
+  ReactGA.pageview(location.pathname);
+});
 
 // Create the store
 const store = createStore(rootReducer, enhancer);

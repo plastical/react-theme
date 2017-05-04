@@ -11,6 +11,6 @@ import comments from 'wordpress-query-comments/lib/state';
 import users from 'wordpress-query-users/lib/state';
 import menu from 'wordpress-query-menu/lib/state';
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory();
 
 export default combineReducers({ routing: createReducer(history), locale: localeReducer, posts, pages, children, events, terms, comments, users, menu });
