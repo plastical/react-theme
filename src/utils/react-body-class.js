@@ -1,5 +1,6 @@
 // External dependencies
 import React, { Children, Component } from 'react';
+import PropTypes from 'prop-types';
 import withSideEffect from 'react-side-effect';
 import classNames from 'classnames';
 import flatten from 'lodash/flatten';
@@ -16,9 +17,9 @@ class BodyClass extends Component {
 BodyClass.propTypes = {
   // classes is either an object { name: bool }, or list of names
   // classNames is smart enough to handle array + object combos
-  classes: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.arrayOf(React.PropTypes.string)
+  classes: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.arrayOf(PropTypes.string)
   ])
 };
 

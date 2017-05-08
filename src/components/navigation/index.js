@@ -1,6 +1,7 @@
 /* global PlasticalSettings */
 // External dependencies
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classNames from 'classnames';
@@ -64,7 +65,7 @@ const MenuItem = ({ item, onClick, isSelected = false, extended }) => {
 
 class Navigation extends Component {  
   static contextTypes = {
-    closeToggles: React.PropTypes.func.isRequired // This triggers the closing of the toggles (nav and search)
+    closeToggles: PropTypes.func.isRequired // This triggers the closing of the toggles (nav and search)
   };
 
   constructor(props, context) {

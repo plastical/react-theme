@@ -1,6 +1,7 @@
 /* eslint no-param-reassign: 1 */
 // External dependencies
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { injectIntl } from 'react-intl';
 
@@ -8,6 +9,10 @@ import { injectIntl } from 'react-intl';
 import validate from 'utils/validate';
 
 class SearchForm extends Component {
+  static contextTypes = {
+    closeToggles: PropTypes.func.isRequired // This triggers the closing of the toggles (nav and search)
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +41,7 @@ class SearchForm extends Component {
         error_search: false,
         errors: false 
       });
+      this.context.closeToggles(false);
     } 
     return null;    
   }

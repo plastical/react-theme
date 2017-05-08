@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Match, Miss, Link, StaticRouter } from 'react-router';
@@ -51,7 +52,7 @@ function mapDispatchToProps(dispatch) {
 /* eslint react/forbid-prop-types: 1 no-shadow: 1 */
 class Structure extends Component {
   static childContextTypes = {
-    closeToggles: React.PropTypes.func.isRequired
+    closeToggles: PropTypes.func.isRequired
   };
 
   constructor(props) {
