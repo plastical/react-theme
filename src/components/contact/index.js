@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -29,6 +30,7 @@ class Contact extends Component {
       description: post.excerpt.rendered,
       canonical: post.link
     };
+    meta.title = he.decode(meta.title);
 
     const classes = classNames({
       entry: true
@@ -78,7 +80,7 @@ class Contact extends Component {
 export default injectIntl(
   connect((state, ownProps) => {
     const locale = state.locale;
-    let path = ownProps.pathname;
+    let path = ownProps.location.pathname;
 
     if (path[path.length - 1] === '/') {
       path = path.slice(0, -1);

@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import BodyClass from 'utils/react-body-class';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 const NotFound = (props) => {
   const intl = props.intl;
@@ -17,6 +18,7 @@ const NotFound = (props) => {
   const meta = {
     title: `404 ${intl.formatMessage({ id: 'not-found.not-found' })} – ${PlasticalSettings.meta.title}`,
   };
+  meta.title = he.decode(meta.title);
 
   return (
     <section id="main" className="col620 center clearfix" role="main" aria-live="assertive" tabIndex="-1">

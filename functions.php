@@ -89,7 +89,7 @@ if (version_compare($GLOBALS['wp_version'], '4.6-alpha', '<')) {
 }
 
 if (!defined('PLASTICAL_VERSION')) {
-	define('PLASTICAL_VERSION', time());
+	define('PLASTICAL_VERSION', '1.1');
 }
 
 if (!defined('PLASTICAL_APP')) {

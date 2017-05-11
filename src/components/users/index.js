@@ -2,10 +2,11 @@
 // External dependencies
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -39,6 +40,7 @@ class Users extends Component {
       description: PlasticalSettings.meta.description,
       canonical: PlasticalSettings.URL.base,
     };
+    meta.title = he.decode(meta.title);
 
     return (        
       <div className="page">
@@ -85,7 +87,7 @@ export default injectIntl(
 
     let path = ownProps.pathname;
 
-    if (ownProps.params.paged) {
+    if (ownProps.match.params.paged) {
       path = path.substr(0, path.indexOf('/p/'));
       path = `${path}/`;
     }
@@ -96,7 +98,7 @@ export default injectIntl(
     }
 
     query.per_page = 50;
-    query.page = ownProps.params.paged || 1;
+    query.page = ownProps.match.params.paged || 1;
 
     /* eslint no-undef: 1 */
     // Hacky, but it's the only way to find out if we need a sub navigation or not!
@@ -115,7 +117,7 @@ export default injectIntl(
       query.meta_key = 'current_status';
       query.current_status = 'alumni';
     }
-    let residence = ownProps.params.city || '';
+    let residence = ownProps.match.params.city || '';
     if (!isAlumni && residence !== '') {
       residence = getCapitalize(residence.toLowerCase());
       query.meta_key = 'city';

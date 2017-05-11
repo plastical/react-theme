@@ -1,11 +1,12 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -50,6 +51,7 @@ class SingleEvent extends Component {
       description: event.excerpt.rendered,
       canonical: event.link
     };
+    meta.title = he.decode(meta.title);
 
     const classes = classNames({
       entry: true
@@ -148,7 +150,7 @@ class SingleEvent extends Component {
 export default injectIntl(
   connect((state, ownProps) => {
     const locale = state.locale;
-    const slug = `${ownProps.params.slug}&lang=${locale.lang}` || false;
+    const slug = `${ownProps.match.params.slug}&lang=${locale.lang}` || false;
     const eventId = getEventIdFromSlug(state, slug);
     const requesting = isRequestingEvent(state, slug);
     const event = getEvent(state, parseInt(eventId));

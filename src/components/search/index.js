@@ -1,11 +1,12 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router';
+import { Redirect, Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import { getTitle, getEditLink, getContent, getDate, getExcerpt, getFeaturedMedia } from 'utils/content-mixin';
@@ -87,7 +88,7 @@ class Search extends Component {
   }
 
   getSearchValue() {
-    return this.props.params.search;
+    return this.props.match.params.search;
   }
 
   render() {
@@ -104,6 +105,7 @@ class Search extends Component {
     const meta = {
       title: `${intl.formatMessage({ id: 'search.search_results' })} ${term} – ${PlasticalSettings.meta.title}`
     };
+    meta.title = he.decode(meta.title);
 
     return (
       <section id="main" className="clearfix" role="main" aria-live="assertive" tabIndex="-1">
@@ -235,7 +237,7 @@ export default injectIntl(
 
     let path = ownProps.pathname;
 
-    if (ownProps.params.paged) {
+    if (ownProps.match.params.paged) {
       path = path.substr(0, path.indexOf('/p/'));
       path = `${path}/`;
     }
@@ -253,18 +255,18 @@ export default injectIntl(
       postsQuery.lang = locale.lang;
     }
 
-    usersQuery.page = ownProps.params.paged || 1;
-    usersQuery.search = ownProps.params.search || '';
+    usersQuery.page = ownProps.match.params.paged || 1;
+    usersQuery.search = ownProps.match.params.search || '';
 
-    eventsQuery.page = ownProps.params.paged || 1;
-    eventsQuery.search = ownProps.params.search || '';
+    eventsQuery.page = ownProps.match.params.paged || 1;
+    eventsQuery.search = ownProps.match.params.search || '';
 
-    pagesQuery.page = ownProps.params.paged || 1;
-    pagesQuery.search = ownProps.params.search || '';
+    pagesQuery.page = ownProps.match.params.paged || 1;
+    pagesQuery.search = ownProps.match.params.search || '';
     pagesQuery.status = 'publish';
 
-    postsQuery.page = ownProps.params.paged || 1;
-    postsQuery.search = ownProps.params.search || '';
+    postsQuery.page = ownProps.match.params.paged || 1;
+    postsQuery.search = ownProps.match.params.search || '';
 
     
     const users = getUsersForQuery(state, usersQuery) || [];

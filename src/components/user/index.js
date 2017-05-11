@@ -1,11 +1,12 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -46,6 +47,7 @@ class SingleUser extends Component {
       description: `${user.meta.city}, ${user.meta.industry}`,
       canonical: user.link
     };
+    meta.title = he.decode(meta.title);
     
     const classes = classNames({
       entry: true,
@@ -255,7 +257,7 @@ class SingleUser extends Component {
 export default injectIntl(
   connect((state, ownProps) => {
     const locale = state.locale;
-    const slug = ownProps.params.slug || false;
+    const slug = ownProps.match.params.slug || false;
 
     /* eslint no-undef: 1 */
     // Hacky, but it's the only way to find out if we need a sub navigation or not!

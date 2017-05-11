@@ -56,8 +56,7 @@ function handleURLs() {
     let url = e.currentTarget.href;
     
     url = url.replace(PlasticalSettings.URL.base, PlasticalSettings.URL.path);
-    
-    // get global history from ./store
+
     window.h.push(url); 
   });
 

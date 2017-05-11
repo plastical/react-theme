@@ -2,7 +2,6 @@
 // External dependencies
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
 import { injectIntl } from 'react-intl';
 
 // Internal dependencies

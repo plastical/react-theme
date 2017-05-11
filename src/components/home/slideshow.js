@@ -1,7 +1,7 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
@@ -156,14 +156,14 @@ export default injectIntl(
     const children = getChildrenForQuery(state, childrenQuery) || [];
     const childrenRequesting = isRequestingChildrenForQuery(state, childrenQuery);
 
-    postsQuery.page = ownProps.params.paged || 1;
+    postsQuery.page = ownProps.match.params.paged || 1;
     postsQuery.per_page = 1;
     postsQuery.sticky = true;
 
     const posts = getPostsForQuery(state, postsQuery) || [];
     const postsRequesting = isRequestingPostsForQuery(state, postsQuery);
 
-    eventsQuery.page = ownProps.params.paged || 1;
+    eventsQuery.page = ownProps.match.params.paged || 1;
     eventsQuery.per_page = 1;
     eventsQuery.order = 'asc';
     eventsQuery.order_by = 'meta_value';

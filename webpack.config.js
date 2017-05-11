@@ -89,7 +89,7 @@ module.exports = {
 	// The key is used as the name of the script.
 	entry: {
 		assets: './src/index.js',
-		vendor: ['react','react-dom','react-router','redux']
+		vendor: ['react','react-dom','react-router-dom','redux']
 	},
 	output: {
 		path: path.join(__dirname, '../../../assets/build'),

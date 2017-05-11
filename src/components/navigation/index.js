@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { getMenu } from 'wordpress-query-menu/lib/selectors';
 import isItemSelected from 'utils/is-item-selected';
@@ -104,7 +104,8 @@ class Navigation extends Component {
 export default connect((state, ownProps) => {
   const locale = state.locale;
 
-  let selected = state.routing.location.pathname; 
+  let selected = state.router.location.pathname; 
+
   if (selected[selected.length - 1] === '/') {
     selected = selected.slice(0, -1);
   }

@@ -1,6 +1,7 @@
 // External dependencies
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Media extends Component {
   constructor(props) {
@@ -52,8 +53,8 @@ class Media extends Component {
 
 /* eslint react/forbid-prop-types: 1 */
 Media.propTypes = {
-  media: React.PropTypes.object.isRequired,
-  parentClass: React.PropTypes.string,
+  media: PropTypes.object.isRequired,
+  parentClass: PropTypes.string,
 }
 
 export default Media;

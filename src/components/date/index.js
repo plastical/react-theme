@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
 import moment from 'moment';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -21,6 +22,7 @@ const DateArchive = () => {
   const meta = {
     title: `${dateString} – ${PlasticalSettings.meta.title}`,
   };
+  meta.title = he.decode(meta.title);
 
   return (
     <section id="main" className="col780 center clearfix" role="main" aria-live="assertive" tabIndex="-1">

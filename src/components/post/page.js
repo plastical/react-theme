@@ -1,11 +1,12 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -39,6 +40,7 @@ class SinglePage extends Component {
       description: post.excerpt.rendered,
       canonical: post.link
     };
+    meta.title = he.decode(meta.title);
 
     const classes = classNames({
       page: true
@@ -119,8 +121,8 @@ class SinglePage extends Component {
 
 export default injectIntl(
   connect((state, ownProps) => {   
-    const locale = state.locale; 
-    let path = ownProps.slug || ownProps.pathname; // In case, this is the slug for the homepage
+    const locale = state.locale;
+    let path = ownProps.slug || ownProps.location.pathname; // In case, this is the slug for the homepage
 
     if (path[path.length - 1] === '/') {
       path = path.slice(0, -1);

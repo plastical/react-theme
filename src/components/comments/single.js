@@ -8,7 +8,6 @@ import { getComment } from 'wordpress-query-comments/lib/selectors';
 
 const Comment = (props) => {
   const comment = props.comment;
-  console.log(comment);
   const classes = 'comment'; // byuser comment-author-melchoyce even thread-even depth-1
 
   let replyParentString = null;

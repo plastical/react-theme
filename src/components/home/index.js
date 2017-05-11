@@ -1,10 +1,11 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -41,7 +42,8 @@ class Home extends Component {
       title: `${post.title.rendered} – ${PlasticalSettings.meta.title}`,
       description: post.excerpt.rendered,
       canonical: post.link
-    }; 
+    };
+    meta.title = he.decode(meta.title);
 
     const featuredMedia = getFeaturedMedia(post);
     const editLink = getEditLink(post, intl.formatMessage({ id: 'content-mixin.edit' }));
@@ -164,21 +166,21 @@ export default injectIntl(
     const children = getChildrenForQuery(state, childrenQuery) || [];
     const childrenRequesting = isRequestingChildrenForQuery(state, childrenQuery);
 
-    postsQuery.page = ownProps.params.paged || 1;
+    postsQuery.page = ownProps.match.params.paged || 1;
     postsQuery.per_page = 3;
     postsQuery.categories = (locale.lang !== 'en') ? 3 : 1;
 
     const posts = getPostsForQuery(state, postsQuery) || [];
     const postsRequesting = isRequestingPostsForQuery(state, postsQuery);
 
-    otherPostsQuery.page = ownProps.params.paged || 1;
+    otherPostsQuery.page = ownProps.match.params.paged || 1;
     otherPostsQuery.per_page = 3;
     otherPostsQuery.categories = (locale.lang !== 'en') ? 7 : 6;
 
     const otherPosts = getPostsForQuery(state, otherPostsQuery) || [];
     const otherPostsRequesting = isRequestingPostsForQuery(state, otherPostsQuery);
 
-    eventsQuery.page = ownProps.params.paged || 1;
+    eventsQuery.page = ownProps.match.params.paged || 1;
     eventsQuery.per_page = 3;
     eventsQuery.orderby = 'meta_value'; /* orderby vs. order_by !!!! */
     eventsQuery.order = 'asc';

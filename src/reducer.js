@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import createBrowserHistory from 'history/createBrowserHistory';
-import { createReducer } from './routing/';
+// import { createReducer } from './routing/';
+import { routerReducer } from 'react-router-redux';
 import { localeReducer } from './i18n';
 import posts from 'wordpress-query-posts/lib/state';
 import pages from 'wordpress-query-page/lib/state';
@@ -13,4 +14,4 @@ import menu from 'wordpress-query-menu/lib/state';
 
 export const history = createBrowserHistory();
 
-export default combineReducers({ routing: createReducer(history), locale: localeReducer, posts, pages, children, events, terms, comments, users, menu });
+export default combineReducers({ /* routing: createReducer(history) */ router: routerReducer, locale: localeReducer, posts, pages, children, events, terms, comments, users, menu });

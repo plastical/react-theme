@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Match, Miss, Link, StaticRouter } from 'react-router';
+import { withRouter, BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import { intlShape, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
 // Internal
 import { selectedLocale } from './i18n';
-import { push, replace } from './routing';
+import { history } from './reducer';
+import { ConnectedRouter, push } from 'react-router-redux';
 import { requestMenu } from 'wordpress-query-menu/lib/state';
 
 import Navigation from 'components/navigation';
@@ -33,8 +34,6 @@ import { keyboardFocusReset, skipLink } from 'utils/a11y';
 
 function mapStateToProps(state) {
   return {
-    location: state.routing.location,
-    action: state.routing.action,
     locale: state.locale,
     menu: state.menu
   }
@@ -43,7 +42,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ 
     onPush: push,
-    onReplace: replace,
     selectedLocale,
     requestMenu
   }, dispatch);
@@ -109,19 +107,19 @@ class Structure extends Component {
 
     if (settings.frontPage.page) {
       if (settings.frontPage.blog) {   
-        blogURL = <Match exactly pattern={`${path}page/${settings.frontPage.blog}/`} component={Posts} /> 
-        blogURLPaged = <Match pattern={`${path}page/${settings.frontPage.blog}/p/:paged/`} component={Posts} />               
+        blogURL = <Route exact path={`${path}page/${settings.frontPage.blog}/`} component={Posts} /> 
+        blogURLPaged = <Route path={`${path}page/${settings.frontPage.blog}/p/:paged/`} component={Posts} />               
       } else {
         blogURL = null;
         blogURLPaged = null;
       }
       // Comment or uncomment according the kind of page you want to display.
-      // frontPage = <Match exactly pattern={path} render={(props) => <SinglePage slug={settings.frontPage.page} {...props} />} />;
-      slideshow = <Match exactly pattern={path} render={(props) => <Slideshow slug={settings.frontPage.page} {...props} />} />;
-      frontPage = <Match exactly pattern={path} render={(props) => <Home slug={settings.frontPage.page} {...props} />} />;
+      // frontPage = <Route exact path={path} render={(props) => <SinglePage slug={settings.frontPage.page} {...props} />} />;
+      slideshow = <Route exact path={path} render={(props) => <Slideshow slug={settings.frontPage.page} {...props} />} />;
+      frontPage = <Route exact path={path} render={(props) => <Home slug={settings.frontPage.page} {...props} />} />;
     } else {
-      blogURL = <Match exactly pattern={path} component={Posts} />
-      blogURLPaged = <Match pattern={`${path}p/:paged/`} component={Posts} />               
+      blogURL = <Route exact path={path} component={Posts} />
+      blogURLPaged = <Route path={`${path}p/:paged/`} component={Posts} />               
       frontPage = null;
     }
 
@@ -137,12 +135,9 @@ class Structure extends Component {
       'active': this.state.isSearchOpen
     });
 
-    return (
-      <StaticRouter
-        location={this.props.location}
-        action={this.props.action}
-        onPush={this.props.onPush}
-        onReplace={this.props.onReplace}
+    return (      
+      <ConnectedRouter
+        history={history}
       >
         <div id="inner-root">
           {slideshow} 
@@ -150,8 +145,6 @@ class Structure extends Component {
             <a id="t" href="#content" className="skip_link screen_reader_text">{intl.formatMessage({ id: 'structure.skip' })}</a>
             <header id="header" className="site_header" role="banner">
               <div id="inner-header" className="wrap clearfix">
-                {/* 
-                Remember to remove the comment brackets when going multilingual
                 <button 
                   id="language"
                   className="language" 
@@ -162,7 +155,7 @@ class Structure extends Component {
                   }}
                 > 
                   <span>{intl.formatMessage({ id: 'structure.changeLanguageTo' })}</span>
-                </button> */}            
+                </button>          
                 <button id="search-toggle" className={searchClasses} onClick={this.toggleElements}>
                   <svg id="search-toggle-img" ><use xlinkHref="/assets/layout/lens.svg#svg-lens" /></svg>
                 </button>
@@ -182,46 +175,48 @@ class Structure extends Component {
               {frontPage}{/* Guess what? The home page has custom styles... */}                             
               <div className="inner_content wrap clearfix">
                 {/* Trailing slashes for custom routes are a mess!!! */} 
-                <Match exactly pattern={`${path}events`} component={Events} />
-                <Match exactly pattern={`${path}events/`} component={Events} />                   
-                <Match pattern={`${path}events/p/:paged/`} component={Events} />   
-                <Match exactly pattern={`${path}users`} component={Users} />             
-                <Match exactly pattern={`${path}users/`} component={Users} />                       
-                <Match pattern={`${path}users/p/:paged/`} component={Users} />
-                <Match exactly pattern={`${path}residents/:city`} render={(props) => <Users {...props} />} />
-                <Match exactly pattern={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
-                <Match pattern={`${path}residents/:city/p/:paged/`} render={(props) => <Users {...props} />} />
-                <Match exactly pattern={`${path}alumni`} render={(props) => <Users isAlumni {...props} />} />
-                <Match exactly pattern={`${path}alumni/`} render={(props) => <Users isAlumni {...props} />} />
-                <Match pattern={`${path}alumni/p/:paged/`} render={(props) => <Users isAlumni {...props} />} />
-                <Match exactly pattern={`${path}search/:search`} component={Search} />
-                <Match exactly pattern={`${path}search/:search/`} component={Search} />
-                <Match exactly pattern={`${path}search/:search/p/:paged/`} component={Search} />
-                <Match exactly pattern={`${path}category/:slug/`} render={(props) => <Term taxonomy="category" {...props} />} />
-                <Match pattern={`${path}category/:slug/p/:paged/`} render={(props) => <Term taxonomy="category" {...props} />} />
-                <Match exactly pattern={`${path}tag/:slug/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
-                <Match pattern={`${path}tag/:slug/p/:paged/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
-                <Match exactly pattern={`${path}date/:year/`} component={DateArchive} />
-                <Match pattern={`${path}date/:year/p/:paged/`} component={DateArchive} />
-                <Match exactly pattern={`${path}date/:year/:month/`} component={DateArchive} />
-                <Match pattern={`${path}date/:year/:month/p/:paged/`} component={DateArchive} />
-                <Match exactly pattern={`${path}date/:year/:month/:day/`} component={DateArchive} />
-                <Match pattern={`${path}date/:year/:month/:day/p/:paged/`} component={DateArchive} />
-                <Match exactly pattern={`${path}contact/`} component={Contact} />
-                <Match exactly pattern={`${path}page/**/`} component={SinglePage} />
-                <Match exactly pattern={`${path}:year/:month/:day/:slug/`} component={SinglePost} />             
-                <Match exactly pattern={`${path}events/:slug/`} component={SingleEvent} />                
-                <Match exactly pattern={`${path}user/:slug/`} component={SingleUser} />
-                {blogURL}
-                {blogURLPaged}
-                <Miss component={NotFound} />
-              </div>  
+                <Switch>
+                  <Route exact path={`${path}events`} component={Events} />
+                  <Route exact path={`${path}events/`} component={Events} />                   
+                  <Route path={`${path}events/p/:paged/`} component={Events} />   
+                  <Route exact path={`${path}users`} component={Users} />             
+                  <Route exact path={`${path}users/`} component={Users} />                       
+                  <Route path={`${path}users/p/:paged/`} component={Users} />
+                  <Route exact path={`${path}residents/:city`} render={(props) => <Users {...props} />} />
+                  <Route exact path={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
+                  <Route path={`${path}residents/:city/p/:paged/`} render={(props) => <Users {...props} />} />
+                  <Route exact path={`${path}alumni`} render={(props) => <Users isAlumni {...props} />} />
+                  <Route exact path={`${path}alumni/`} render={(props) => <Users isAlumni {...props} />} />
+                  <Route path={`${path}alumni/p/:paged/`} render={(props) => <Users isAlumni {...props} />} />
+                  <Route exact path={`${path}search/:search`} component={Search} />
+                  <Route exact path={`${path}search/:search/`} component={Search} />
+                  <Route exact path={`${path}search/:search/p/:paged/`} component={Search} />
+                  <Route exact path={`${path}category/:slug/`} render={(props) => <Term taxonomy="category" {...props} />} />
+                  <Route path={`${path}category/:slug/p/:paged/`} render={(props) => <Term taxonomy="category" {...props} />} />
+                  <Route exact path={`${path}tag/:slug/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
+                  <Route path={`${path}tag/:slug/p/:paged/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
+                  <Route exact path={`${path}date/:year/`} component={DateArchive} />
+                  <Route path={`${path}date/:year/p/:paged/`} component={DateArchive} />
+                  <Route exact path={`${path}date/:year/:month/`} component={DateArchive} />
+                  <Route path={`${path}date/:year/:month/p/:paged/`} component={DateArchive} />
+                  <Route exact path={`${path}date/:year/:month/:day/`} component={DateArchive} />
+                  <Route path={`${path}date/:year/:month/:day/p/:paged/`} component={DateArchive} />
+                  <Route exact path={`${path}contact/`} component={Contact} />
+                  <Route exact path={`${path}page/**/`} component={SinglePage} />
+                  <Route exact path={`${path}:year/:month/:day/:slug/`} component={SinglePost} />             
+                  <Route exact path={`${path}events/:slug/`} component={SingleEvent} />                
+                  <Route exact path={`${path}user/:slug/`} component={SingleUser} />
+                  {blogURL}
+                  {blogURLPaged}
+                  <Route component={NotFound} />
+                </Switch>
+              </div>
             </div>{/* #content */}
 
             <div className="push" />
             <footer id="footer" className="site_footer" role="contentinfo">
               <div id="inner-footer" className="wrap clearfix">
-                <Link className="logo" to="#t" rel="home"><img src="/assets/layout/logo_inv.svg" alt="logo" /></Link>
+                <a className="logo" to="#t" rel="home"><img src="/assets/layout/logo_inv.svg" alt="logo" /></a>
                 <nav id="footer-navigation" role="navigation" aria-live="assertive">
                   <Navigation extended />
                 </nav>
@@ -243,19 +238,16 @@ class Structure extends Component {
 
           </div>{/* #container */}
         </div>
-      </StaticRouter>
+      </ConnectedRouter>
     )
   }
 }
 
 Structure.propTypes = {
-  location: PropTypes.object.isRequired,
-  action: PropTypes.string.isRequired,
   onPush: PropTypes.func.isRequired,
-  onReplace: PropTypes.func.isRequired,
   intl: intlShape.isRequired
 }
 
-export default injectIntl(
+export default injectIntl(    
   connect(mapStateToProps, mapDispatchToProps)(Structure)
 );
