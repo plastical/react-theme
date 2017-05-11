@@ -171,46 +171,48 @@ class Structure extends Component {
                 </nav>
               </div>    
             </header>{/* #masthead */}  
-            <div id="content" className="site_content">
-              {frontPage}{/* Guess what? The home page has custom styles... */}                             
-              <div className="inner_content wrap clearfix">
-                {/* Trailing slashes for custom routes are a mess!!! */} 
-                <Switch>
-                  <Route exact path={`${path}events`} component={Events} />
-                  <Route exact path={`${path}events/`} component={Events} />                   
-                  <Route path={`${path}events/p/:paged/`} component={Events} />   
-                  <Route exact path={`${path}users`} component={Users} />             
-                  <Route exact path={`${path}users/`} component={Users} />                       
-                  <Route path={`${path}users/p/:paged/`} component={Users} />
-                  <Route exact path={`${path}residents/:city`} render={(props) => <Users {...props} />} />
-                  <Route exact path={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
-                  <Route path={`${path}residents/:city/p/:paged/`} render={(props) => <Users {...props} />} />
-                  <Route exact path={`${path}alumni`} render={(props) => <Users isAlumni {...props} />} />
-                  <Route exact path={`${path}alumni/`} render={(props) => <Users isAlumni {...props} />} />
-                  <Route path={`${path}alumni/p/:paged/`} render={(props) => <Users isAlumni {...props} />} />
-                  <Route exact path={`${path}search/:search`} component={Search} />
-                  <Route exact path={`${path}search/:search/`} component={Search} />
-                  <Route exact path={`${path}search/:search/p/:paged/`} component={Search} />
-                  <Route exact path={`${path}category/:slug/`} render={(props) => <Term taxonomy="category" {...props} />} />
-                  <Route path={`${path}category/:slug/p/:paged/`} render={(props) => <Term taxonomy="category" {...props} />} />
-                  <Route exact path={`${path}tag/:slug/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
-                  <Route path={`${path}tag/:slug/p/:paged/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
-                  <Route exact path={`${path}date/:year/`} component={DateArchive} />
-                  <Route path={`${path}date/:year/p/:paged/`} component={DateArchive} />
-                  <Route exact path={`${path}date/:year/:month/`} component={DateArchive} />
-                  <Route path={`${path}date/:year/:month/p/:paged/`} component={DateArchive} />
-                  <Route exact path={`${path}date/:year/:month/:day/`} component={DateArchive} />
-                  <Route path={`${path}date/:year/:month/:day/p/:paged/`} component={DateArchive} />
-                  <Route exact path={`${path}contact/`} component={Contact} />
-                  <Route exact path={`${path}page/**/`} component={SinglePage} />
-                  <Route exact path={`${path}:year/:month/:day/:slug/`} component={SinglePost} />             
-                  <Route exact path={`${path}events/:slug/`} component={SingleEvent} />                
-                  <Route exact path={`${path}user/:slug/`} component={SingleUser} />
-                  {blogURL}
-                  {blogURLPaged}
-                  <Route component={NotFound} />
-                </Switch>
-              </div>
+            <div id="content" className="site_content">              
+              <Switch>
+                {frontPage}{/* Guess what? The home page has custom styles... */}                             
+                <div className="inner_content wrap clearfix">
+                  {/* Trailing slashes for custom routes are a mess!!! */} 
+                  <Switch>
+                    <Route exact path={`${path}events`} component={Events} />
+                    <Route exact path={`${path}events/`} component={Events} />                   
+                    <Route path={`${path}events/p/:paged/`} component={Events} />   
+                    <Route exact path={`${path}users`} component={Users} />             
+                    <Route exact path={`${path}users/`} component={Users} />                       
+                    <Route path={`${path}users/p/:paged/`} component={Users} />
+                    <Route exact path={`${path}residents/:city`} render={(props) => <Users {...props} />} />
+                    <Route exact path={`${path}residents/:city/`} render={(props) => <Users {...props} />} />                   
+                    <Route path={`${path}residents/:city/p/:paged/`} render={(props) => <Users {...props} />} />
+                    <Route exact path={`${path}alumni`} render={(props) => <Users isAlumni {...props} />} />
+                    <Route exact path={`${path}alumni/`} render={(props) => <Users isAlumni {...props} />} />
+                    <Route path={`${path}alumni/p/:paged/`} render={(props) => <Users isAlumni {...props} />} />
+                    <Route exact path={`${path}search/:search`} component={Search} />
+                    <Route exact path={`${path}search/:search/`} component={Search} />
+                    <Route exact path={`${path}search/:search/p/:paged/`} component={Search} />
+                    <Route exact path={`${path}category/:slug/`} render={(props) => <Term taxonomy="category" {...props} />} />
+                    <Route path={`${path}category/:slug/p/:paged/`} render={(props) => <Term taxonomy="category" {...props} />} />
+                    <Route exact path={`${path}tag/:slug/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
+                    <Route path={`${path}tag/:slug/p/:paged/`} render={(props) => <Term taxonomy="post_tag" {...props} />} />
+                    <Route exact path={`${path}date/:year/`} component={DateArchive} />
+                    <Route path={`${path}date/:year/p/:paged/`} component={DateArchive} />
+                    <Route exact path={`${path}date/:year/:month/`} component={DateArchive} />
+                    <Route path={`${path}date/:year/:month/p/:paged/`} component={DateArchive} />
+                    <Route exact path={`${path}date/:year/:month/:day/`} component={DateArchive} />
+                    <Route path={`${path}date/:year/:month/:day/p/:paged/`} component={DateArchive} />
+                    <Route exact path={`${path}contact/`} component={Contact} />
+                    <Route exact path={`${path}page/**/`} component={SinglePage} />
+                    <Route exact path={`${path}:year/:month/:day/:slug/`} component={SinglePost} />             
+                    <Route exact path={`${path}events/:slug/`} component={SingleEvent} />                
+                    <Route exact path={`${path}user/:slug/`} component={SingleUser} />
+                    {blogURL}
+                    {blogURLPaged}
+                    <Route component={NotFound} />
+                  </Switch>
+                </div>
+              </Switch>
             </div>{/* #content */}
 
             <div className="push" />
