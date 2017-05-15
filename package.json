@@ -96,9 +96,11 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "fetch-ponyfill": "^4.0.0",
     "he": "^1.1.1",
     "history": "^4.5.0",
     "intl": "^1.2.5",
+    "isomorphic-fetch": "^2.2.1",
     "language": "^0.4.0",
     "lodash": "^4.17.2",
     "moment": "^2.17.1",

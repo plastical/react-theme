@@ -1,7 +1,10 @@
 /* global PlasticalSettings, PlasticalData, PlasticalMenu, jQuery */
 // Load in the babel (es6) polyfill, and fetch polyfill
 import 'babel-polyfill';
-import 'whatwg-fetch';
+
+const isEdge = /Edge\//.test(navigator.userAgent);
+if (isEdge) window.fetch = undefined; // ensure the polyfill runs
+require('isomorphic-fetch'); // exports to global if necessary
 
 // React
 import React from 'react';
@@ -56,7 +59,8 @@ function handleURLs() {
     let url = e.currentTarget.href;
     
     url = url.replace(PlasticalSettings.URL.base, PlasticalSettings.URL.path);
-
+    
+    // get global history from ./store
     window.h.push(url); 
   });
 

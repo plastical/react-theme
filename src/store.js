@@ -3,12 +3,6 @@ import ReactGA from 'react-ga';
 import { routerMiddleware as createRouterMiddleware, push } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 
-/* import {
-  syncHistoryWithStore,
-  routerMiddleware as createRouterMiddleware,
-  push, replace, go, goBack, goForward,
-} from './routing/'; */
-
 import rootReducer, { history } from './reducer';
 
 import { addLocaleData } from 'react-intl';
@@ -46,12 +40,7 @@ const store = createStore(rootReducer, enhancer);
 // syncHistoryWithStore(history, store)
 
 // Expose these globally for dev purposes
-// window.dispatch = store.dispatch
 window.h = history
 window.push = push
-// window.replace = replace
-// window.go = go
-// window.goBack = goBack
-// window.goForward = goForward
 
 export default store;
