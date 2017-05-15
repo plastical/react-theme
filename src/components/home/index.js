@@ -105,7 +105,7 @@ class Home extends Component {
 
         <section className="home_highlight blue_deco wrap clearfix" role="main" aria-live="assertive" tabIndex="-1">
           <div className="col780 wrap center clearfix">
-            <h1 className="tech_title increase"><strong>Tecnopolo®</strong> Ticino</h1>
+            <h1 className="tech_title increase"><img src="/assets/layout/tecnopolo_inv.svg" alt="logo" />{/* <strong>Tecnopolo®</strong> Ticino */}</h1>
             <HomeWidget slug="tecnopolo-ticino-home" intl={props.intl} hideTitle />
           </div>
         </section>   

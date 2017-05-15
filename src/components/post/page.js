@@ -54,7 +54,7 @@ class SinglePage extends Component {
         <DocumentMeta {...meta} />
         <BodyClass classes={['page', 'single', 'single_page']} />
         {(this.props.path.indexOf('/tecnopolo-ticino') !== -1) ?
-          <h1 className="tech_title increase"><strong>Tecnopolo®</strong> Ticino</h1> :
+          <h1 className="tech_title increase"><img src="/assets/layout/tecnopolo.svg" alt="logo" />{/* <strong>Tecnopolo®</strong> Ticino */}</h1> :
           <h1 className="page_title" dangerouslySetInnerHTML={getTitle(post)} />
         }
         {featuredMedia ?

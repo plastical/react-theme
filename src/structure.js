@@ -157,10 +157,10 @@ class Structure extends Component {
                   <span>{intl.formatMessage({ id: 'structure.changeLanguageTo' })}</span>
                 </button>          
                 <button id="search-toggle" className={searchClasses} onClick={this.toggleElements}>
-                  <svg id="search-toggle-img" ><use xlinkHref="/assets/layout/lens.svg#svg-lens" /></svg>
+                  <svg id="search-toggle-img"><use xlinkHref="/assets/layout/lens.svg#svg-lens" /></svg>
                 </button>
                 <button id="nav-toggle" className={navClasses} onClick={this.toggleElements}>
-                  <svg id="nav-toggle-img" ><use xlinkHref="/assets/layout/hamburger.svg#hamburger" /></svg>
+                  <svg id="nav-toggle-img"><use xlinkHref="/assets/layout/hamburger.svg#hamburger" /></svg>
                 </button>
                 <h1 id="logo"><Link to={path} rel="home"><img src="/assets/layout/logo.svg" alt="logo" /></Link></h1>              
                 <div id="search-box" className={searchClasses} role="search" aria-live="assertive">
