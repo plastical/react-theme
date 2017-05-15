@@ -49,7 +49,7 @@ class ContactForm extends Component {
     e.preventDefault();
     e.persist(); // We need this for the callback after a message is posted.
     this.validation(e);  
-    // this.setState({ isSubmitting: true });
+    this.setState({ isSubmitting: true });
 
     const keys = ['name', 'email', 'company', 'industry', 'url', 'reason', 'details', 'file_input', 'verify', 'built', 'language'];
        
