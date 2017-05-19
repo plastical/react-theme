@@ -1,10 +1,12 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -25,14 +27,32 @@ import Media from '../post/image';
 import Placeholder from 'components/placeholder';
 import HomeWidget from './widget';
 
+// Localstore
+import { slideStore } from './slideStore';
+
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      currentSlide: 0
+    }
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(() => this.highlightSlide(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
+  highlightSlide() {
+    this.setState({ currentSlide: slideStore.getState().currentSlide });
   }
 
   renderHome() {
     const { post, intl, location, path } = this.props;
+
     if (!post) {
       return null;
     } 
@@ -42,13 +62,14 @@ class Home extends Component {
       description: post.excerpt.rendered,
       canonical: post.link
     }; 
+    meta.title = he.decode(meta.title);
 
     const featuredMedia = getFeaturedMedia(post);
     const editLink = getEditLink(post, intl.formatMessage({ id: 'content-mixin.edit' }));
 
     return (
-      <section className="home_highlight green_deco wrap clearfix" role="main" aria-live="assertive" tabIndex="-1">
-        <div className="wrap clearfix">
+      <section className="wrap clearfix" role="main" aria-live="assertive" tabIndex="-1">
+        <div className="clearfix">
           <DocumentMeta {...meta} />
           <BodyClass classes={['home']} />
           <HomeWidget slug={path} intl={intl} hideTitle />
@@ -65,64 +86,40 @@ class Home extends Component {
     });
 
     return (  
-      <div id="home" className={classes}>        
-        <QueryPage pagePath={props.path} />
-        {props.loading ?
-          <Placeholder /> :
-          this.renderHome()
-        }
+      <div id="home" className={classes}>
 
         <section id="updates" className="inner_content wrap clearfix">
-          <div className="home_list col780 center clearfix">
-            <QueryEvents query={props.eventsQuery} />
-            {props.eventsLoading ?
-              <Placeholder /> :
-              <div>
-                <h1>{props.intl.formatMessage({ id: 'home.forthcoming_events' })}</h1>
-                <EventList {...props} />
-                <Link className="more" to={props.intl.formatMessage({ id: 'home.link_events' })}>{props.intl.formatMessage({ id: 'home.more_events' })}</Link>
-              </div>
-            }
-          </div>
-
-          <div className="bumper" />
-          <div className="sep" />
-
-          <div className="home_list col780 center clearfix">
+          <div className="home_list col480 first left clearfix">
             <QueryPosts query={props.postsQuery} />
             {props.postsLoading ?
               <Placeholder /> :
               <div>
-                <h1>{props.intl.formatMessage({ id: 'home.latest_news' })}</h1>
-                <PostList {...props} />
-                <Link className="more" to={props.intl.formatMessage({ id: 'home.link_news' })}>{props.intl.formatMessage({ id: 'home.more_news' })}</Link>
+                <h3>{props.intl.formatMessage({ id: 'home.latest_news' })}</h3>
+                <PostList {...props} currentSlide={this.state.currentSlide} />
+              </div>
+            }
+          </div>
+
+          <div className="home_list col480 right last clearfix">            
+            <QueryEvents query={props.eventsQuery} />
+            {props.eventsLoading ?
+              <Placeholder /> :
+              <div>
+                <h3>{props.intl.formatMessage({ id: 'home.forthcoming_events' })}</h3>
+                <EventList {...props} currentSlide={this.state.currentSlide} />
               </div>
             }
           </div>                           
         </section>   
 
-        <section className="home_highlight blue_deco wrap clearfix" role="main" aria-live="assertive" tabIndex="-1">
-          <div className="col780 wrap center clearfix">
-            <h1 className="tech_title increase"><strong>Tecnopolo®</strong> Ticino</h1>
-            <HomeWidget slug="tecnopolo-ticino-home" intl={props.intl} hideTitle />
-          </div>
-        </section>   
+        <div className="bumper" />
+        <div className="wrap light_sep" />
 
-        <section id="home-widgets" className="inner_content wrap clearfix">
-          
-          <div className="col480 first left clearfix">
-            <HomeWidget slug="for-entrepreneurs" intl={props.intl} />
-          </div>
-
-          <div className="col480 right last clearfix">
-            <HomeWidget slug="for-institutions" intl={props.intl} />
-          </div>
-
-          <div className="bumper" />
-          <div className="sep" />
-
-          <HomeWidget slug="members" intl={props.intl} />
-        </section>
+        <QueryPage pagePath={props.path} />
+        {props.loading ?
+          <Placeholder /> :
+          this.renderHome()
+        }
 
       </div>
     )
@@ -137,7 +134,7 @@ export default injectIntl(
     if (path[path.length - 1] === '/') {
       path = path.slice(0, -1);
     }
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       path = `${path}&lang=${locale.lang}`;
     }
 
@@ -150,7 +147,7 @@ export default injectIntl(
     const otherPostsQuery = {};
     const eventsQuery = {};
 
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       childrenQuery.lang = locale.lang;
       postsQuery.lang = locale.lang;
       otherPostsQuery.lang = locale.lang;
@@ -164,21 +161,13 @@ export default injectIntl(
     const children = getChildrenForQuery(state, childrenQuery) || [];
     const childrenRequesting = isRequestingChildrenForQuery(state, childrenQuery);
 
-    postsQuery.page = ownProps.params.paged || 1;
+    postsQuery.page = ownProps.match.params.paged || 1;
     postsQuery.per_page = 3;
-    postsQuery.categories = (locale.lang !== 'en') ? 3 : 1;
 
     const posts = getPostsForQuery(state, postsQuery) || [];
     const postsRequesting = isRequestingPostsForQuery(state, postsQuery);
 
-    otherPostsQuery.page = ownProps.params.paged || 1;
-    otherPostsQuery.per_page = 3;
-    otherPostsQuery.categories = (locale.lang !== 'en') ? 7 : 6;
-
-    const otherPosts = getPostsForQuery(state, otherPostsQuery) || [];
-    const otherPostsRequesting = isRequestingPostsForQuery(state, otherPostsQuery);
-
-    eventsQuery.page = ownProps.params.paged || 1;
+    eventsQuery.page = ownProps.match.params.paged || 1;
     eventsQuery.per_page = 3;
     eventsQuery.orderby = 'meta_value'; /* orderby vs. order_by !!!! */
     eventsQuery.order = 'asc';
@@ -206,12 +195,6 @@ export default injectIntl(
       postsRequesting,
       postsLoading: postsRequesting && !posts,
       postsTotalPages: getTotalPagesForQueryPosts(state, postsQuery),
-      otherPostsPage: parseInt(postsQuery.page),
-      otherPostsQuery,
-      otherPosts,
-      otherPostsRequesting,
-      otherPostsLoading: otherPostsRequesting && !otherPosts,
-      otherPostsTotalPages: getTotalPagesForQueryPosts(state, otherPostsQuery),
       eventsPage: parseInt(eventsQuery.page),
       eventsQuery,
       events,

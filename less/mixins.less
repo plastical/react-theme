@@ -17,8 +17,9 @@ THEME COLORS
 *********************/
 /* main theme colors */
 @baseColor: rgb(51,51,51); 	// gray
-@primaryColor: rgb(11,94,92); // dark green
-@secondaryColor: rgb(87,161,144); // light green
+@primaryColor: rgb(43,63,134); // dark blue
+@secondaryColor: rgb(57,180,64); // light green
+@tertiaryColor: rgb(243,112,34); // orange
 
 /* Default variations  */
 @baseColor-light5:		lighten(@baseColor, 5%);
@@ -27,6 +28,8 @@ THEME COLORS
 @primaryColor-light10:			lighten(@primaryColor, 10%);
 @secondaryColor-light5:		lighten(@secondaryColor, 5%);
 @secondaryColor-light10:			lighten(@secondaryColor, 10%);
+@tertiaryColor-light5:		lighten(@tertiaryColor, 5%);
+@tertiaryColor-light10:			lighten(@tertiaryColor, 10%);
 
 @baseColor-dark5:		darken(@baseColor, 5%);
 @baseColor-dark10:			darken(@baseColor, 10%);
@@ -34,6 +37,8 @@ THEME COLORS
 @primaryColor-dark10:			darken(@primaryColor, 10%);
 @secondaryColor-dark5:		darken(@secondaryColor, 5%);
 @secondaryColor-dark10:			darken(@secondaryColor, 10%);
+@tertiaryColor-dark5:		darken(@tertiaryColor, 5%);
+@tertiaryColor-dark10:			darken(@tertiaryColor, 10%);
            
 
 /*********************
@@ -127,30 +132,6 @@ TYPOGRAPHY
     font-family: 'open_sansregular';
     src: url("@{base-url}/webfonts/opensans-regular-webfont.woff2") format('woff2'),
          url("@{base-url}/webfonts/opensans-regular-webfont.woff") format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'tech-light';
-    src: url("@{base-url}/webfonts/tech-round-light-beta.woff2") format('woff2'),
-         url("@{base-url}/webfonts/tech-round-light-beta.woff") format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'tech-medium';
-    src: url("@{base-url}/webfonts/tech-round-medium-beta.woff2") format('woff2'),
-         url("@{base-url}/webfonts/tech-round-medium-beta.woff") format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'tech-bold';
-    src: url("@{base-url}/webfonts/tech-round-bold-beta.woff2") format('woff2'),
-         url("@{base-url}/webfonts/tech-round-bold-beta.woff") format('woff');
     font-weight: normal;
     font-style: normal;
 }

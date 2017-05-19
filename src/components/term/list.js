@@ -53,7 +53,7 @@ export default injectIntl(
     const { query, taxonomy, term } = ownProps;
     let path = PlasticalSettings.URL.path || '/';
 
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       query.lang = locale.lang;
     }
 

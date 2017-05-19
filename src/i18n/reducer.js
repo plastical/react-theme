@@ -3,9 +3,9 @@ import { ITALIAN_TRANSLATION } from './messages/it';
 
 export const LOCALE_SELECTED = '@@i18n/LOCALE_SELECTED';
 
-const initialState = {
-  lang: ENGLISH_TRANSLATION.lang,
-  messages: ENGLISH_TRANSLATION.messages
+const initialState = { // Remember to change this for the default, initial locale!!!
+  lang: ITALIAN_TRANSLATION.lang,
+  messages: ITALIAN_TRANSLATION.messages
 };
 
 export const localeReducer = (state = initialState, action) => {

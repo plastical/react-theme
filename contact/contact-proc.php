@@ -13,97 +13,32 @@ include ('class-smtp.php');
 $host = '';
 $username = '';
 $password = '';
-$from = 'no-reply@agire.ch';
-$fromName = 'Fondazione AGIRE';
+$from = 'apec@chiasso.ch';
+$fromName = 'APEC';
 $to = 'info@plastical.com';
 $l = 'en';
 
 $r = array(
 	'en' => array(
 		'bodyGeneral' => '<br/>Thank you for contacting us.<br/><br/>We will come back to you as soon as possible.<br/><br/>Best regards.<br/>',
-		'subjectContact' => 'Information request',
-    'reasonTecnopolo' => 'Tecnopolo Ticino',
-    'reasonTechTransfer' => 'Technology transfer',
-    'reasonSupport' => 'Startup / SME support',
-    'reasonCoaching' => 'Coaching',
-    'reasonOther' => 'Other',
-    'industryLifeSciences' =>  'Life sciences',
-    'industryDigitalIct' =>  'Digital / ICT',
-    'industryHightechIndustrial' =>  'High tech / Industrial',
-    'industryCleantechEnergy' =>  'Cleantech / Energy',
-    'industryFashion' =>  'Fashion',
-    'industryOther' => 'Other',
-    'fileAttached' => 'Complementary information in the attached pdf.',
+		'subjectContact' => 'Contact request',    
 		'subjectAttend' => 'Event attendance',
 		'bodyAttend' => '<br/>Thank you for booking a place at this event.<br/><br/>Best regards.<br/>',
 	),
 	'it' => array(
 		'bodyGeneral' => '<br/>Grazie per averci contattato.<br/><br/>Daremo un riscontro non appena possibile.<br/><br/>Cordiali saluti.<br/>',
-		'subjectContact' => 'Richiesta informazioni',
-    'reasonTecnopolo' => 'Tecnopolo Ticino',
-    'reasonTechTransfer' => 'Transfer tecnologico',
-    'reasonSupport' => 'Supporto Startup / PMI',
-    'reasonCoaching' => 'Coaching',
-    'reasonOther' => 'Altro',
-    'industryLifeSciences' =>  'Life sciences',
-    'industryDigitalIct' =>  'Digital / ICT',
-    'industryHightechIndustrial' =>  'High tech / Industrial',
-    'industryCleantechEnergy' =>  'Cleantech / Energy',
-    'industryFashion' =>  'Fashion',
-    'industryOther' => 'Altro',
+		'subjectContact' => 'Richiesta di contatto',
     'fileAttached' => 'Informazioni complementari nel pdf allegato.',
 		'subjectAttend' => 'Iscrizione evento',
 		'bodyAttend' => '<br/>Grazie per aver prenotato un posto a questo evento.<br/><br/>Cordiali saluti.<br/>',
   )
 );
 
-function randomText() {
-  $alphanum = "abcdefghijkmnpqrstuvwxyz123456789";   		
-    $inc = 1;
-    while ($inc < 5) {
-      $alphanum = $alphanum.'abcdefghijkmnpqrstuvwxyz123456789';
-      $inc++;
-    }  
-    $str = substr(str_shuffle($alphanum), 0, rand(4,8));  // 4 Being the minimum amound of letters returned and 24 being the maximum
-    return strtolower($str);
-}
-
-function upload($file) {
-  $allowedMimeTypes = array( 
-    'application/pdf'
-  );
-  $valid = false;
-  if($file['size'] > (10485760/5)) { //2 MB (size is also in bytes)
-    $valid = false;
-  } else {
-    $valid = true;
-  }
-  if (!in_array($file['type'], $allowedMimeTypes)) {
-    $valid = false;
-  } else {
-    $valid = true;
-  }
-  if ($valid) {
-    // $file_name = round(microtime(true)) . '_' . randomText() . '.pdf';
-    // if (move_uploaded_file($file['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/files/uploads/docs/' . $file_name)) {
-      return true;
-      //return strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https://'?'https://':'http://' . $_SERVER['HTTP_HOST'] . '/files/uploads/docs/' . $file_name;
-    // } else {
-      // return false;
-    // }
-  } else {
-    return false;
-  }
-}
-
-
 // verification random string
 $contentHelpers = new ContentHelpers();
 
 $errors = array();
 $missing = array();
-$file_input = false;
-$uploadOk = true;
 $sqlOK = true;	
 		
 $jsonItems = Array();
@@ -114,17 +49,6 @@ if (!is_array($req)) {
 
 // check if the form has been submitted
 if (isset($req['submit'])) {	
-
-  // check file
-  if (isset($_FILES['file_input'])) {    
-    $uploadOk = upload($_FILES['file_input']);
-    if($uploadOk) {
-
-      $new_file_name = round(microtime(true)) . '_' . randomText() . '.pdf';
-      $file_input = $_FILES['file_input']['tmp_name'];
-      //$file_input = $uploadOk;
-    }
-  }
 		
 	// check whether verification is empty
 	if (isset($req['verify']) && $req['verify'] != '')
@@ -140,35 +64,15 @@ if (isset($req['submit'])) {
 	if ($timeOut == false) {					
 		$notificationBody = $r[$l]['bodyGeneral'] . $fromName;
 		// filter according to reason
-		if ($req['reason'] != 'attendance') {
-			$expected = array('name', 'email', 'company', 'industry', 'url', 'reason', 'details', 'built');
-			$required = array('name', 'email', 'reason', 'details', 'built');
-      if ($req['reason'] == 'tecnopolo') {
-        $notificationReason = $r[$l]['reasonTecnopolo'];
-      }
-      else if ($req['reason'] == 'tech-transfer_startup-support') {
-        $notificationReason = $r[$l]['reasonTechTransfer'] . ' - ' . $r[$l]['reasonSupport'];
-      }
-      else if ($req['reason'] == 'tech-transfer') {
-        $notificationReason = $r[$l]['reasonTechTransfer'];
-      }
-      else if ($req['reason'] == 'startup-sme-support') {
-        $notificationReason = $r[$l]['reasonSupport'];
-      } 
-      else if ($req['reason'] == 'coaching') {
-        $notificationReason = $r[$l]['reasonCoaching'];
-      }
-      else {
-        $notificationReason = $r[$l]['reasonOther'];
-      }
-
-			$notificationSubject = $fromName . ': ' . $r[$l]['subjectContact'] . ' - ' . $notificationReason;
-		}
-		else if ($req['reason'] == 'attendance') {
+		if ($req['reason'] == 'attendance') {
 			$expected = array('first_name', 'last_name', 'email', 'job_title', 'company', 'address', 'post_id', 'reason', 'event_name', 'event_startdate', 'built');
 			$required = array('first_name', 'last_name', 'email', 'address', 'post_id', 'reason', 'event_name', 'event_startdate', 'built');
 			$notificationSubject = $fromName . ': ' . $r[$l]['subjectAttend'];
 			$notificationBody = $r[$l]['bodyAttend'] . $fromName;
+		} else {
+			$expected = array('name', 'email', 'details', 'built');
+			$required = array('name', 'email', 'details', 'built');
+			$notificationSubject = $fromName . ': ' . $r[$l]['subjectContact'];
 		}
 	
 		// assume nothing is suspect
@@ -238,28 +142,7 @@ if (isset($req['submit'])) {
 				// add label and value to the message body
 				if($item != 'verify' && $item != 'built' && $item != 'reason')	{
 					if($item == 'details')
-						$message .= "<hr/>$val<hr/>";
-					else if($item == 'industry') {
-           switch ($val) {
-            case 'life-sciences':
-              $message .= ucfirst($item).': ' . $r[$l]['industryLifeSciences'] . '<br/>';
-              break;
-            case 'digital-ict':
-              $message .= ucfirst($item).': ' . $r[$l]['industryDigitalIct'] . '<br/>';
-              break;
-            case 'hightech-industrial':
-              $message .= ucfirst($item).': ' . $r[$l]['industryHightechIndustrial'] . '<br/>';
-              break;
-            case 'cleantech-energy':
-              $message .= ucfirst($item).': ' . $r[$l]['industryCleantechEnergy'] . '<br/>';
-              break;
-            case 'fashion':
-              $message .= ucfirst($item).': ' . $r[$l]['industryFashion'] . '<br/>';
-              break;
-            default:
-              $message .= ucfirst($item).': ' . $r[$l]['industryOther'] . '<br/>';
-           }
-          }
+						$message .= "<hr/>$val<hr/>";					
           else
 					 $message .= ucfirst($item).": $val<br/>";
 				}
@@ -305,16 +188,6 @@ if (isset($req['submit'])) {
 			
 			// Set the body of the Email.
 			//'Ex.: $message= This Email is sent by PHPMailer of WordPress';
-      //if($file_input) {
-        //$message .= '<br/><br/>' . $r[$l]['fileAttached'] . ' ' . $file_input . '<br/>';
-      //}
-      if($uploadOk) { 
-        if($file_input) {
-          $message .= '<br/><br/>' . $r[$l]['fileAttached'] . ' <br/>';
-        }
-        $mail->AddAttachment($file_input, $new_file_name);
-      }
-
 			$mailBody2Text = new Html2Text($message . '<br/><br/>' . $notificationBody);
 			$message = $mailBody2Text->get_text();
 			

@@ -1,7 +1,8 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
@@ -24,39 +25,24 @@ import EventList from '../events/list';
 import Media from '../post/image';
 import Placeholder from 'components/placeholder';
 
-const Slide = ({ intl, slide, active, idx }) =>   
-  <article 
-    id={`slide-${idx}`}
-    key={idx} 
-    style={{ 
-      backgroundImage: `url(${getFeaturedMedia(slide).source_url})`
-    }}
-    className={(active) ? 'slide_item active' : 'slide_item'}
-  >
-    <div className="slide_filter" />
-    <div className="wrap clearfix">
-      <div dangerouslySetInnerHTML={getEditLink(slide, intl.formatMessage({ id: 'content-mixin.edit' }))} />
-      {(slide.type === 'page') ?
-        <div className="slide_content" dangerouslySetInnerHTML={getContent(slide, intl.formatMessage({ id: 'content-mixin.passprotected' }))} /> :
-        <div className="slide_content">
-          <h1>
-            <a className="entry_link" href={slide.link} dangerouslySetInnerHTML={getTitle(slide)} />
-          </h1>      
-          {(slide.type === 'events') ?
-            <h2>
-              <time dateTime={slide.events_startdate_iso}>
-                {slide.events_startdate}
-              </time> &mdash; {slide.events_location}          
-            </h2> :
-            <h2>
-              <time dateTime={slide.date}>{getDate(slide.date)}</time>          
-            </h2>
-          }
-          <a className="more_inv right" href={slide.link}>{intl.formatMessage({ id: 'home.learn_more' })}</a>
-        </div>
-      }
-    </div>
-  </article>
+// Localstore
+import { slideStore } from './slideStore';
+
+const Slide = ({ intl, slide, active, idx, highlightSlide }) => {
+  if (active) {
+    slideStore.mergeState({ currentSlide: idx });
+  }
+  return ( 
+    <article 
+      id={`slide-${idx}`}
+      key={idx} 
+      style={{ 
+        backgroundImage: `url(${getFeaturedMedia(slide).source_url})`
+      }}
+      className={(active) ? 'slide_item active' : 'slide_item'}
+    />
+  )
+}
 
 class Slideshow extends Component {
   constructor(props) {
@@ -77,6 +63,9 @@ class Slideshow extends Component {
   }
 
   slideShow() {
+    if (this.props.slidesLength <= 1) {
+      clearInterval(this.timerId);
+    }
     let activeId = this.state.activeId;
     activeId += 1;
     if (activeId > this.props.slidesLength - 1) {
@@ -111,7 +100,7 @@ class Slideshow extends Component {
         {(props.eventsLoading || props.postsLoading || props.childrenLoading) ?
           null :
           slides.map((slide, i) => 
-            <Slide key={slide.id} active={activeId === i} idx={slide.id} slide={slide} intl={props.intl} />
+            <Slide key={slide.id} active={activeId === i} idx={slide.id} slide={slide} intl={props.intl} cont={this.context} highlightSlide={(value) => this.props.cbHighlightSlide(value)} />
           )
         } 
         {(props.slides) ?
@@ -131,7 +120,7 @@ export default injectIntl(
     if (path[path.length - 1] === '/') {
       path = path.slice(0, -1);
     }
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       path = `${path}&lang=${locale.lang}`;
     }
 
@@ -143,7 +132,7 @@ export default injectIntl(
     const postsQuery = {};
     const eventsQuery = {};
 
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       childrenQuery.lang = locale.lang;
       postsQuery.lang = locale.lang;
       eventsQuery.lang = locale.lang;
@@ -156,15 +145,15 @@ export default injectIntl(
     const children = getChildrenForQuery(state, childrenQuery) || [];
     const childrenRequesting = isRequestingChildrenForQuery(state, childrenQuery);
 
-    postsQuery.page = ownProps.params.paged || 1;
-    postsQuery.per_page = 1;
+    postsQuery.page = ownProps.match.params.paged || 1;
+    postsQuery.per_page = 3;
     postsQuery.sticky = true;
 
     const posts = getPostsForQuery(state, postsQuery) || [];
     const postsRequesting = isRequestingPostsForQuery(state, postsQuery);
 
-    eventsQuery.page = ownProps.params.paged || 1;
-    eventsQuery.per_page = 1;
+    eventsQuery.page = ownProps.match.params.paged || 1;
+    eventsQuery.per_page = 3;
     eventsQuery.order = 'asc';
     eventsQuery.order_by = 'meta_value';
     eventsQuery.meta_key = 'events_startdate';

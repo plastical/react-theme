@@ -54,7 +54,7 @@ export default injectIntl(
   connect((state, ownProps) => {
     const locale = state.locale;
     const query = {};
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       query.lang = locale.lang;
     }
     query.page = ownProps.params.paged || 1;
@@ -63,7 +63,7 @@ export default injectIntl(
     if (PlasticalSettings.frontPage.page) {
       path += `page/${PlasticalSettings.frontPage.blog}/`;
     }
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       path += `/${locale.lang}/${path}`;
     }
 

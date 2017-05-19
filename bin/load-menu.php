@@ -35,9 +35,9 @@ class Plastical_LoadMenu {
 
 		$request = new \WP_REST_Request();
 		$request['context'] = 'view';
-    $location = 'primary-en';
-    if(ICL_LANGUAGE_CODE == 'it'){
-      $location = 'primary-it';
+    $location = 'primary-it';
+    if(ICL_LANGUAGE_CODE == 'en'){
+      $location = 'primary-en';
     }
 		$request['location'] = $location;
     

@@ -2,7 +2,7 @@
 // External dependencies
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { getMenu } from 'wordpress-query-menu/lib/selectors';
 import isItemSelected from 'utils/is-item-selected';

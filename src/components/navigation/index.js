@@ -1,8 +1,9 @@
 /* global PlasticalSettings */
 // External dependencies
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { getMenu } from 'wordpress-query-menu/lib/selectors';
 import isItemSelected from 'utils/is-item-selected';
@@ -64,7 +65,7 @@ const MenuItem = ({ item, onClick, isSelected = false, extended }) => {
 
 class Navigation extends Component {  
   static contextTypes = {
-    closeToggles: React.PropTypes.func.isRequired // This triggers the closing of the toggles (nav and search)
+    closeToggles: PropTypes.func.isRequired // This triggers the closing of the toggles (nav and search)
   };
 
   constructor(props, context) {
@@ -103,11 +104,12 @@ class Navigation extends Component {
 export default connect((state, ownProps) => {
   const locale = state.locale;
 
-  let selected = state.routing.location.pathname; 
+  let selected = state.router.location.pathname; 
+  
   if (selected[selected.length - 1] === '/') {
     selected = selected.slice(0, -1);
   }
-  if (locale.lang !== 'en') {
+  if (locale.lang !== 'it') {
     selected = selected.replace(`/${locale.lang}/`, '');
   }  
   selected = `${PlasticalSettings.URL.base}${selected}`;

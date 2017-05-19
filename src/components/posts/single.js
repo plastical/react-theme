@@ -2,7 +2,7 @@
 // External dependencies
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
@@ -21,7 +21,8 @@ const Post = (props) => {
   }
 
   const classes = classNames({
-    entry: true
+    entry: true,
+    highlight: (post.id === props.currentSlide) 
   });
 
   let size = 'large'; // parent's props let us define the thumb size
@@ -34,19 +35,19 @@ const Post = (props) => {
 
   const path = post.link.replace(PlasticalSettings.URL.base, PlasticalSettings.URL.path);
 
-  const featuredMedia = getFeaturedMedia(post);
+  // const featuredMedia = getFeaturedMedia(post);
   const editLink = getEditLink(post, intl.formatMessage({ id: 'content-mixin.edit' }));
 
   return (
     <article id={`post-${post.id}`} className={classes}>
-      {featuredMedia ?
+      {/* featuredMedia ?
         <Media media={featuredMedia} size={size} parentClass="entry_image" path={path} /> :
         null
-      }
-      <div className="entry_main">
+      */ }
+      <div className="entry_main">        
         <h2 className="entry_title">
           <Link className="entry_link" to={path} rel="bookmark" dangerouslySetInnerHTML={getTitle(post)} />
-        </h2>        
+        </h2>  
         <div className="entry_meta">   
           <time className="entry_date published updated" dateTime={post.date}>{getDate(post.date)}</time>        
           {editLink ?
@@ -54,7 +55,7 @@ const Post = (props) => {
             null
           }
         </div>
-        <div className="entry_content" dangerouslySetInnerHTML={getExcerpt(post)} /> 
+        {/* <div className="entry_content" dangerouslySetInnerHTML={getExcerpt(post)} /> */}
       </div>  
     </article>       
   );

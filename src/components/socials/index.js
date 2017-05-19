@@ -23,14 +23,12 @@ class Socials extends Component {
 
   /* eslint no-undef: 0 */
   facebookShare(e) {
-    e.preventDefault();
-    const appId = '779952552154308';    
+    e.preventDefault();  
     window.open(`https://www.facebook.com/sharer.php?u=${this.state.currentUrl}&amp;appId=${PlasticalSettings.facebookAppId}&amp;title=${this.props.title.html}`, 'sharer', 'toolbar=0,status=0,width=548,height=325');
   }
 
   twitterShare(e) {
     e.preventDefault();
-    const twitterHandler = 'fondazioneAGIRE';
     window.open(`https://twitter.com/share?&amp;url=${this.state.currentUrl}&amp;text=${this.props.title}&amp;via=${PlasticalSettings.twitterHandler}`, 'Tweet', '540', '400');
   }
 

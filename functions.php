@@ -12,7 +12,6 @@ define('CONFIG_THEME_DIR', '/bin');
 
 // Get Specific functions Up & Running!
 require_once(get_template_directory() . CONFIG_THEME_DIR . '/client-core.php'); // core functions (don't remove)
-require_once(get_template_directory() . CONFIG_THEME_DIR . '/profiles.php'); // custom profile functions
 require_once(get_template_directory() . CONFIG_THEME_DIR . '/events-post-type.php'); // events custom types
 require_once(get_template_directory() . CONFIG_THEME_DIR . '/admin.php'); // custom admin functions
 /**
@@ -89,7 +88,7 @@ if (version_compare($GLOBALS['wp_version'], '4.6-alpha', '<')) {
 }
 
 if (!defined('PLASTICAL_VERSION')) {
-	define('PLASTICAL_VERSION', time());
+	define('PLASTICAL_VERSION', '1');
 }
 
 if (!defined('PLASTICAL_APP')) {
@@ -204,7 +203,7 @@ function plastical_scripts() {
 			'nonce' => wp_create_nonce('wp_rest')
 		) ),
 		wp_json_encode(array(
-      'lang' => (ICL_LANGUAGE_CODE != '') ? ICL_LANGUAGE_CODE : 'en',
+      'lang' => 'it',
 			'user' => get_current_user_id(),
 			'userDisplay' => $user ? $user->display_name : '',
       'canEdit' => $canEdit,

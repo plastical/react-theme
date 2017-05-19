@@ -1,11 +1,12 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -39,6 +40,7 @@ class SinglePage extends Component {
       description: post.excerpt.rendered,
       canonical: post.link
     };
+    meta.title = he.decode(meta.title);
 
     const classes = classNames({
       page: true
@@ -51,10 +53,7 @@ class SinglePage extends Component {
         <ScrollIntoView id="#container" />          
         <DocumentMeta {...meta} />
         <BodyClass classes={['page', 'single', 'single_page']} />
-        {(this.props.path.indexOf('/tecnopolo-ticino') !== -1) ?
-          <h1 className="tech_title increase"><strong>Tecnopolo®</strong> Ticino</h1> :
-          <h1 className="page_title" dangerouslySetInnerHTML={getTitle(post)} />
-        }
+        <h1 className="page_title" dangerouslySetInnerHTML={getTitle(post)} />
         {featuredMedia ?
           <Media media={featuredMedia} parentClass="page_image" /> :
           null
@@ -91,8 +90,7 @@ class SinglePage extends Component {
         {(this.props.hasBack && this.props.parentNavItem) ?
           <div className="back">
             <Link className="back_link" to={this.props.parentNavItem.url} >{this.props.parentNavItem.title}</Link>
-            <span className="back_current" dangerouslySetInnerHTML={getTitle(this.props.post)} />            
-            <div className="lightest_sep" />
+            <span className="back_current" dangerouslySetInnerHTML={getTitle(this.props.post)} />  
           </div> :
           null
         }
@@ -120,12 +118,12 @@ class SinglePage extends Component {
 export default injectIntl(
   connect((state, ownProps) => {   
     const locale = state.locale; 
-    let path = ownProps.slug || ownProps.pathname; // In case, this is the slug for the homepage
+    let path = ownProps.slug || ownProps.location.pathname; // In case, this is the slug for the homepage
 
     if (path[path.length - 1] === '/') {
       path = path.slice(0, -1);
     }
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       path = `${path}&lang=${locale.lang}`;
     }
 

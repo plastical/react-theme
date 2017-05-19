@@ -51,24 +51,6 @@ p.increase {
 	#inner-header {
 		width: 90%;	
 	}
-	
-  #language {
-    border-right: solid 1px @secondaryColor;
-
-  	&:hover{	
-			color: @baseColor-dark5;
-      height: 80px;
-			border-bottom: solid 8px @white;						
-		}		
-  }
-
-  #nav-toggle, #search-toggle {
-    &:hover{	
-			color: @baseColor-dark5;
-      height: 80px;
-			border-bottom: solid 10px @white;						
-		}	
-  }
 
   #navigation, #search-box {
 	  margin: 0 auto 0 -5.555555555555555555555%;
@@ -85,18 +67,10 @@ p.increase {
   }
 
 	#slider {
-
-    & .slide_item {
-      & .slide_content {
-         & h1, & h1 a {
-           font-size: 3rem;
-         }
-      }
-    }
+    margin-bottom: -4px;
   }
 	
-	#container {	
-		background-color: @lightestGray;	
+	#container {		
     
     &.moved {
       padding-top: 70px;
@@ -107,15 +81,18 @@ p.increase {
   }
 
   .inner_content { 
-		padding: 1em 2.5% 4em 2.5%;
+		padding: 1em 0 4em 0;
     .borderBox;
 		background-color: @white;	
 	}	
 
+  .home .inner_content {
+    border-top: solid 8px @secondaryColor; 
+  }
+
   .featured_image {
     width: 100%;
     min-height: 480px;
-    margin-bottom: -120px;
     max-height: 600px;
     overflow: hidden;
 

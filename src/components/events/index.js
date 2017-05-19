@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -31,6 +32,7 @@ const Events = (props) => {
     description: PlasticalSettings.meta.description,
     canonical: PlasticalSettings.URL.base,
   };
+  meta.title = he.decode(meta.title);
 
   return ( 
     <section id="main" className="col700 center clearfix" role="main" aria-live="assertive" tabIndex="-1">
@@ -92,7 +94,7 @@ export default injectIntl(
     const query = {};
     const pastQuery = {};
 
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       query.lang = locale.lang;
       pastQuery.lang = locale.lang;
     }
@@ -104,7 +106,7 @@ export default injectIntl(
     query.meta_key = 'events_startdate';
     query.forthcoming = 1;
 
-    pastQuery.page = ownProps.params.paged || 1;
+    pastQuery.page = ownProps.match.params.paged || 1;
     pastQuery.order = 'desc';
     pastQuery.orderby = 'meta_value';
     pastQuery.meta_key = 'events_enddate';

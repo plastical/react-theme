@@ -122,14 +122,14 @@ input[type="submit"] {
 	margin-top: 1em;
 	padding: .75em 1.5em;
 	color: @white;
-	background-color: @secondaryColor;
+	background-color: @tertiaryColor;
 	background-repeat:no-repeat;
 	background-position:100% 50%;
 	text-align:center;
 	.transition(all,.5s,ease-out);
 }
 input:hover[type="submit"]{
-	background-color: @secondaryColor-dark10;
+	background-color: @tertiaryColor-dark10;
 }
 input:active[type="submit"]{
 }
@@ -150,12 +150,12 @@ LINK STYLES
 *********************/
 
 a, a:visited { 
-	color: @primaryColor;
+	color: @tertiaryColor;
 	text-decoration:none;
   font-family: 'open_sansregular', arial, helvetica, sans-serif;	
 	
 	&:hover, &:focus { 
-    color: @primaryColor-dark5; 
+    color: @tertiaryColor-dark5; 
 	}
 
   &:focus {
@@ -266,9 +266,10 @@ H1, H2, H3, H4, H5 STYLES
 h1, h2, h3, h4, h5 { 
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
-	color: @primaryColor;
+	color: @baseColor;
 	font-family: 'open_sansregular', arial, helvetica, sans-serif;
-	line-height: 1; 
+	line-height: 1;
+  letter-spacing: -1px;
 
   & a {
     font-weight: 700;
@@ -287,8 +288,9 @@ h2 {
 
 h3 { 
 	padding: .5em 0 .5em;
-	font-size: 20/16em; 
-  font-weight: 300;
+  font-family: 'open_sanslight', arial, helvetica, sans-serif;
+	font-size: 18/16em; 
+  font-weight: 100;
   text-transform: uppercase;
 }
 
@@ -299,20 +301,10 @@ h4 {
 
 h5 { 
 	padding: .5em 0 .25em;
+  font-family: 'open_sanslight', arial, helvetica, sans-serif;
 	font-size: 12/16em; 
-  font-weight: 300;
+  font-weight: 100;
   text-transform: uppercase;
-}
-
-.tech_title {
-  color: rgb(66, 80, 90);
-  font-family: 'tech-light';
-  font-size: 40/16em;
-  text-transform: uppercase;
-
-  & strong {
-    font-family: 'tech-bold';
-  }
 }
 
 /*********************
@@ -326,17 +318,17 @@ DECORATION STYLES AND BREAKS
 
 .sep {
 	clear: both;
-	border-bottom: solid 4px @primaryColor;
+	border-bottom: solid 2px @primaryColor;
 }
 
 .light_sep {
 	clear: both;
-	border-bottom: solid 2px @lighterGray;
+	border-bottom: solid 1px @secondaryColor;
 }
 
 .lightest_sep {
   clear: both;
-  border-bottom: solid 1px @lighterGray;
+  border-bottom: solid 1px @tertiaryColor;
 }
 
 /*********************
@@ -376,8 +368,7 @@ HEADER SYTLES
 	margin: 0;
 	padding: 0; 
 	width: 100%;
-	height: 70px;
-  border-bottom: solid 8px @secondaryColor;
+	height: 64px;
 	background-color: @white;
 
   &.moved{
@@ -393,15 +384,16 @@ HEADER SYTLES
   padding: 0 0 0 0;
   width: 100%;
   vertical-align: middle;
+  border-bottom: solid 4px @primaryColor;
 } 	
 
 #logo {
   float: left;
   z-index:10000;
   margin: 0;
-  padding: 4px 0 0 8px;
+  padding: 2px 0 0 2px;
   .borderBox;
-  width: 112px;
+  width: 144px;
 
   & img {
     max-width: 100%;
@@ -414,16 +406,16 @@ HEADER SYTLES
 	display:block;
 	z-index:9991;
 	margin: 0 0 -10px 0;	
-	padding: 4px 0 0 0;
+	padding: 0 0 0 0;
   .borderBox;
   border: 0;
   border-left: solid 1px @secondaryColor;
 	width: 48px;
-  height: 70px;
+  height: 60px;
 	color: @baseColor;
 	background: @white;
 	font-size: 16px;
-	line-height: 70px;
+	line-height: 60px;
 	text-align: center;
 
   &:focus {
@@ -439,11 +431,11 @@ SEARCH STYLES
 #search-box {
 	position: relative;
 	z-index: 10000;
-  top: 10px;
+  top: 0px;
 	margin: 0 auto 0;
 	padding: 1.5em 1em 1.5em 1em;
   .borderBox;
-	background-color: @secondaryColor;
+	background-color: @baseColor;
 
   & .search_form {	
     margin: 0 auto;
@@ -475,9 +467,9 @@ SEARCH STYLES
     height:0;
     border: 0;
     background: transparent;
-    overflow:hidden;
-    font-size:0;
-    line-height:0;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
 
   }
 }
@@ -487,38 +479,42 @@ MAIN NAVIGATION STYLES
 *********************/
 
 #navigation, #search-box {	
-	display:none;	
+	display: none;	
 }
 
 #navigation.show, 
 #navigation:target, 
 #search-box.show, 
 #search-box:target {
-	display:block;
-	clear:both;
+	display: block;
+	clear: both;
   .boxShadow(0, 2px);
 }
 
 #nav-toggle, #search-toggle {
-	position:relative;
-	z-index:9991;
+	position: relative;
+	z-index: 9991;
 	float: right;
 	display: block;
 	margin: 0 0 -10px 0;	
 	padding: 0 8px;
   border: 0;
-  border-left: solid 1px @secondaryColor;
   .borderBox;
 	width: 48px;
-  height: 70px;
+  height: 60px;
 	color: @baseColor;
 	background:@white;
 	font-size: 48px;
-	line-height: 70px;
+	line-height: 60px;
 	text-align: center;
 
   &:focus {
     outline:0;
+  }
+
+  &:hover {
+	  font-size: 48px;
+	  line-height: 60px;
   }
 
   & svg {
@@ -532,12 +528,12 @@ MAIN NAVIGATION STYLES
 #search-toggle {
 	float: right;
 	width: 48px;
-  height: 70px;
+  height: 60px;
 }
 
 #nav-toggle.active, #search-toggle.active {
 	color: @white;
-  background-color: @secondaryColor;
+  background-color: @baseColor;
   & svg {
     color: @white;
   }
@@ -546,13 +542,12 @@ MAIN NAVIGATION STYLES
 #navigation {
 	position: relative;
 	z-index: 10000;
-  top: 10px;
+  top: 0px;
 	margin: 0 auto 0;
 	padding: 0 0;
-	border-bottom: solid 4px @primaryColor;
 	width: 100%;
   height: 100%;
-	background-color: @secondaryColor;
+	background-color: @baseColor;
 	display: none;
 
 	& .menu {		
@@ -577,9 +572,9 @@ MAIN NAVIGATION STYLES
         & a {
           display: block;
           padding: .75em .5em;
-          border-top: solid 1px @secondaryColor-light10; 
+          border-top: solid 1px @lighterGray; 
           color: @white;
-          font-size: 1em;
+          font-size: 14/16em;
           text-transform: uppercase;
           text-decoration: none;
 
@@ -615,14 +610,13 @@ BANNER & CALL TO ACTIONS
 						
 #slider {
   position: relative;
-  margin-top: -78px;
-  bottom: -78px;
+  margin-top: 0;
+  margin-bottom: -2px;
   z-index: 0;
   width: 100%;
-  height: 100%;
-  min-height: 100%;
+  height: 400px;
   border-bottom: 0;
-  background-color: @white;      
+  background-color: @white;     
   .borderBox;
   overflow:hidden;
 
@@ -637,7 +631,6 @@ BANNER & CALL TO ACTIONS
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
-    box-shadow: inset 50px 50px 300px 50px rgba(0,0,0,0.5);
     .borderBox;
     overflow:hidden;	
     transition: opacity 1000ms ease-in;
@@ -647,63 +640,6 @@ BANNER & CALL TO ACTIONS
       left: 0;
       z-index: 1;
       transition: opacity 500ms ease-in;
-    }
-
-    & .slide_filter {
-      position: absolute;
-      z-index: -1;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: .10;
-      background-color: rgb(10,54,114, .6);
-      background-image: url("@{layout-url}/sail_transp.svg");
-      background-repeat: no-repeat;
-      background-position:  33.33333333333333% 0%;
-      background-size: cover;
-    }
-    
-    & .slide_content {
-      position: relative;
-      z-index: 2;
-      display: block;
-      float: right;
-      margin-top: 40px;
-      padding: 1em;
-      .borderBox;
-      width: 100%;
-      color: @white;
-      filter: none;
-
-      & h1, & h1 a {
-        margin: 0 0 0 0;
-        padding: 0 0 .5em 0;
-        color: @white;
-        font-family: 'open_sansextrabold', Arial, Helvetica, sans-serif;
-        line-height: 1;
-        .textShadow-darker;
-      }
-
-      & h2, & h2 a {
-        margin: 0 0 0 0;
-        padding: 0 0 .5em 0;
-        color: @white;
-        line-height: 1;
-        .textShadow-darker;
-      }
-
-      & a {
-        color: @white;
-        &:hover {
-          color: @white;
-        }
-      }
-
-      & p {
-        margin: 0 0 .5em 0;
-        padding: 0;
-      }
     }
   }
 }
@@ -717,7 +653,7 @@ CONTENT STYLES
 	min-height: 100%;
 
   &.moved { 
-    padding-top: 70px;
+    padding-top: 88px;
   }
 }
 
@@ -735,114 +671,10 @@ CONTENT STYLES
 }	
 
 .home .inner_content {
+  position: relative;
+  z-index: 1;
+  border-top: solid 4px @secondaryColor; 
   min-height: 0;
-}
-
-.home_highlight {
-  padding: 5em 0;
-  .borderBox;
-  min-height: 400px;  
-  color: @white;
-
-  & p {
-    margin: .5em 0 0 0;
-    line-height: 1.5;
-
-    & a {
-      color: @white;
-
-      &:hover {
-        color: @white;
-      }
-    }
-  }
-
-  &.green_deco {
-    background-color: @secondaryColor-dark5;
-
-    & .link_list {
-      list-style: none;
-      list-style-type: none;
-
-      & li {
-        display: block;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
-        height: 49px;
-        border-bottom: solid 1px @lighterGray;
-        text-indent: 0;
-
-        &:before {
-          display: none;
-          content: none;
-          width: 0;
-          color: inherit;
-        }
-
-        & a.more {
-          width: 100%;
-          height: 46px;
-          color: @white;
-          text-align: right;
-
-          &:hover {
-            color: @white;
-          }
-
-        }
-      }
-
-      & li:last-child {
-        border-bottom: 0;
-      }
-    }
-  }
-
-  &.blue_deco {
-    color: @white;
-    background-color: rgb(66, 80, 90);
-
-    & .tech_title {
-      color: @white;
-    }
-   
-    & .link_list {
-      list-style: none;
-      list-style-type: none;
-
-      & li {
-        display: block;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
-        height: 49px;
-        border-bottom: solid 1px @lighterGray;
-        text-indent: 0;
-
-        &:before {
-          display: none;
-          content: none;
-          width: 0;
-          color: inherit;
-        }
-
-        & a.more {
-          width: 100%;
-          height: 46px;
-          color: @white;
-          text-align: right;
-
-          &:hover {
-            color: @white;
-          }
-
-        }
-      }
-
-      & li:last-child {
-        border-bottom: 0;
-      }
-    }
-  }
 }
 
 .back {
@@ -867,6 +699,7 @@ CONTENT STYLES
     font-size: 12/16em;
     text-transform: uppercase;
 
+    /*
     &:before {
       content: '<';
       position: relative;
@@ -878,6 +711,7 @@ CONTENT STYLES
       font-size: 44px;
       line-height: 12/16em;
     }
+    */
   }
 }
 
@@ -927,8 +761,18 @@ CONTENT STYLES
 
     & .entry_main {
       max-width: 360px;
-      min-height: 144px;
+      min-height: 80px;
       .borderBox;
+
+      & .entry_title {
+        // font-size: 1.125rem;
+        & a {
+          color: @baseColor;
+          &:hover {
+            color: @baseColor-dark10;
+          }
+        }
+      }
 
       & .entry_meta {
         font-size: 12/16em;
@@ -946,6 +790,12 @@ CONTENT STYLES
     margin: 0 0 0 0;
     padding: .125em 0 .125em 0;
     text-indent: 0;
+
+
+    &.highlight {
+      border-left: solid 4px @tertiaryColor;
+      text-indent: 1em;
+    }
 
     &:before {
       display: none;
@@ -968,6 +818,12 @@ CONTENT STYLES
 
       & .entry_title {
         // font-size: 1.125rem;
+        & a {
+          color: @baseColor;
+          &:hover {
+            color: @baseColor-dark10;
+          }
+        }
       }
 
       & .entry_meta {
@@ -1040,60 +896,6 @@ CONTENT STYLES
     }
   }
 }
-
-.team_board_grid {
-  list-style: none;
-  list-style-type: none;
-
-  & li {
-    display: block;
-    float: none;
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    width: 100%;
-    .borderBox;
-    text-indent: 0;
-
-    &:before {
-      display: none;
-      content: none;
-      width: 0;
-      color: inherit;
-    }
-
-    & h3, & h3 a,  & h4, & h4 a, & p {
-      margin: 0 auto 0 auto;
-      text-align: center;
-    }
-
-    & a.social {
-      width: 32px;
-      height: 32px;
-      .borderRadius(32px);
-      background-color: @secondaryColor;
-
-      & svg {
-        margin: 4px;
-        color: @white;        
-        width: 24px;
-        height: 24px;
-      }
-
-      &:hover {
-        background-color: @secondaryColor-dark10;
-      }
-
-    }
-
-    & img {
-      max-width: 100%;
-      .borderBox;
-    }
-
-    &:nth-child(3n+3) {  
-    }
-  }
-}
 				
 .search_results {
    padding: .5em;
@@ -1139,11 +941,11 @@ PAGE NAV STYLES
       text-decoration: none; 
       position: relative; 
       color: @white;
-      background-color: @primaryColor; 
+      background-color: @tertiaryColor; 
       
       &:hover { 
         color: @white;
-        background-color: @primaryColor-dark10; 
+        background-color: @tertiaryColor-dark10; 
       }
     }
     
@@ -1156,12 +958,12 @@ PAGE NAV STYLES
       
     /* common styles for page_navi links */
     &.prev_link a, &.next_link a {
-      color: @primaryColor;
+      color: @tertiaryColor;
       background: none;
       padding: 0;   
 
       &:hover {
-        color: @primaryColor-dark5; 
+        color: @tertiaryColor-dark5; 
         background: none;
       }
     } 
@@ -1221,7 +1023,7 @@ aside {
     &.current_page_item a,
     &.current_page_ancestor,
     & a.active {
-      color: @secondaryColor;
+      color: @tertiaryColor;
     }
   }
 }

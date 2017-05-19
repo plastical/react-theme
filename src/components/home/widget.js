@@ -49,7 +49,7 @@ export default injectIntl(
     const locale = state.locale;
     let path = ownProps.slug;
 
-    if (locale.lang !== 'en') {
+    if (locale.lang !== 'it') {
       path = `/${locale.lang}/page/${path}&lang=${locale.lang}`;
     } else {
       path = `/page/${path}&lang=${locale.lang}`;

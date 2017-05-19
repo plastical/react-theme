@@ -1,12 +1,13 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
 import find from 'lodash/find';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -65,6 +66,7 @@ class SinglePost extends Component {
       description: post.excerpt.rendered,
       canonical: post.link
     };
+    meta.title = he.decode(meta.title);
 
     const classes = classNames({
       entry: true
@@ -118,7 +120,6 @@ class SinglePost extends Component {
       <div className="back">
         {categories}
         <span className="back_current" dangerouslySetInnerHTML={getTitle(post)} />
-        <div className="lightest_sep" />
       </div>
     )
   }
@@ -168,7 +169,7 @@ class SinglePost extends Component {
 export default injectIntl(
   connect((state, ownProps) => {
     const locale = state.locale;
-    const slug = `${ownProps.params.slug}&lang=${locale.lang}` || false;
+    const slug = `${ownProps.match.params.slug}&lang=${locale.lang}` || false;
     const postId = getPostIdFromSlug(state, slug);
     const requesting = isRequestingPost(state, slug);
     const post = getPost(state, parseInt(postId));

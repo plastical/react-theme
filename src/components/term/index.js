@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import BodyClass from 'utils/react-body-class';
@@ -21,6 +22,7 @@ const TermHeader = ({ term, taxonomy, loading, termData = {}, query = {} }) => {
     title: `${termData.name} ${pag} – ${PlasticalSettings.meta.title}`,
     description: termData.description,
   };
+  meta.title = he.decode(meta.title);
 
   return (
     <section id="main" className="col700 center clearfix" role="main" aria-live="assertive" tabIndex="-1">
@@ -44,18 +46,18 @@ const TermHeader = ({ term, taxonomy, loading, termData = {}, query = {} }) => {
 
 export default connect((state, ownProps) => {
   const locale = state.locale;
-  const term = (locale.lang !== 'en') ? `${ownProps.params.slug}&lang=${locale.lang}` : ownProps.params.slug;
+  const term = (locale.lang !== 'it') ? `${ownProps.match.params.slug}&lang=${locale.lang}` : ownProps.match.params.slug;
   const taxonomy = ownProps.taxonomy;
   const termId = getTermIdFromSlug(state, taxonomy, term) || 0;
   const termData = getTerm(state, termId);
   const requesting = isRequestingTerm(state, taxonomy, term);
 
   const query = {};
-  if (locale.lang !== 'en') {
+  if (locale.lang !== 'it') {
     query.lang = locale.lang;
   }
 
-  query.page = ownProps.params.paged || 1;
+  query.page = ownProps.match.params.paged || 1;
 
   if (taxonomy === 'category') {
     query.categories = [termId];

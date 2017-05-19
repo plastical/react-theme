@@ -1,7 +1,10 @@
 /* global PlasticalSettings, PlasticalData, PlasticalMenu, jQuery */
 // Load in the babel (es6) polyfill, and fetch polyfill
 import 'babel-polyfill';
-import 'whatwg-fetch';
+
+const isEdge = /Edge\//.test(navigator.userAgent);
+if (isEdge) window.fetch = undefined; // ensure the polyfill runs
+require('isomorphic-fetch'); // exports to global if necessary
 
 // React
 import React from 'react';
@@ -22,7 +25,6 @@ import { setMenu } from 'wordpress-query-menu/lib/state';
 // Accessibility
 import { skipLink } from 'utils/a11y';
 
-
 function renderApp() {
   render(
     <Provider store={store}>
@@ -36,7 +38,6 @@ function renderApp() {
 
 // Set up link capture on all links in the app context.
 function handleURLs() {
-  console.log(location.href);
   if (/files/.test(location.href)) {
     return;
   }

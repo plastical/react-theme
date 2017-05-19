@@ -1,5 +1,6 @@
 // External dependencies
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const noop = () => {};
 
@@ -30,11 +31,11 @@ const Pagination = (props) => {
 }
 
 Pagination.propTypes = {
-  // start: React.PropTypes.number,
-  current: React.PropTypes.number,
-  end: React.PropTypes.number,
-  onNextPage: React.PropTypes.func,
-  onPreviousPage: React.PropTypes.func,
+  // start: PropTypes.number,
+  current: PropTypes.number,
+  end: PropTypes.number,
+  onNextPage: PropTypes.func,
+  onPreviousPage: PropTypes.func,
 }
 
 Pagination.defaultProps = {

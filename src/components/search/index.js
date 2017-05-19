@@ -1,17 +1,16 @@
 /* global PlasticalSettings */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router';
+import { Redirect, Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import DocumentMeta from 'react-document-meta';
 import ScrollIntoView from 'scroll-component';
+import he from 'he';
 
 // Internal dependencies
 import { getTitle, getEditLink, getContent, getDate, getExcerpt, getFeaturedMedia } from 'utils/content-mixin';
 import BodyClass from 'utils/react-body-class';
-import QueryUsers from 'wordpress-query-users';
-import { isRequestingUsersForQuery, getUsersForQuery, getTotalPagesForQuery as getTotalPagesForQueryUsers } from 'wordpress-query-users/lib/selectors';
 import QueryEvents from 'wordpress-query-custom-posts-events';
 import { isRequestingEventsForQuery, getEventsForQuery, getTotalPagesForQuery as getTotalPagesForQueryEvents } from 'wordpress-query-custom-posts-events/lib/selectors';
 import QueryChildren from 'wordpress-query-page-children';
@@ -20,7 +19,6 @@ import QueryPosts from 'wordpress-query-posts';
 import { isRequestingPostsForQuery, getPostsForQuery, getTotalPagesForQuery as getTotalPagesForQueryPosts } from 'wordpress-query-posts/lib/selectors';
 
 // Components
-import UserList from 'components/users/list';
 import EventList from 'components/events/list';
 import PostList from 'components/posts/list';
 import Pagination from 'components/pagination/archive';
@@ -87,12 +85,11 @@ class Search extends Component {
   }
 
   getSearchValue() {
-    return this.props.params.search;
+    return this.props.match.params.search;
   }
 
   render() {
     const props = this.props;
-    const users = this.props.users;
     const events = this.props.events;
     const pages = this.props.pages;
     const posts = this.props.posts;
@@ -104,6 +101,7 @@ class Search extends Component {
     const meta = {
       title: `${intl.formatMessage({ id: 'search.search_results' })} ${term} – ${PlasticalSettings.meta.title}`
     };
+    meta.title = he.decode(meta.title);
 
     return (
       <section id="main" className="clearfix" role="main" aria-live="assertive" tabIndex="-1">
@@ -119,33 +117,8 @@ class Search extends Component {
         <div className="bumper" />
 
         <div className="col940 center clearfix">
-
-          <div className="search_results col480 first left clearfix">
-            <h5>{intl.formatMessage({ id: 'search.users' })}</h5>
-            <QueryUsers query={this.props.usersQuery} />
-            {(this.props.usersLoading) ?
-              <Placeholder /> :
-              <UserList users={users} {...props} status smallList noPreload />
-            }
-            {this.props.usersTotalPages > 1 ? 
-              <Pagination
-                path={this.props.path}
-                length={users.length}
-                current={this.props.usersPage}
-                isFirstPage={this.props.usersPage === 1}
-                isLastPage={this.props.usersPage === this.props.usersTotalPages}
-                totalPages={this.props.usersTotalPages}
-                intl
-              /> : 
-              null
-            }   
-            {!this.props.usersRequesting && users.length === 0 && this.props.usersTotalPages <= 1 ?
-              <p>{intl.formatMessage({ id: 'search.no_results' })}</p> :
-              null
-            }
-          </div>
           
-          <div className="search_results col480 right last clearfix">
+          <div className="search_results col300 first left clearfix">
             <h5>{intl.formatMessage({ id: 'search.events' })}</h5>
             <QueryEvents query={this.props.eventsQuery} />        
             {(this.props.eventsLoading) ?
@@ -170,9 +143,7 @@ class Search extends Component {
             }          
           </div>
 
-          <div style={{ clear: 'both' }} />
-
-          <div className="search_results col480 first left clearfix">
+          <div className="search_results col300 left clearfix">
             <h5>{intl.formatMessage({ id: 'search.pages' })}</h5>
             <QueryChildren query={this.props.pagesQuery} />
             {(this.props.pagesLoading) ?
@@ -197,7 +168,7 @@ class Search extends Component {
             }
           </div>
 
-          <div className="search_results col480 right last clearfix">
+          <div className="search_results col300 right last clearfix">
             <h5>{intl.formatMessage({ id: 'search.posts' })}</h5>
             <QueryPosts query={this.props.postsQuery} />
             {(this.props.postsLoading) ?
@@ -235,40 +206,31 @@ export default injectIntl(
 
     let path = ownProps.pathname;
 
-    if (ownProps.params.paged) {
+    if (ownProps.match.params.paged) {
       path = path.substr(0, path.indexOf('/p/'));
       path = `${path}/`;
     }
 
-    const usersQuery = {};
     const eventsQuery = {};
     const pagesQuery = {};
     const postsQuery = {};
 
 
-    if (locale.lang !== 'en') {
-      usersQuery.lang = locale.lang;
+    if (locale.lang !== 'it') {
       eventsQuery.lang = locale.lang;
       pagesQuery.lang = locale.lang;
       postsQuery.lang = locale.lang;
     }
 
-    usersQuery.page = ownProps.params.paged || 1;
-    usersQuery.search = ownProps.params.search || '';
+    eventsQuery.page = ownProps.match.params.paged || 1;
+    eventsQuery.search = ownProps.match.params.search || '';
 
-    eventsQuery.page = ownProps.params.paged || 1;
-    eventsQuery.search = ownProps.params.search || '';
-
-    pagesQuery.page = ownProps.params.paged || 1;
-    pagesQuery.search = ownProps.params.search || '';
+    pagesQuery.page = ownProps.match.params.paged || 1;
+    pagesQuery.search = ownProps.match.params.search || '';
     pagesQuery.status = 'publish';
 
-    postsQuery.page = ownProps.params.paged || 1;
-    postsQuery.search = ownProps.params.search || '';
-
-    
-    const users = getUsersForQuery(state, usersQuery) || [];
-    const usersRequesting = isRequestingUsersForQuery(state, usersQuery);
+    postsQuery.page = ownProps.match.params.paged || 1;
+    postsQuery.search = ownProps.match.params.search || '';
 
     const events = getEventsForQuery(state, eventsQuery) || [];
     const eventsRequesting = isRequestingEventsForQuery(state, eventsQuery);
@@ -282,13 +244,6 @@ export default injectIntl(
     return {
       locale,
       path,
-      usersLength: users.length,
-      usersPage: parseInt(usersQuery.page),
-      usersQuery,
-      users,
-      usersRequesting,
-      usersLoading: usersRequesting && !users,
-      usersTotalPages: getTotalPagesForQueryUsers(state, usersQuery),
       eventsLength: events.length,
       eventsPage: parseInt(eventsQuery.page),
       eventsQuery,

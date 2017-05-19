@@ -2,7 +2,7 @@
 // External dependencies
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
@@ -17,7 +17,8 @@ const Event = (props) => {
   const intl = props.intl;
 
   const classes = classNames({
-    entry: true
+    entry: true,
+    highlight: (event.id === props.currentSlide) 
   });
 
   let size = 'large'; // parent's props let us define the thumb size
@@ -36,10 +37,10 @@ const Event = (props) => {
 
   return (
     <article id={`event-${event.id}`} className={classes}>
-      {featuredMedia ?
+      {/* featuredMedia ?
         <Media media={featuredMedia} size={size} parentClass="entry_image" path={path} /> :
         null
-      }
+      */}
       <div className="entry_main">
         <h2 className="entry_title">
           <Link className="entry_link" to={path} rel="bookmark" dangerouslySetInnerHTML={getTitle(event)} />
@@ -53,7 +54,7 @@ const Event = (props) => {
             null
           }
         </div>
-        <div className="entry_content" dangerouslySetInnerHTML={getExcerpt(event)} /> 
+        {/* <div className="entry_content" dangerouslySetInnerHTML={getExcerpt(event)} /> */}
       </div>     
     </article>
   );

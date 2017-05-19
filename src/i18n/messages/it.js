@@ -5,29 +5,16 @@ export const ITALIAN_TRANSLATION = {
     // structure
     'structure.skip': 'Salta e vai al contenuto',
     'structure.changeLanguageTo': 'EN',
-    'structure.changePathTo': '',
+    'structure.changePathTo': 'en/',
     // content-mixin
     'content-mixin.passprotected': 'Contenuto protetto da password',
     'content-mixin.edit': 'Modifica',
     // home
     'home.learn_more': 'Scopri di più',
     'home.updates': 'Novità',
-    'home.latest_news': 'Ultime notizie',
-    'home.other_news': 'Notizie dal SRI',
-    'home.more_news': 'Altre notizie',
-    'home.link_news': '/it/category/notizie/',
-    'home.forthcoming_events': 'Prossimi eventi',
-    'home.more_events': 'Altri eventi',
-    'home.link_events': '/it/events/',
-    // user
-    'user.users': 'Aziende',
-    'user.joined': 'Affiliazione nel:',
-    'user.industry': 'Settore:',
-    'user.founded': 'Fondazione nel:',
-    'user.founders': 'Fondatori:',
-    'user.awards': 'Riconoscimenti:',
-    'user.funds_rised': 'Capitale ottenuto:',
-    // user
+    'home.latest_news': 'Ultime attività',
+    'home.forthcoming_events': 'Prossimi appuntamenti',
+    // search
     'search.search': 'Cerca...',
     'search.search_results': 'Risultato ricerca:',
     'search.search_err': 'Cerca richiede un formato valido',
@@ -55,7 +42,7 @@ export const ITALIAN_TRANSLATION = {
     'event.title': 'Eventi',
     'event.forthcoming': 'Prossimi eventi',
     'event.past': 'Eventi passati',
-    'event.link': '/it/events/',
+    'event.link': '/events/',
     'event.location': 'Luogo:',
     'event.begins': 'Inizio:',
     'event.ends': 'Fine:',

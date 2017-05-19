@@ -91,7 +91,7 @@ $more = 'Continuez';
 else if(ICL_LANGUAGE_CODE == 'it')
 $more = 'Continua';
 else 
-$more = 'More';
+$more = 'Continua';
 // if there's no active WPLM active:  $more = 'more';
 return '... <a class="excerpt" href="'. get_permalink($post->ID) . '" title="'.get_the_title($post->ID).'">&nbsp;</a><p class="clearfix"></p>';
 }

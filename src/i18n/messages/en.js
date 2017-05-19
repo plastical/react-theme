@@ -5,7 +5,7 @@ export const ENGLISH_TRANSLATION = {
     // structure
     'structure.skip': 'Skip to content',
     'structure.changeLanguageTo': 'IT',
-    'structure.changePathTo': 'it/',
+    'structure.changePathTo': '/',
     // content-mixin
     'content-mixin.passprotected': 'This content is password protected',
     'content-mixin.edit': 'Edit',
@@ -13,20 +13,7 @@ export const ENGLISH_TRANSLATION = {
     'home.learn_more': 'Learn more',
     'home.updates': 'Updates',
     'home.latest_news': 'Latest news',
-    'home.other_news': 'News from the RSI',
-    'home.more_news': 'More news',
-    'home.link_news': '/category/news/',
     'home.forthcoming_events': 'Forthcoming events',
-    'home.more_events': 'More events',
-    'home.link_events': '/events/',
-    // user
-    'user.users': 'Companies in',
-    'user.joined': 'Joined in:',
-    'user.industry': 'Industry:',
-    'user.founded': 'Founded in:',
-    'user.founders': 'Founders:',
-    'user.awards': 'Awards:',
-    'user.funds_rised': 'Funds rised:',
     // search
     'search.search': 'Search...',
     'search.search_results': 'Search results for:',
@@ -55,7 +42,7 @@ export const ENGLISH_TRANSLATION = {
     'event.title': 'Events',
     'event.forthcoming': 'Forthcoming events',
     'event.past': 'Past events',
-    'event.link': '/events/',
+    'event.link': '/en/events/',
     'event.location': 'Location:',
     'event.begins': 'Begins:',
     'event.ends': 'Ends:',
