@@ -38,7 +38,7 @@ function renderApp() {
 
 // Set up link capture on all links in the app context.
 function handleURLs() {
-  if (/files/.test(location.href)) {
+  if (/files/.test(location.href) || (/\.(xml)$/i).test(location.href)) {
     return;
   }
 
@@ -52,7 +52,7 @@ function handleURLs() {
       return;
     }
     // Don't capture clicks to wp-admin, or the RSS feed
-    if (/wp-(admin|login)/.test(e.currentTarget.href) || /\/feed\/$/.test(e.currentTarget.href) || /files/.test(e.currentTarget.href)) {
+    if (/wp-(admin|login)/.test(e.currentTarget.href) || /\/feed\/$/.test(e.currentTarget.href) || /files/.test(e.currentTarget.href) || (/\.(xml)$/i).test(location.href)) {
       return;
     }
     e.preventDefault();
