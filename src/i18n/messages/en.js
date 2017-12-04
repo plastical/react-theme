@@ -22,7 +22,9 @@ export const ENGLISH_TRANSLATION = {
     // user
     'user.users': 'Companies in',
     'user.joined': 'Joined in:',
-    'user.industry': 'Industry:',
+    'user.left': 'Left in:',
+    // 'user.industry': 'Industry:',
+    'user.industry': 'Sector:',
     'user.founded': 'Founded in:',
     'user.founders': 'Founders:',
     'user.awards': 'Awards:',

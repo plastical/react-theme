@@ -89,7 +89,8 @@ if (version_compare($GLOBALS['wp_version'], '4.6-alpha', '<')) {
 }
 
 if (!defined('PLASTICAL_VERSION')) {
-	define('PLASTICAL_VERSION', 1.1);
+  // define('PLASTICAL_VERSION', 1.1);
+  define('PLASTICAL_VERSION', date('Ymdhis')); // only on localhost for dev purposes!!!
 }
 
 if (!defined('PLASTICAL_APP')) {

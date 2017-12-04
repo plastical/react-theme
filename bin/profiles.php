@@ -150,6 +150,7 @@ function get_user_meta_rest($user) { // no need to call a single field_name
   $array_data['github'] = get_user_meta($user['id'], 'github', true);
   $array_data['current_status'] = get_user_meta($user['id'], 'current_status', true);
   $array_data['joined'] = get_user_meta($user['id'], 'joined', true);
+  $array_data['left'] = get_user_meta($user['id'], 'left', true);
   $array_data['industry'] = get_user_meta($user['id'], 'industry', true);
   $array_data['founded'] = get_user_meta($user['id'], 'founded', true);
   $array_data['founders'] = get_user_meta($user['id'], 'founders', true);

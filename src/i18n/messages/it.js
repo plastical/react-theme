@@ -22,6 +22,7 @@ export const ITALIAN_TRANSLATION = {
     // user
     'user.users': 'Aziende',
     'user.joined': 'Affiliazione nel:',
+    'user.left': 'Uscita nel:',
     'user.industry': 'Settore:',
     'user.founded': 'Fondazione nel:',
     'user.founders': 'Fondatori:',

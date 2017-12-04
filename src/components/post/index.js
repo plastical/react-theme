@@ -77,6 +77,15 @@ class SinglePost extends Component {
     const editLink = getEditLink(post, intl.formatMessage({ id: 'content-mixin.edit' }));
     const title = getTitle(post);
 
+    const categories = this.getTaxonomy(post, 'category');
+    let isAvailable = true;
+
+    if (typeof categories !== 'undefined') {
+      if (categories[0].slug === 'event-downloads' || categories[0].slug === 'download-evento') {
+        isAvailable = false;
+      }
+    }
+
     return (
       <article id={`post-${post.id}`} className={classes}>
         <ScrollIntoView id="#container" />          
@@ -93,8 +102,11 @@ class SinglePost extends Component {
         {/* <PostMeta post={post} humanDate={getDate(post.date)} intl={intl} /> */}
         <div className="entry_content" dangerouslySetInnerHTML={getContent(post, intl.formatMessage({ id: 'content-mixin.passprotected' }))} />
         
-        <div className="bumper" />  
-        <Socials intl title={title.__html} summary={getContent(post, intl.formatMessage({ id: 'content-mixin.passprotected' }))} image={featuredMedia.source_url} />
+        <div className="bumper" />
+        {isAvailable ?
+          <Socials intl title={title.__html} summary={getContent(post, intl.formatMessage({ id: 'content-mixin.passprotected' }))} image={featuredMedia.source_url} /> :
+          false
+        }
         <div className="bumper" />  
       </article>
     );
@@ -108,18 +120,26 @@ class SinglePost extends Component {
     }
 
     let categories = this.getTaxonomy(this.props.post, 'category');
-
+          
     if (typeof categories !== 'undefined') {
-      categories = categories.map((item, i) => 
-        <Link className="back_link" key={i} to={item.link}>{item.name}</Link>
-      );
+      if (categories[0].slug === 'event-downloads' || categories[0].slug === 'download-evento') {
+        categories = null
+      } else {
+        categories = categories.map((item, i) => 
+          <Link className="back_link" key={i} to={item.link}>{item.name}</Link>
+        );
+      }
     } else {
       categories = null;
     }
-    return (
-      <div className="back">
+
+    return (      
+      <div className="back">              
         {categories}
-        <span className="back_current" dangerouslySetInnerHTML={getTitle(post)} />
+        {categories ? 
+          <span className="back_current" dangerouslySetInnerHTML={getTitle(post)} /> :
+          null
+        }
         <div className="lightest_sep" />
       </div>
     )
