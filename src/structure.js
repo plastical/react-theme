@@ -145,7 +145,7 @@ class Structure extends Component {
             <a id="t" href="#content" className="skip_link screen_reader_text">{intl.formatMessage({ id: 'structure.skip' })}</a>
             <header id="header" className="site_header" role="banner">
               <div id="inner-header" className="wrap clearfix">
-                <button 
+                {/* <button 
                   id="language"
                   className="language" 
                   onClick={(e) => { 
@@ -153,9 +153,9 @@ class Structure extends Component {
                     e.stopPropagation(); 
                     window.location.assign(languageSwitch); 
                   }}
-                > 
+                >
                   <span>{intl.formatMessage({ id: 'structure.changeLanguageTo' })}</span>
-                </button>          
+                </button> */}         
                 <button id="search-toggle" className={searchClasses} onClick={this.toggleElements}>
                   <svg id="search-toggle-img"><use xlinkHref="/assets/layout/lens.svg#svg-lens" /></svg>
                 </button>
