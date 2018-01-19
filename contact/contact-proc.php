@@ -32,6 +32,20 @@ $r = array(
     'industryHightechIndustrial' =>  'High tech / Industrial',
     'industryCleantechEnergy' =>  'Cleantech / Energy',
     'industryFashion' =>  'Fashion',
+    'industryAgritechFoodtech' => 'Agritech / Foodtech',
+    'industryBioPharma' => 'Bio / Pharma (drugs)',
+    'industryConsultingServices' => 'Consulting & Services',
+    'industryConsumerProductsServices' => 'Consumer Products & Services',
+    'industryDesignArtArchitecture' => 'Design / Art / Architecture/ Gaming',
+    'industryElectronicMecheng' => 'Electronic & Mechanical Engineering',
+    'industryEnergyCleantech' => 'Energy / Cleantech',
+    'industryFintechInsurancetech' => 'Fintech / Insurance Tech',
+    'industryIctSoftwareDataeng' => 'ICT / Software & Data Engineering',
+    'industryLifescience' => 'Life Science (IT, Diagnostics, Data)',
+    'industryMedtech' => 'Medtech (devices)',
+    'industryMicroNanotech' => 'Micro & Nanotech / Material Science',
+    'industrySocialEntrepreneurship' => 'Social Entrepreneurship/Education',
+    'industrySport' => 'Sport / Leisure / Tourism / Lifestyle',
     'industryOther' => 'Other',
     'fileAttached' => 'Complementary information in the attached pdf.',
 		'subjectAttend' => 'Event attendance',
@@ -50,6 +64,20 @@ $r = array(
     'industryHightechIndustrial' =>  'High tech / Industrial',
     'industryCleantechEnergy' =>  'Cleantech / Energy',
     'industryFashion' =>  'Fashion',
+    'industryAgritechFoodtech' => 'Agritech / Foodtech',
+    'industryBioPharma' => 'Bio / Pharma (drugs)',
+    'industryConsultingServices' => 'Consulting & Services',
+    'industryConsumerProductsServices' => 'Consumer Products & Services',
+    'industryDesignArtArchitecture' => 'Design / Art / Architecture/ Gaming',
+    'industryElectronicMecheng' => 'Electronic & Mechanical Engineering',
+    'industryEnergyCleantech' => 'Energy / Cleantech',
+    'industryFintechInsurancetech' => 'Fintech / Insurance Tech',
+    'industryIctSoftwareDataeng' => 'ICT / Software & Data Engineering',
+    'industryLifescience' => 'Life Science (IT, Diagnostics, Data)',
+    'industryMedtech' => 'Medtech (devices)',
+    'industryMicroNanotech' => 'Micro & Nanotech / Material Science',
+    'industrySocialEntrepreneurship' => 'Social Entrepreneurship/Education',
+    'industrySport' => 'Sport / Leisure / Tourism / Lifestyle',
     'industryOther' => 'Altro',
     'fileAttached' => 'Informazioni complementari nel pdf allegato.',
 		'subjectAttend' => 'Iscrizione evento',
@@ -255,6 +283,49 @@ if (isset($req['submit'])) {
               break;
             case 'fashion':
               $message .= ucfirst($item).': ' . $r[$l]['industryFashion'] . '<br/>';
+              break;
+            // new industries January 2018
+            case 'agritech-foodtech':
+              $message .= ucfirst($item).': ' . $r[$l]['industryAgritechFoodtech'] . '<br/>';
+              break;            
+            case 'bio-pharma':            
+              $message .= ucfirst($item).': ' . $r[$l]['industryBioPharma'] . '<br/>';
+              break;            
+            case 'consulting-services':
+              $message .= ucfirst($item).': ' . $r[$l]['industryConsultingServices'] . '<br/>';
+              break;
+            case 'consumer-products-services':
+              $message .= ucfirst($item).': ' . $r[$l]['industryConsumerProductsServices'] . '<br/>';
+              break;
+            case 'design-art-architecture':
+              $message .= ucfirst($item).': ' . $r[$l]['industryDesignArtArchitecture'] . '<br/>';
+              break;
+            case 'electronic-mecheng':
+              $message .= ucfirst($item).': ' . $r[$l]['industryElectronicMecheng'] . '<br/>';
+              break;
+            case 'energy-cleantech':
+              $message .= ucfirst($item).': ' . $r[$l]['industryEnergyCleantech'] . '<br/>';
+              break;
+            case 'fintech-insurancetech':
+              $message .= ucfirst($item).': ' . $r[$l]['industryFintechInsurancetech'] . '<br/>';
+              break;
+            case 'ict-software-dataeng':
+              $message .= ucfirst($item).': ' . $r[$l]['industryIctSoftwareDataeng'] . '<br/>';
+              break;
+            case 'lifescience':
+              $message .= ucfirst($item).': ' . $r[$l]['industryLifescience'] . '<br/>';
+              break;
+            case 'medtech':
+              $message .= ucfirst($item).': ' . $r[$l]['industryMedtech'] . '<br/>';
+              break;
+            case 'micro-nanotech':
+              $message .= ucfirst($item).': ' . $r[$l]['industryMicroNanotech'] . '<br/>';
+              break;
+            case 'social-entrepreneurship':
+              $message .= ucfirst($item).': ' . $r[$l]['industrySocialEntrepreneurship'] . '<br/>';
+              break;
+            case 'sport':
+              $message .= ucfirst($item).': ' . $r[$l]['industrySport'] . '<br/>';
               break;
             default:
               $message .= ucfirst($item).': ' . $r[$l]['industryOther'] . '<br/>';

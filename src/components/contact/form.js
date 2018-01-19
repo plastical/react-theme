@@ -241,11 +241,28 @@ class ContactForm extends Component {
         <div className="contact_form_field">
           <label htmlFor="industry">{intl.formatMessage({ id: 'contact.industry' })} *</label>
           <select name="industry">
+            {/*
             <option value="life-sciences">{intl.formatMessage({ id: 'contact.life-sciences' })}</option>
             <option value="digital-ict">{intl.formatMessage({ id: 'contact.digital-ict' })}</option>
             <option value="hightech-industrial">{intl.formatMessage({ id: 'contact.hightech-industrial' })}</option>
             <option value="cleantech-energy">{intl.formatMessage({ id: 'contact.cleantech-energy' })}</option>
             <option value="fashion">{intl.formatMessage({ id: 'contact.fashion' })}</option>
+            <option value="other">{intl.formatMessage({ id: 'contact.other' })}</option>
+            */}
+            <option value="agritech-foodtech">{intl.formatMessage({ id: 'contact.agritech-foodtech' })}</option>
+            <option value="bio-pharma">{intl.formatMessage({ id: 'contact.bio-pharma' })}</option>
+            <option value="consulting-services">{intl.formatMessage({ id: 'contact.consulting-services' })}</option>
+            <option value="consumer-products-services">{intl.formatMessage({ id: 'contact.consumer-products-services' })}</option>
+            <option value="design-art-architecture">{intl.formatMessage({ id: 'contact.design-art-architecture' })}</option>
+            <option value="electronic-mecheng">{intl.formatMessage({ id: 'contact.electronic-mecheng' })}</option>
+            <option value="energy-cleantech">{intl.formatMessage({ id: 'contact.energy-cleantech' })}</option>
+            <option value="fintech-insurancetech">{intl.formatMessage({ id: 'contact.fintech-insurancetech' })}</option>
+            <option value="ict-software-dataeng">{intl.formatMessage({ id: 'contact.ict-software-dataeng' })}</option>
+            <option value="lifescience">{intl.formatMessage({ id: 'contact.lifescience' })}</option>
+            <option value="medtech">{intl.formatMessage({ id: 'contact.medtech' })}</option>
+            <option value="micro-nanotech">{intl.formatMessage({ id: 'contact.micro-nanotech' })}</option>
+            <option value="social-entrepreneurship">{intl.formatMessage({ id: 'contact.social-entrepreneurship' })}</option>
+            <option value="sport">{intl.formatMessage({ id: 'contact.sport' })}</option>
             <option value="other">{intl.formatMessage({ id: 'contact.other' })}</option>
           </select>
         </div>
