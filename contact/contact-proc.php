@@ -15,7 +15,7 @@ $username = '';
 $password = '';
 $from = 'no-reply@agire.ch';
 $fromName = 'Fondazione AGIRE';
-$to = 'info@plastical.com';
+$to = 'info@agire.ch';
 $l = 'en';
 
 $r = array(
@@ -372,7 +372,8 @@ if (isset($req['submit'])) {
 			// by using this method repeatedly.
 			//$mail->AddAddress('xxxxxxx@gmail.com');
 			$mail->AddAddress($email);
-			$mail->AddBCC($to);
+      $mail->AddBCC($to);
+      $mail->AddBCC('info@plastical.com');
 			
 			// Set the body of the Email.
 			//'Ex.: $message= This Email is sent by PHPMailer of WordPress';
